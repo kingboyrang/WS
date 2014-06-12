@@ -11,7 +11,7 @@
 #import "ServiceRequestManager.h"
 #import "ServiceOperation.h"
 #import "JSONKit.h"
-
+#import "ServiceResult.h"
 
 @interface LoginViewController ()
 
@@ -117,14 +117,19 @@
             
             return;
         }
+        ServiceResult *rs=[ServiceResult serviceWithArgs:args responseText:manager.responseString];
+        /***
         //请求成功
         NSXMLParser *xml = [[NSXMLParser alloc]initWithData:[this.responseString dataUsingEncoding:NSUTF8StringEncoding]];
         [xml setDelegate:self];
         [xml parse];  //xml开始解析
         NSDictionary *resultJsonDic = [Global GetjsonStr:self.jsonStr];
-        if ([[resultJsonDic objectForKey:@"return"]isEqualToString:@"true"]) {
+        //if ([[resultJsonDic objectForKey:@"return"]isEqualToString:@"true"]) {
+         ***/
+        NSDictionary *resultJsonDic=[rs json];
+       if (rs.success) {
             
-            self.projectArray =  [Global resultArray:resultJsonDic :2:nil:nil where:@""];
+           self.projectArray =[Global resultArray:resultJsonDic :2:nil:nil where:@""];
         }else{
             UIAlertView *alterView = [[UIAlertView alloc]initWithTitle:nil message:[Global tishiMessage:[resultJsonDic objectForKey:@"error"]] delegate:nil cancelButtonTitle:nil otherButtonTitles:@"OK", nil];
             [alterView show];

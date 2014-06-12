@@ -30,6 +30,13 @@
     }
     return nil;
 }
+- (BOOL)success{
+    NSDictionary *dic=[self json];
+    if (dic&&[dic.allKeys containsObject:@"return"]&&[[dic objectForKey:@"return"] isEqualToString:@"true"]) {
+        return YES;
+    }
+    return NO;
+}
 - (XmlParseHelper*)xmlParse{
     return self.xmlHelper;
 }

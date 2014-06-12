@@ -16,5 +16,6 @@
 @property (nonatomic,readonly) NSString *xpath;
 @property (nonatomic,readonly) NSString *filterXml;
 @property (nonatomic,readonly) id json;
+@property (nonatomic,readonly) BOOL success;//判断是否成功(表示返回的json中包含"return":"true")
 + (ServiceResult*)serviceWithArgs:(ServiceArgs*)args responseText:(NSString*)xml;
 @end
