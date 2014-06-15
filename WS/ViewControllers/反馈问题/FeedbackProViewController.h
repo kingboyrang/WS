@@ -23,6 +23,7 @@
     NSMutableArray *zhuanyebtnArr;
     NSMutableArray *wentijibieArr;
     CGFloat cellH;
+    NSString *lauguageStr;
     
     
     CVLabelLabelCell *cell5;

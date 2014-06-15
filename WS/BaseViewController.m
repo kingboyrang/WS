@@ -8,7 +8,9 @@
 
 #import "BaseViewController.h"
 #import "Global.h"
-#import "ServiceResult.h"
+
+#import "AlbumCameraImage.h"
+
 @interface BaseViewController ()
 
 @end
@@ -28,6 +30,8 @@
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    self.albumCamera=[[AlbumCameraImage alloc] init];
+    self.albumCamera.delegate=self;
     
     self.bgImageView = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, 320, 568)];
     [self.bgImageView setImage:[UIImage imageNamed:@"backgroundImage"]];
@@ -112,64 +116,66 @@
 }
 #pragma mark - 调用相册和相机
 -(void)chooseImage {
-    UIActionSheet *sheet;
-    // 判断是否支持相机
+      // 判断是否支持相机
     if([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera])
         
     {
-        sheet  = [[UIActionSheet alloc] initWithTitle:@"选择" delegate:self cancelButtonTitle:nil destructiveButtonTitle:@"取消" otherButtonTitles:@"拍照",@"从相册选择", nil];
+    
+        sheetView = [[[NSBundle mainBundle]loadNibNamed:@"MySheetView" owner:nil options:nil]objectAtIndex:0];
+        BOOL ISEN = [[Global getPreferredLanguage]isEqualToString:@"en"];
+        [sheetView.takePhotoBtn setTitle:ISEN? @"Take photo":@"拍照" forState:UIControlStateNormal];
+        [sheetView.photeBtn setTitle:ISEN?@"Chose photo":@"从手机相册选择" forState:UIControlStateNormal];
+        
         
     }
     
     else {
+        sheetView = [[[NSBundle mainBundle]loadNibNamed:@"MySheetView_noCrame" owner:nil options:nil]objectAtIndex:0];
+        [sheetView.photeBtn setTitle:@"Chose photo" forState:UIControlStateNormal];
         
-        sheet = [[UIActionSheet alloc] initWithTitle:@"选择" delegate:self cancelButtonTitle:nil destructiveButtonTitle:@"取消" otherButtonTitles:@"从相册选择", nil];
         
     }
-    
-    sheet.tag = 255;
-    
-    [sheet showInView:self.view];
+    sheetView.delegate = self;
+    [self.view addSubview:sheetView];
     
 }
--(void) actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
-{
-    if (actionSheet.tag == 255) {
-        
-        NSUInteger sourceType = 0;
-        
-        // 判断是否支持相机
-        if([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
-            
-            switch (buttonIndex) {
-                case 0:
-                    // 取消
-                    return;
-                case 1:
-                    // 相机
-                    sourceType = UIImagePickerControllerSourceTypeCamera;
-                    break;
-                    
-                case 2:
-                    // 相册
-                    sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
-                    break;
-            }
-        }
-        else {
-            if (buttonIndex == 0) {
-                
-                return;
-            } else {
-                sourceType = UIImagePickerControllerSourceTypeSavedPhotosAlbum;
-            }
-        }
+
+-(void)MySheetAction:(int)tag{
+    NSUInteger sourceType = 0;
+ [sheetView removeFromSuperview];
+    if (tag == 100) {
+        [sheetView removeFromSuperview];
+    }else if (tag == 200){
+        sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
         QBImagePickerController *imagePickerController = [[QBImagePickerController alloc] init];
         imagePickerController.delegate = self;
         imagePickerController.allowsMultipleSelection = 1;
         UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:imagePickerController];
         [self presentViewController:navigationController animated:YES completion:NULL];
+
+    }else if (tag == 300){
+        [self.albumCamera showCameraInController:self];
+
     }
+}
+
+/////////////////////////////////////
+- (void)photoFromAlbumCameraWithImage:(UIImage*)image{
+    //取得拍照图片
+    //Document
+    NSDate *  senddate=[NSDate date];
+    NSDateFormatter  *dateformatter=[[NSDateFormatter alloc] init];
+    [dateformatter setDateFormat:@"YYYYMMddhhmmssSSS"];
+    NSString *  locationString=[dateformatter stringFromDate:senddate]; //当前时间
+    NSString *fileName = locationString;  //得到图片名字
+    NSData *_data = UIImageJPEGRepresentation(image, 1.0f);
+    NSString *_encodedImageStr = [_data base64Encoding];//转成base64String
+    FujianClass *class = [[FujianClass alloc]init];
+    class.fujianName = fileName;
+    class.fujianData = _encodedImageStr;
+    class.myImage = image;
+    [self.fujianArray addObject:class];
+    
 }
 - (void)dismissImagePickerController
 {
@@ -276,11 +282,26 @@
 //            NSLog(@"同步请求失败，失败原因=%@",manager.error.description);
             return;
         }
-        ServiceResult *sr=[ServiceResult serviceWithArgs:args responseText:manager.responseString];
-        NSDictionary *resultJsonDic =[sr json];
+        NSLog(@"同步请求成功，请求结果为=%@",manager.responseString);
+       
+        NSString *xml=[manager.responseString stringByReplacingOccurrencesOfString:@"xmlns=\"http://tempuri.org/\"" withString:@""];
+        XmlParseHelper *_helper = [[XmlParseHelper alloc] initWithData:xml];
+        XmlNode *node=[_helper soapXmlSelectSingleNode:@"//UploadFileResult"];
+
+        NSDictionary *resultJsonDic = [NSJSONSerialization JSONObjectWithData:[node.InnerText dataUsingEncoding:NSUTF8StringEncoding] options:1 error:nil];
         if (resultJsonDic&&[resultJsonDic.allKeys containsObject:@"return"]&&[[resultJsonDic objectForKey:@"return"] isEqualToString:@"true"]) {
             [self.sendFujianArray addObject:resultJsonDic];
         }
+        /***
+        if ([[resultJsonDic objectForKey:@"return"] isEqualToString:@"true"]) {
+            NSMutableDictionary *dic = [[NSMutableDictionary alloc]init];
+            [dic setObject:[resultJsonDic objectForKey:@"LeiXing"] forKey:@"LeiXing"];
+            [dic setObject:[resultJsonDic objectForKey:@"XinMingCheng"] forKey:@"XinMingCheng"];
+            [dic setObject:[resultJsonDic objectForKey:@"YuanMingCheng"] forKey:@"YuanMingCheng"];
+            
+        }
+         ***/
+        
     }];
     [manager startSynchronous];//开始同步
 }

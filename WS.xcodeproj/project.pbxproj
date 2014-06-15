@@ -55,6 +55,20 @@
 		215D3EC718F5291B00FD7E78 /* FMResultSet.m in Sources */ = {isa = PBXBuildFile; fileRef = 215D3EC218F5291B00FD7E78 /* FMResultSet.m */; };
 		215D3ECA18F52A3900FD7E78 /* FMDBClass.m in Sources */ = {isa = PBXBuildFile; fileRef = 215D3EC918F52A3900FD7E78 /* FMDBClass.m */; };
 		216748F31907719D0010D543 /* PerSonClass.m in Sources */ = {isa = PBXBuildFile; fileRef = 216748F21907719D0010D543 /* PerSonClass.m */; };
+		2168490C194A890A00C58C6D /* FaultCellTableViewCell_en.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2168490B194A890A00C58C6D /* FaultCellTableViewCell_en.xib */; };
+		2168490E194A8CA000C58C6D /* Suqqestions.png in Resources */ = {isa = PBXBuildFile; fileRef = 2168490D194A8CA000C58C6D /* Suqqestions.png */; };
+		21684910194A8CB100C58C6D /* Opinion.png in Resources */ = {isa = PBXBuildFile; fileRef = 2168490F194A8CB100C58C6D /* Opinion.png */; };
+		21684912194A8CBE00C58C6D /* Result.png in Resources */ = {isa = PBXBuildFile; fileRef = 21684911194A8CBE00C58C6D /* Result.png */; };
+		21684914194A8CCF00C58C6D /* Confirmation.png in Resources */ = {isa = PBXBuildFile; fileRef = 21684913194A8CCF00C58C6D /* Confirmation.png */; };
+		21684916194A8CDC00C58C6D /* Evaluation.png in Resources */ = {isa = PBXBuildFile; fileRef = 21684915194A8CDC00C58C6D /* Evaluation.png */; };
+		21684918194A8CF300C58C6D /* Forward.png in Resources */ = {isa = PBXBuildFile; fileRef = 21684917194A8CF300C58C6D /* Forward.png */; };
+		2168491A194A905F00C58C6D /* pwBg.png in Resources */ = {isa = PBXBuildFile; fileRef = 21684919194A905F00C58C6D /* pwBg.png */; };
+		21684927194ACABA00C58C6D /* MySheetView.m in Sources */ = {isa = PBXBuildFile; fileRef = 21684926194ACABA00C58C6D /* MySheetView.m */; };
+		21684929194ACAD400C58C6D /* MySheetView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 21684928194ACAD400C58C6D /* MySheetView.xib */; };
+		2168492C194ACC0200C58C6D /* Cancel1-1.png in Resources */ = {isa = PBXBuildFile; fileRef = 2168492A194ACC0200C58C6D /* Cancel1-1.png */; };
+		2168492D194ACC0200C58C6D /* Cancel1.png in Resources */ = {isa = PBXBuildFile; fileRef = 2168492B194ACC0200C58C6D /* Cancel1.png */; };
+		2168492F194AD7A000C58C6D /* MySheetView_noCrame.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2168492E194AD7A000C58C6D /* MySheetView_noCrame.xib */; };
+		21684933194AE77E00C58C6D /* AlbumCameraImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 21684932194AE77E00C58C6D /* AlbumCameraImage.m */; };
 		21699DAC194984F000BECEC5 /* backgroundImage.png in Resources */ = {isa = PBXBuildFile; fileRef = 21699DAB194984F000BECEC5 /* backgroundImage.png */; };
 		21699DF41949850400BECEC5 /* 30.png in Resources */ = {isa = PBXBuildFile; fileRef = 21699DAD1949850400BECEC5 /* 30.png */; };
 		21699DF51949850400BECEC5 /* backBtn.png in Resources */ = {isa = PBXBuildFile; fileRef = 21699DAE1949850400BECEC5 /* backBtn.png */; };
@@ -242,7 +256,6 @@
 		21DAE9BD1904E72900BD1E20 /* MessageClass.m in Sources */ = {isa = PBXBuildFile; fileRef = 21DAE9BC1904E72900BD1E20 /* MessageClass.m */; };
 		21FD2ED419406BA200400905 /* CVRadio.m in Sources */ = {isa = PBXBuildFile; fileRef = 21FD2ED319406BA200400905 /* CVRadio.m */; };
 		21FD2ED719406FC000400905 /* CVRadioCollection.m in Sources */ = {isa = PBXBuildFile; fileRef = 21FD2ED619406FBF00400905 /* CVRadioCollection.m */; };
-		26AA1A151949CB21006DD34C /* ServiceResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 26AA1A141949CB21006DD34C /* ServiceResult.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -350,6 +363,22 @@
 		215D3EC918F52A3900FD7E78 /* FMDBClass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FMDBClass.m; path = ../3rd/FMDBClass.m; sourceTree = "<group>"; };
 		216748F11907719D0010D543 /* PerSonClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PerSonClass.h; sourceTree = "<group>"; };
 		216748F21907719D0010D543 /* PerSonClass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PerSonClass.m; sourceTree = "<group>"; };
+		2168490B194A890A00C58C6D /* FaultCellTableViewCell_en.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FaultCellTableViewCell_en.xib; sourceTree = "<group>"; };
+		2168490D194A8CA000C58C6D /* Suqqestions.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Suqqestions.png; sourceTree = "<group>"; };
+		2168490F194A8CB100C58C6D /* Opinion.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Opinion.png; sourceTree = "<group>"; };
+		21684911194A8CBE00C58C6D /* Result.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Result.png; sourceTree = "<group>"; };
+		21684913194A8CCF00C58C6D /* Confirmation.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Confirmation.png; sourceTree = "<group>"; };
+		21684915194A8CDC00C58C6D /* Evaluation.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Evaluation.png; sourceTree = "<group>"; };
+		21684917194A8CF300C58C6D /* Forward.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Forward.png; sourceTree = "<group>"; };
+		21684919194A905F00C58C6D /* pwBg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = pwBg.png; sourceTree = "<group>"; };
+		21684925194ACABA00C58C6D /* MySheetView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MySheetView.h; sourceTree = "<group>"; };
+		21684926194ACABA00C58C6D /* MySheetView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MySheetView.m; sourceTree = "<group>"; };
+		21684928194ACAD400C58C6D /* MySheetView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MySheetView.xib; sourceTree = "<group>"; };
+		2168492A194ACC0200C58C6D /* Cancel1-1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Cancel1-1.png"; sourceTree = "<group>"; };
+		2168492B194ACC0200C58C6D /* Cancel1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Cancel1.png; sourceTree = "<group>"; };
+		2168492E194AD7A000C58C6D /* MySheetView_noCrame.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MySheetView_noCrame.xib; sourceTree = "<group>"; };
+		21684931194AE77E00C58C6D /* AlbumCameraImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlbumCameraImage.h; sourceTree = "<group>"; };
+		21684932194AE77E00C58C6D /* AlbumCameraImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlbumCameraImage.m; sourceTree = "<group>"; };
 		21699DAB194984F000BECEC5 /* backgroundImage.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = backgroundImage.png; sourceTree = "<group>"; };
 		21699DAD1949850400BECEC5 /* 30.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 30.png; sourceTree = "<group>"; };
 		21699DAE1949850400BECEC5 /* backBtn.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = backBtn.png; sourceTree = "<group>"; };
@@ -594,8 +623,6 @@
 		21FD2ED319406BA200400905 /* CVRadio.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CVRadio.m; sourceTree = "<group>"; };
 		21FD2ED519406FBF00400905 /* CVRadioCollection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CVRadioCollection.h; sourceTree = "<group>"; };
 		21FD2ED619406FBF00400905 /* CVRadioCollection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CVRadioCollection.m; sourceTree = "<group>"; };
-		26AA1A131949CB21006DD34C /* ServiceResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ServiceResult.h; sourceTree = "<group>"; };
-		26AA1A141949CB21006DD34C /* ServiceResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ServiceResult.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -630,6 +657,7 @@
 		21451A4018FCFC70004866A9 /* class */ = {
 			isa = PBXGroup;
 			children = (
+				2154939919358FC300700E30 /* Category */,
 				21699F5319498B9700BECEC5 /* Pull_downClass.h */,
 				21699F5419498B9700BECEC5 /* Pull_downClass.m */,
 				21699F5019498B7B00BECEC5 /* Pull_downTable.h */,
@@ -648,7 +676,6 @@
 				21699F391949877F00BECEC5 /* DownTableCell.h */,
 				21699F3A1949877F00BECEC5 /* DownTableCell.m */,
 				21699F3B1949877F00BECEC5 /* DownTableCell.xib */,
-				2154939919358FC300700E30 /* Category */,
 				21451A4118FCFCDB004866A9 /* PersonInfoClass.h */,
 				21451A4218FCFCDB004866A9 /* PersonInfoClass.m */,
 				21451A4418FCFE14004866A9 /* ProjectClass.h */,
@@ -661,6 +688,10 @@
 				210D4D79192B563400CE22FF /* CaoZuoClass.m */,
 				215493A31935B41A00700E30 /* FujianBtn.h */,
 				215493A41935B41A00700E30 /* FujianBtn.m */,
+				21684925194ACABA00C58C6D /* MySheetView.h */,
+				21684926194ACABA00C58C6D /* MySheetView.m */,
+				21684928194ACAD400C58C6D /* MySheetView.xib */,
+				2168492E194AD7A000C58C6D /* MySheetView_noCrame.xib */,
 			);
 			path = class;
 			sourceTree = "<group>";
@@ -683,6 +714,7 @@
 		214833D2191792FA00299EDD /* QBImagePickerController */ = {
 			isa = PBXGroup;
 			children = (
+				21684930194AE76600C58C6D /* crema */,
 				214833D3191792FA00299EDD /* QBAssetsCollectionCheckmarkView.h */,
 				214833D4191792FA00299EDD /* QBAssetsCollectionCheckmarkView.m */,
 				214833D5191792FA00299EDD /* QBAssetsCollectionFooterView.h */,
@@ -774,6 +806,8 @@
 		2156C1AB19494D990088F3BE /* Image_en */ = {
 			isa = PBXGroup;
 			children = (
+				2168492A194ACC0200C58C6D /* Cancel1-1.png */,
+				2168492B194ACC0200C58C6D /* Cancel1.png */,
 				21B4FE4F1949B7B100D2F2EF /* Search */,
 				21B4FE481949B55700D2F2EF /* list1 */,
 				21B4FE3D1949A9F400D2F2EF /* pw */,
@@ -855,6 +889,15 @@
 				21B74156194971F500D9B0FF /* FeiFaultViewController.xib */,
 			);
 			path = "非故障信息";
+			sourceTree = "<group>";
+		};
+		21684930194AE76600C58C6D /* crema */ = {
+			isa = PBXGroup;
+			children = (
+				21684931194AE77E00C58C6D /* AlbumCameraImage.h */,
+				21684932194AE77E00C58C6D /* AlbumCameraImage.m */,
+			);
+			name = crema;
 			sourceTree = "<group>";
 		};
 		21699E3D1949863A00BECEC5 /* 在线客服 */ = {
@@ -1191,6 +1234,7 @@
 		21B4FE3D1949A9F400D2F2EF /* pw */ = {
 			isa = PBXGroup;
 			children = (
+				21684919194A905F00C58C6D /* pwBg.png */,
 				21B4FE421949AA2400D2F2EF /* Confirm-1.png */,
 				21B4FE431949AA2400D2F2EF /* Confirm.png */,
 				21B4FE3E1949AA1400D2F2EF /* Cancel-1.png */,
@@ -1202,6 +1246,12 @@
 		21B4FE481949B55700D2F2EF /* list1 */ = {
 			isa = PBXGroup;
 			children = (
+				21684917194A8CF300C58C6D /* Forward.png */,
+				21684915194A8CDC00C58C6D /* Evaluation.png */,
+				21684913194A8CCF00C58C6D /* Confirmation.png */,
+				21684911194A8CBE00C58C6D /* Result.png */,
+				2168490F194A8CB100C58C6D /* Opinion.png */,
+				2168490D194A8CA000C58C6D /* Suqqestions.png */,
 				21B4FE491949B57800D2F2EF /* Switching projsct-1.png */,
 				21B4FE4A1949B57800D2F2EF /* Switching projsct.png */,
 			);
@@ -1279,8 +1329,6 @@
 				21CFD54F18FBCA3000CE5397 /* ServiceRequestManager.h */,
 				21CFD55018FBCA3000CE5397 /* ServiceRequestManager.m */,
 				2147A389194852CE00E87A44 /* Globalservices.h */,
-				26AA1A131949CB21006DD34C /* ServiceResult.h */,
-				26AA1A141949CB21006DD34C /* ServiceResult.m */,
 			);
 			path = webservices;
 			sourceTree = "<group>";
@@ -1291,6 +1339,7 @@
 				21B741A419497D4600D9B0FF /* FaultCellTableViewCell.h */,
 				21B741A519497D4600D9B0FF /* FaultCellTableViewCell.m */,
 				21B741A619497D4600D9B0FF /* FaultCellTableViewCell.xib */,
+				2168490B194A890A00C58C6D /* FaultCellTableViewCell_en.xib */,
 				21B741A719497D4600D9B0FF /* FeedbackViewController_3.5.xib */,
 				21B741A819497D4600D9B0FF /* FeedbackViewController.h */,
 				21B741A919497D4600D9B0FF /* FeedbackViewController.m */,
@@ -1434,6 +1483,7 @@
 				2180FF1B18EA535A00FB838A /* InfoPlist.strings in Resources */,
 				2140423419261DE40026717A /* ProCell.xib in Resources */,
 				21699E1E1949850400BECEC5 /* normal_5.png in Resources */,
+				2168492D194ACC0200C58C6D /* Cancel1.png in Resources */,
 				21B74158194971F500D9B0FF /* FeiFaultViewController.xib in Resources */,
 				2156C1AE19494DDB0088F3BE /* login_en.png in Resources */,
 				2142A8FC1909FDEE00883B8C /* LoginViewController.xib in Resources */,
@@ -1443,6 +1493,7 @@
 				21B741C71949812E00D9B0FF /* NavView_7.xib in Resources */,
 				21B7417A1949787600D9B0FF /* ForwardTableViewCell.xib in Resources */,
 				21B7412E194957E300D9B0FF /* Feedback issues-1.png in Resources */,
+				2168491A194A905F00C58C6D /* pwBg.png in Resources */,
 				21B4FE471949AC3A00D2F2EF /* RegistrationViewController_en.xib in Resources */,
 				21CFD53F18FBB6A300CE5397 /* SearchViewController.xib in Resources */,
 				21699E171949850400BECEC5 /* loginbtn@2x.png in Resources */,
@@ -1462,9 +1513,11 @@
 				21699E101949850400BECEC5 /* jianyi.png in Resources */,
 				21B4FE441949AA2400D2F2EF /* Confirm-1.png in Resources */,
 				21B741231949502100D9B0FF /* Registration-1.png in Resources */,
+				2168490C194A890A00C58C6D /* FaultCellTableViewCell_en.xib in Resources */,
 				21699F381949867700BECEC5 /* OnlineServiceViewController.xib in Resources */,
 				21B741811949796B00D9B0FF /* forwardNormal.png in Resources */,
 				21699E051949850400BECEC5 /* deleBtn.png in Resources */,
+				21684912194A8CBE00C58C6D /* Result.png in Resources */,
 				21699E111949850400BECEC5 /* jieguo.png in Resources */,
 				21B4FE4B1949B57800D2F2EF /* Switching projsct-1.png in Resources */,
 				21B7412F194957E300D9B0FF /* Feedback issues.png in Resources */,
@@ -1478,11 +1531,13 @@
 				21699E361949850400BECEC5 /* zhuanfa.png in Resources */,
 				21B741AD19497D4600D9B0FF /* FeedbackViewController_3.5.xib in Resources */,
 				21699DFE1949850400BECEC5 /* cankanqueren_nor.png in Resources */,
+				2168490E194A8CA000C58C6D /* Suqqestions.png in Resources */,
 				21B7412D194957E300D9B0FF /* Feedback information.png in Resources */,
 				21699DFD1949850400BECEC5 /* cankanpingjia_sele.png in Resources */,
 				21699E071949850400BECEC5 /* forgetpw.png in Resources */,
 				21699E091949850400BECEC5 /* hight_1.png in Resources */,
 				21699E351949850400BECEC5 /* yijian.png in Resources */,
+				21684929194ACAD400C58C6D /* MySheetView.xib in Resources */,
 				21699E181949850400BECEC5 /* navImage.png in Resources */,
 				21699E2A1949850400BECEC5 /* searchBtn.png in Resources */,
 				21B741AF19497D4600D9B0FF /* FeedbackViewController.xib in Resources */,
@@ -1490,6 +1545,7 @@
 				21699E0E1949850400BECEC5 /* higtloginbtn.png in Resources */,
 				21699E1F1949850400BECEC5 /* noSelefang.png in Resources */,
 				21699DFC1949850400BECEC5 /* cankanpingjia_nor.png in Resources */,
+				2168492C194ACC0200C58C6D /* Cancel1-1.png in Resources */,
 				21B4FE551949B90900D2F2EF /* FeedbackViewController_en.xib in Resources */,
 				21699E0A1949850400BECEC5 /* hight_2.png in Resources */,
 				21699E201949850400BECEC5 /* noSeleYuan.png in Resources */,
@@ -1512,17 +1568,21 @@
 				21699E151949850400BECEC5 /* login@2x.png in Resources */,
 				214833F2191792FA00299EDD /* QBImagePickerController.strings in Resources */,
 				21B741B519497DB500D9B0FF /* DetailedViewController.xib in Resources */,
+				2168492F194AD7A000C58C6D /* MySheetView_noCrame.xib in Resources */,
 				21B741201949500600D9B0FF /* Enter.png in Resources */,
+				21684910194A8CB100C58C6D /* Opinion.png in Resources */,
 				21699DF71949850400BECEC5 /* cancelBtn.png in Resources */,
 				21699E321949850400BECEC5 /* yesSelefang.png in Resources */,
 				21699E001949850400BECEC5 /* cankanyijian_nor.png in Resources */,
 				21699DF91949850400BECEC5 /* cankanjianyi_sele.png in Resources */,
+				21684918194A8CF300C58C6D /* Forward.png in Resources */,
 				21B741601949730900D9B0FF /* BottonView.xib in Resources */,
 				21699E161949850400BECEC5 /* loginbtn.png in Resources */,
 				21CAE1C719499F5F0082C466 /* ForwardingViewController.xib in Resources */,
 				21699E391949850400BECEC5 /* zhuceLine1.png in Resources */,
 				21699E061949850400BECEC5 /* fogetPwBG.png in Resources */,
 				21699E331949850400BECEC5 /* yesSeleYuan.png in Resources */,
+				21684916194A8CDC00C58C6D /* Evaluation.png in Resources */,
 				2140421D1925EB1E0026717A /* RegistrationViewController.xib in Resources */,
 				21699E341949850400BECEC5 /* yidu.png in Resources */,
 				21699E381949850400BECEC5 /* zhuceBg.png in Resources */,
@@ -1550,6 +1610,7 @@
 				21404222192607000026717A /* FindEmailViewController.xib in Resources */,
 				21699E2C1949850400BECEC5 /* seleBtn.png in Resources */,
 				2156C1B219494E710088F3BE /* Forgot password.png in Resources */,
+				21684914194A8CCF00C58C6D /* Confirmation.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1576,6 +1637,7 @@
 				214833EC191792FA00299EDD /* QBAssetsCollectionViewCell.m in Sources */,
 				2180FF4C18EA569800FB838A /* LoginViewController.m in Sources */,
 				214833EF191792FA00299EDD /* QBImagePickerController.m in Sources */,
+				21684927194ACABA00C58C6D /* MySheetView.m in Sources */,
 				214833ED191792FA00299EDD /* QBAssetsCollectionViewController.m in Sources */,
 				21B741611949730900D9B0FF /* HearView.m in Sources */,
 				21B741A019497D3200D9B0FF /* CZCell.m in Sources */,
@@ -1602,7 +1664,6 @@
 				21699F371949867700BECEC5 /* OnlineCell.m in Sources */,
 				21D8D1CD18FFAF6C00A06A80 /* MJRefreshConst.m in Sources */,
 				21699F431949888100BECEC5 /* BtnView.m in Sources */,
-				26AA1A151949CB21006DD34C /* ServiceResult.m in Sources */,
 				214DDA721900BA15001AC7F9 /* UserInfo.m in Sources */,
 				21505C7118FCBF1700C3C671 /* JSONKit.m in Sources */,
 				2170CAF218FB7F0100CE7C38 /* SearchViewController.m in Sources */,
@@ -1610,6 +1671,7 @@
 				215D3EC518F5291B00FD7E78 /* FMDatabasePool.m in Sources */,
 				21CFD55318FBCA3000CE5397 /* ServiceOperationQueue.m in Sources */,
 				21CAE1C619499F5F0082C466 /* ForwardingViewController.m in Sources */,
+				21684933194AE77E00C58C6D /* AlbumCameraImage.m in Sources */,
 				21B7416E1949782600D9B0FF /* AddviceViewController.m in Sources */,
 				21AC9237193746E6006CD6F3 /* WTStatusBar.m in Sources */,
 				210D4D7A192B563400CE22FF /* CaoZuoClass.m in Sources */,

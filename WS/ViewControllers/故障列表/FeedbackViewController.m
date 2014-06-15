@@ -266,9 +266,10 @@
 }
 #pragma mark tableViewDelegate
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+
     
     [cellHighArray addObject:[NSNumber numberWithFloat:160+ [self getHeightForCell:contentsArray[indexPath.row]]]];
-    return 160+ [self getHeightForCell:contentsArray[indexPath.row]];
+    return cellH+ [self getHeightForCell:contentsArray[indexPath.row]];
    
     
 }
@@ -317,46 +318,91 @@
     }
     
     int y = [[cellHighArray objectAtIndex:indexPath.row] intValue]-30;
-    UIButton *btn1 = [[UIButton alloc]initWithFrame:CGRectMake(260, y, 48, 21)];
-    UIButton *btn2 = [[UIButton alloc]initWithFrame:CGRectMake(210, y, 48, 21)];
-    UIButton *btn3 = [[UIButton alloc]initWithFrame:CGRectMake(160, y, 48, 21)];
-    UIButton *btn4 = [[UIButton alloc]initWithFrame:CGRectMake(110, y, 48, 21)];
-    UIButton *btn5 = [[UIButton alloc]initWithFrame:CGRectMake(60, y, 48, 21)];
-    UIButton *btn6 = [[UIButton alloc]initWithFrame:CGRectMake(10, y, 48, 21)];
     
+    UIButton *btn1,*btn2,*btn3,*btn4,*btn5,*btn6;
+    
+    if ([[Global getPreferredLanguage]isEqualToString:@"en"]) {
+        btn1 = [[UIButton alloc]initWithFrame:CGRectMake(80, y+22, 75, 21)];
+        btn2 = [[UIButton alloc]initWithFrame:CGRectMake(10, y+22, 75, 21)];
+        btn3 = [[UIButton alloc]initWithFrame:CGRectMake(240, y, 75, 21)];
+        btn4 = [[UIButton alloc]initWithFrame:CGRectMake(160, y, 75, 21)];
+        btn5 = [[UIButton alloc]initWithFrame:CGRectMake(80, y, 75, 21)];
+        btn6 = [[UIButton alloc]initWithFrame:CGRectMake(10, y,75, 21)];
+    }else{
+        btn1 = [[UIButton alloc]initWithFrame:CGRectMake(260, y, 48, 21)];
+        btn2 = [[UIButton alloc]initWithFrame:CGRectMake(210, y, 48, 21)];
+        btn3 = [[UIButton alloc]initWithFrame:CGRectMake(160, y, 48, 21)];
+        btn4 = [[UIButton alloc]initWithFrame:CGRectMake(110, y, 48, 21)];
+        btn5 = [[UIButton alloc]initWithFrame:CGRectMake(60, y, 48, 21)];
+        btn6 = [[UIButton alloc]initWithFrame:CGRectMake(10, y, 48, 21)];
+        
+    }
 
     NSMutableArray *btnarray = [[NSMutableArray alloc]initWithObjects:btn1,btn2,btn3,btn4,btn5,btn6, nil];
     NSMutableDictionary *imageDic = [[NSMutableDictionary alloc]init];
     int i = 0;
     if ([messClass.XinXi_forwarding isEqualToString:@"True"]) {
         i++;
-        NSString *str = @"zhuanfa";
+         NSString *str;
+        if (cellH == 160) {
+           str = @"zhuanfa";
+        }else{
+           str = @"Forward";
+        }
+       
         [imageDic setObject:str forKey:@"100"];
     }
     if ([messClass.XinXi_pingjia isEqualToString:@"True"]) {
         i++;
-        NSString *str = @"pingjia";
+        NSString *str;
+        if (cellH == 160) {
+            str = @"pingjia";
+        }else{
+            str = @"Evaluation";
+        }
         [imageDic setObject:str forKey:@"200"];
     }
     if ([messClass.XinXi_result_submit isEqualToString:@"True"]) {
         i++;
-        NSString *str = @"queding";
+        NSString *str;
+        if (cellH == 160) {
+            str = @"queding";
+        }else{
+            str = @"Confirmation";
+        }
         [imageDic setObject:str forKey:@"300"];
     }
     if ([messClass.XinXi_result isEqualToString:@"True"]) {
         i++;
-        NSString *str = @"jieguo";
+        NSString *str;
+        if (cellH == 160) {
+            str = @"queding";
+        }else{
+            str = @"Result";
+        }
         [imageDic setObject:str forKey:@"400"];
     }
     if ([messClass.XinXi_yijian isEqualToString:@"True"]) {
         i++;
-        NSString *str = @"yijian";
+        
+        NSString *str;
+        if (cellH == 160) {
+            str = @"yijian";
+        }else{
+            str = @"Opinion";
+        }
         [imageDic setObject:str forKey:@"500"];
         
     }
     if ([messClass.XinXi_jianyi isEqualToString:@"True"]) {
         i++;
-        NSString *str = @"jianyi";
+        NSString *str;
+        if (cellH == 160) {
+            str = @"jianyi";
+        }else{
+            str = @"Suqqestions";
+        }
+        
         [imageDic setObject:str forKey:@"600"];
         
     }
@@ -650,6 +696,12 @@
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    if ([[Global getPreferredLanguage]isEqualToString:@"en"]) {
+        cellH = 180;
+    }else{
+        cellH = 160;
+    }
+    
      self.messageArr = [[FMDBClass shareInstance]seleDate:INFOTABLE wherestr:[NSString stringWithFormat:@"WHERE proid = %@",[UserInfo shareInstance].project_current_Id]];
     [self.mytableView reloadData];
 }

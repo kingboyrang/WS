@@ -41,7 +41,10 @@
     
     return self;
 }
-
+-(void)viewDidLoad{
+    
+    self.view.backgroundColor = [UIColor colorWithRed:146/255.0 green:153/255.0 blue:161/255.0 alpha:1];
+}
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];

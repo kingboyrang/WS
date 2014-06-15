@@ -23,7 +23,6 @@
     _bgView.backgroundColor=[UIColor grayColor];
     
     _radios = [[CVRadioCollection alloc] initWithFrame:CGRectMake(0, 0, self.frame.size.width-80, 78)];
-	//_radios.backgroundColor = [UIColor grayColor];
     _radios.delegate=self;
     [_bgView addSubview:_radios];
     

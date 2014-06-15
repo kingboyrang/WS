@@ -18,9 +18,8 @@
     _labDetail.textColor = [UIColor blueColor];
 	_labDetail.numberOfLines=0;
     _labDetail.lineBreakMode=NSLineBreakByWordWrapping;
-    _labDetail.font = [UIFont systemFontOfSize:17.0f];
-    //70,101,132
-    //_labTitle.backgroundColor=[UIColor colorWithRed:70 green:101 blue:132 alpha:1.0];
+    _labDetail.font = [UIFont systemFontOfSize:13.0f];
+
 	[self.contentView addSubview:_labDetail];
 
     return self;

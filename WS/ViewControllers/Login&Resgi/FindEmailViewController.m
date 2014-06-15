@@ -28,7 +28,14 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    self.navView.titel_Label.text = @"找回密码";
+    
+    
+    if ([[Global getPreferredLanguage]isEqualToString:@"en"]) {
+        self.navView.titel_Label.text = @"Forgot Password";
+        
+    }else{
+        self.navView.titel_Label.text = @"找回密码";
+    }
 }
 -(BOOL)textFieldShouldReturn:(UITextField *)textField{
   

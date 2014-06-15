@@ -69,7 +69,7 @@
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                 </imageView>
                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="cellbackG.png" translatesAutoresizingMaskIntoConstraints="NO" id="qhE-Pw-sKt">
-                    <rect key="frame" x="10" y="507" width="305" height="51"/>
+                    <rect key="frame" x="10" y="510" width="305" height="51"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                 </imageView>
             </subviews>

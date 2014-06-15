@@ -82,6 +82,7 @@ ALAssetsFilter * ALAssetsFilterFromQBImagePickerControllerFilterType(QBImagePick
 {
     [super viewDidLoad];
     
+    self.view.backgroundColor = [UIColor colorWithRed:146/255.0 green:153/255.0 blue:161/255.0 alpha:1];
     // View controller settings
     self.title = NSLocalizedStringFromTable(@"title", @"QBImagePickerController", nil);
 }
@@ -279,7 +280,7 @@ ALAssetsFilter * ALAssetsFilterFromQBImagePickerControllerFilterType(QBImagePick
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     QBImagePickerGroupCell *cell = [tableView dequeueReusableCellWithIdentifier:@"GroupCell" forIndexPath:indexPath];
-    
+    cell.selectedBackgroundView.backgroundColor = [UIColor colorWithRed:125/255.0 green:164/255.0 blue:207/255.0 alpha:1];
     ALAssetsGroup *assetsGroup = [self.assetsGroups objectAtIndex:indexPath.row];
     cell.assetsGroup = assetsGroup;
     
@@ -291,7 +292,7 @@ ALAssetsFilter * ALAssetsFilterFromQBImagePickerControllerFilterType(QBImagePick
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 86.0;
+    return 40.0;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath

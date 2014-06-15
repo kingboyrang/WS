@@ -26,34 +26,22 @@
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     
     if (self) {
-        // Cell settings
-        self.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-        
-        // Create thumbnail view
-        QBImagePickerThumbnailView *thumbnailView = [[QBImagePickerThumbnailView alloc] initWithFrame:CGRectMake(8, 4, 70, 74)];
-        thumbnailView.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleBottomMargin;
-        
-        [self.contentView addSubview:thumbnailView];
-        self.thumbnailView = thumbnailView;
-        
-        // Create name label
-        UILabel *nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(8 + 70 + 18, 22, 180, 21)];
-        nameLabel.font = [UIFont systemFontOfSize:17];
-        nameLabel.textColor = [UIColor blackColor];
+
+        UILabel *nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 320, 39)];
+        nameLabel.font = [UIFont systemFontOfSize:15];
+        nameLabel.textColor = [UIColor colorWithRed:21/255.0 green:49/255.0 blue:86/255.0 alpha:1];
+        nameLabel.textAlignment = NSTextAlignmentCenter;
         nameLabel.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleWidth;
         
         [self.contentView addSubview:nameLabel];
         self.nameLabel = nameLabel;
         
-        // Create count label
-        UILabel *countLabel = [[UILabel alloc] initWithFrame:CGRectMake(8 + 70 + 18, 46, 180, 15)];
-        countLabel.font = [UIFont systemFontOfSize:12];
-        countLabel.textColor = [UIColor blackColor];
-        countLabel.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleWidth;
+        UIImageView *imageView = [[UIImageView alloc]initWithFrame:CGRectMake(0, 39, 320, 1)];
+        [imageView setImage:[UIImage imageNamed:@"line2"]];
+        imageView.tag = 0.8;
+       [self.contentView addSubview:imageView];
         
-        [self.contentView addSubview:countLabel];
-        self.countLabel = countLabel;
-    }
+     }
     
     return self;
 }
@@ -65,12 +53,8 @@
 {
     _assetsGroup = assetsGroup;
     
-    // Update thumbnail view
-    self.thumbnailView.assetsGroup = self.assetsGroup;
-    
-    // Update label
+
     self.nameLabel.text = [self.assetsGroup valueForProperty:ALAssetsGroupPropertyName];
-    self.countLabel.text = [NSString stringWithFormat:@"%ld", (long)self.assetsGroup.numberOfAssets];
 }
 
 @end

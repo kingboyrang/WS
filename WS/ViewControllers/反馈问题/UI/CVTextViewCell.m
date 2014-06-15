@@ -15,11 +15,8 @@
     
     _textView = [[UITextView alloc] initWithFrame:CGRectZero];
 	
-    _textView.font = [UIFont systemFontOfSize:17.0f];
-//    _textView.layer.borderWidth=1.0;
-//    _textView.layer.borderColor=[UIColor whiteColor].CGColor;
-//    _textView.layer.cornerRadius=5.0;
-//    _textView.layer.masksToBounds=YES;
+    _textView.font = [UIFont systemFontOfSize:15.0f];
+
     _textView.delegate = self;
     _textView.returnKeyType = UIReturnKeyDone;
     _textView.backgroundColor=[UIColor colorWithRed:192/255.0 green:195/255.0 blue:200/255.0 alpha:1.0];
@@ -72,7 +69,7 @@
 }
 - (void)textViewDidChange:(UITextView *)textView {
     NSInteger number = [textView.text length];
-    [self.delegate ChangeSuzi:[NSString stringWithFormat:@"  字数限制还剩%d字",1000-number]];
+    [self.delegate ChangeSuzi:[NSString stringWithFormat:@"    The words limitation has %d character left",1000-number]];
     if (number > 1000) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"字符个数不能大于1000" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil];
         [alert show];

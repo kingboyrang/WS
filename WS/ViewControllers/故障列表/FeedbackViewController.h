@@ -32,6 +32,8 @@
 @interface FeedbackViewController : BaseViewController<UITableViewDataSource,UITableViewDelegate,MJRefreshBaseViewDelegate,NSXMLParserDelegate,Pull_downTableDelegate>
 {
    
+    int cellH; //cell 高度
+    
     NSMutableArray *contentsArray;
     MJRefreshHeaderView *_headerView;
     MJRefreshFooterView *_footerVier;

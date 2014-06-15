@@ -43,35 +43,35 @@
     self.seleFaultStr = @"2";
     
     
-//    self.fautltBtn = [[UIButton alloc]initWithFrame:CGRectMake(135, 245, 20, 20)];
-//    [self.fautltBtn setImage:[UIImage imageNamed:@"1.jpg"] forState:UIControlStateNormal];
-//    [self.fautltBtn setImage:[UIImage imageNamed:@"2.png"] forState:UIControlStateSelected];
-//    [self.view addSubview:self.fautltBtn];
-//    
-//    self.exitsBtn = [[UIButton alloc]initWithFrame:CGRectMake(240, 245, 20, 20)];
-//    [self.view addSubview:self.exitsBtn];
-//    [self.exitsBtn setImage:[UIImage imageNamed:@"1.jpg"] forState:UIControlStateNormal];
-//    [self.exitsBtn setImage:[UIImage imageNamed:@"2.png"] forState:UIControlStateSelected];
-//    [self.fautltBtn addTarget:self action:@selector(FaultAction:) forControlEvents:UIControlEventTouchUpInside];
-//    [self.exitsBtn addTarget:self action:@selector(FaultAction:) forControlEvents:UIControlEventTouchUpInside];
-//    self.exitsBtn.hidden = YES;
-   
-    
-      self.navView.titel_Label.text = @"反馈问题";
-//    self.currentProLabel.text = [UserInfo shareInstance].project_current_name;
-    
+    lauguageStr = [Global getPreferredLanguage];
+    if ([lauguageStr isEqualToString:@"en"]) {
+        self.navView.titel_Label.text = @"Feedback issues";
+    }else{
+        self.navView.titel_Label.text = @"反馈问题";
+    }
     self.ZhuanYeBtnArr = [self sendJiChuData:ZHUANYE];
     self.WenTiJiBieArr = [self sendJiChuData:JIBIE]; //这已经获取了。。
     
     
     
     CVLabelLabelCell *cell1=[[CVLabelLabelCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
-    cell1.labTitle.text=@"项目:";
+    if ([lauguageStr isEqualToString:@"en"]) {
+          cell1.labTitle.text=@"Project:";
+    }else{
+          cell1.labTitle.text=@"项目:";
+    }
+  
     cell1.labDetail.text=[UserInfo shareInstance].project_current_name;
     
     CVRadioCollectionCell *cell2=[[CVRadioCollectionCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
-    cell2.labTitle.text=@"专业:";
-    ///
+    if ([lauguageStr isEqualToString:@"en"]) {
+        cell2.labTitle.text=@"Specialized filed:";
+    }else{
+        cell2.labTitle.text=@"专业:";
+    }
+    
+    
+   
     for (BtnClass *class in self.ZhuanYeBtnArr) {
         CVRadio *radio = [[CVRadio alloc]init];
         [radio setRadioTitle:class.MingCheng source:class];
@@ -79,7 +79,13 @@
     }
     
     CVRadioCollectionCell *cell3=[[CVRadioCollectionCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
-    cell3.labTitle.text=@"级别:";
+    
+    if ([lauguageStr isEqualToString:@"en"]) {
+        cell3.labTitle.text=@"Level:";
+    }else{
+        cell3.labTitle.text=@"级别:";
+    }
+    
     for (BtnClass *class in self.WenTiJiBieArr) {
         CVRadio *radio = [[CVRadio alloc]init];
         radio.delegate =self;
@@ -89,14 +95,26 @@
 
     
     FaultCell *cell4=[[FaultCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
-    cell4.labTitle.text=@"故障:";
+    
+    if ([lauguageStr isEqualToString:@"en"]) {
+        cell4.labTitle.text=@"Malfunction:";
+    }else{
+        cell4.labTitle.text=@"故障:";
+    }
+    
+    
 
     
     cell5=[[CVLabelLabelCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
-    cell5.labTitle.text=@"文字描述:";
-    cell5.labDetail.text=@"  字数限制还剩1000字";
+   
     
-  
+    if ([lauguageStr isEqualToString:@"en"]) {
+        cell5.labTitle.text=@"Text description:";
+        cell5.labDetail.text=@"  The words limitation has 200 character left";
+    }else{
+        cell5.labTitle.text=@"文字描述:";
+        cell5.labDetail.text=@"  字数限制还剩1000字";
+    }
     CVTextViewCell *cell6=[[CVTextViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
     cell6.delegate = self;
     

@@ -23,7 +23,7 @@
     _labTitle.textColor = [UIColor whiteColor];
 	_labTitle.numberOfLines=0;
     _labTitle.lineBreakMode=NSLineBreakByWordWrapping;
-    _labTitle.font = [UIFont systemFontOfSize:17.0f];
+    _labTitle.font = [UIFont systemFontOfSize:15.0f];
     //70,101,132
     _labTitle.backgroundColor=[UIColor colorWithRed:70/255.0 green:101/255.0 blue:132/255.0 alpha:1.0];
 	[self.contentView addSubview:_labTitle];
