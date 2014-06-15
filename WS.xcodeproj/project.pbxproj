@@ -256,6 +256,8 @@
 		21DAE9BD1904E72900BD1E20 /* MessageClass.m in Sources */ = {isa = PBXBuildFile; fileRef = 21DAE9BC1904E72900BD1E20 /* MessageClass.m */; };
 		21FD2ED419406BA200400905 /* CVRadio.m in Sources */ = {isa = PBXBuildFile; fileRef = 21FD2ED319406BA200400905 /* CVRadio.m */; };
 		21FD2ED719406FC000400905 /* CVRadioCollection.m in Sources */ = {isa = PBXBuildFile; fileRef = 21FD2ED619406FBF00400905 /* CVRadioCollection.m */; };
+		26AD88BA194D3A0A00F896FA /* ServiceResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 26AD88B8194D3A0A00F896FA /* ServiceResult.m */; };
+		26AD88BD194D3B4700F896FA /* Localization.strings in Resources */ = {isa = PBXBuildFile; fileRef = 26AD88BF194D3B4700F896FA /* Localization.strings */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -331,7 +333,6 @@
 		215493A31935B41A00700E30 /* FujianBtn.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FujianBtn.h; sourceTree = "<group>"; };
 		215493A41935B41A00700E30 /* FujianBtn.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FujianBtn.m; sourceTree = "<group>"; };
 		2156C1A3194945530088F3BE /* en-US */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "en-US"; path = "en-US.lproj/QBImagePickerController.strings"; sourceTree = "<group>"; };
-		2156C1A4194945530088F3BE /* en-US */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "en-US"; path = "en-US.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
 		2156C1A5194945530088F3BE /* en-US */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "en-US"; path = "en-US.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
 		2156C1A61949461B0088F3BE /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/QBImagePickerController.strings"; sourceTree = "<group>"; };
 		2156C1A71949461B0088F3BE /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
@@ -623,6 +624,10 @@
 		21FD2ED319406BA200400905 /* CVRadio.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CVRadio.m; sourceTree = "<group>"; };
 		21FD2ED519406FBF00400905 /* CVRadioCollection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CVRadioCollection.h; sourceTree = "<group>"; };
 		21FD2ED619406FBF00400905 /* CVRadioCollection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CVRadioCollection.m; sourceTree = "<group>"; };
+		26AD88B8194D3A0A00F896FA /* ServiceResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ServiceResult.m; sourceTree = "<group>"; };
+		26AD88B9194D3A0A00F896FA /* ServiceResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ServiceResult.h; sourceTree = "<group>"; };
+		26AD88BE194D3B4700F896FA /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localization.strings; sourceTree = "<group>"; };
+		26AD88C0194D3B4C00F896FA /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Localization.strings"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1074,6 +1079,7 @@
 		2180FF0418EA535A00FB838A = {
 			isa = PBXGroup;
 			children = (
+				26AD88BF194D3B4700F896FA /* Localization.strings */,
 				2180FF1618EA535A00FB838A /* WS */,
 				2180FF2F18EA535A00FB838A /* WSTests */,
 				2180FF0F18EA535A00FB838A /* Frameworks */,
@@ -1320,6 +1326,8 @@
 		21CFD54818FBC9E400CE5397 /* webservices */ = {
 			isa = PBXGroup;
 			children = (
+				26AD88B8194D3A0A00F896FA /* ServiceResult.m */,
+				26AD88B9194D3A0A00F896FA /* ServiceResult.h */,
 				21CFD54918FBCA3000CE5397 /* ServiceArgs.h */,
 				21CFD54A18FBCA3000CE5397 /* ServiceArgs.m */,
 				21CFD54B18FBCA3000CE5397 /* ServiceOperation.h */,
@@ -1527,6 +1535,7 @@
 				21B741A319497D3200D9B0FF /* FindViewController.xib in Resources */,
 				21699E041949850400BECEC5 /* changeProSel.png in Resources */,
 				21B4FE4C1949B57800D2F2EF /* Switching projsct.png in Resources */,
+				26AD88BD194D3B4700F896FA /* Localization.strings in Resources */,
 				21699E371949850400BECEC5 /* zhuce.png in Resources */,
 				21699E361949850400BECEC5 /* zhuanfa.png in Resources */,
 				21B741AD19497D4600D9B0FF /* FeedbackViewController_3.5.xib in Resources */,
@@ -1676,6 +1685,7 @@
 				21AC9237193746E6006CD6F3 /* WTStatusBar.m in Sources */,
 				210D4D7A192B563400CE22FF /* CaoZuoClass.m in Sources */,
 				215D3EC318F5291B00FD7E78 /* FMDatabase.m in Sources */,
+				26AD88BA194D3A0A00F896FA /* ServiceResult.m in Sources */,
 				214833F0191792FA00299EDD /* QBImagePickerGroupCell.m in Sources */,
 				21B741651949775E00D9B0FF /* AddSubmitViewController.m in Sources */,
 				21699F5519498B9700BECEC5 /* Pull_downClass.m in Sources */,
@@ -1754,7 +1764,6 @@
 			isa = PBXVariantGroup;
 			children = (
 				2180FF1A18EA535A00FB838A /* en */,
-				2156C1A4194945530088F3BE /* en-US */,
 				2156C1A71949461B0088F3BE /* zh-Hans */,
 			);
 			name = InfoPlist.strings;
@@ -1768,6 +1777,15 @@
 				2156C1A81949461B0088F3BE /* zh-Hans */,
 			);
 			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		26AD88BF194D3B4700F896FA /* Localization.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				26AD88BE194D3B4700F896FA /* en */,
+				26AD88C0194D3B4C00F896FA /* zh-Hans */,
+			);
+			name = Localization.strings;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
