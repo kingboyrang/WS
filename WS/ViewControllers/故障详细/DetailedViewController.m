@@ -26,7 +26,7 @@
 @synthesize biaohao_lab,time_lab,fault_lab,state_lab;
 
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+-(id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
@@ -34,9 +34,7 @@
     }
     return self;
 }
-
-- (void)viewDidLoad
-{
+-(void)viewDidLoad{
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     if ([[Global getPreferredLanguage]isEqualToString:@"en"]) {
@@ -56,7 +54,27 @@
 
 }
 -(void)sendMessage{
-//    NSLog(@"开始异步请求!");
+    if (![self IsEnableConnection]) {
+        UIAlertView *alterView = [[UIAlertView alloc]initWithTitle:nil message:@"没有网络" delegate:nil cancelButtonTitle:nil otherButtonTitles:@"OK", nil];
+        [alterView show];
+        return;
+    }
+    
+    
+    __block UIView *bg=nil;
+    if (!bg) {
+        bg=[[UIView alloc] initWithFrame:self.view.bounds];
+        bg.backgroundColor=[UIColor grayColor];
+        bg.alpha=0.613f;
+        
+        UIActivityIndicatorView *indicator=[[UIActivityIndicatorView alloc] initWithFrame:CGRectMake((self.view.bounds.size.width-30)/2, (self.view.bounds.size.height-30)/2, 30, 30)];
+        indicator.activityIndicatorViewStyle=UIActivityIndicatorViewStyleWhite;
+        [indicator startAnimating];
+        [bg addSubview:indicator];
+        [self.view addSubview:bg];
+    }
+    
+    
     NSMutableArray *params=[NSMutableArray array];
     NSString *str = [NSString stringWithFormat:@"{XinXiLeiXing: \"%@\", XinXiID: \"%@\", FanKuiID: \"%@\",RenYuanID:\"%@\",ZhuanFaXinXiID:\"%@\"}",self.xinxi_type,self.xinxi_id,self.xinxi_currentFaultId,[UserInfo shareInstance].userId,self.zhuanFaID];
     [params addObject:[NSDictionary dictionaryWithObjectsAndKeys:str,@"chaKanXinXiXiangQing", nil]];
@@ -65,7 +83,6 @@
     args.soapParams=params;//传递方法参数
     ServiceRequestManager *manager=[ServiceRequestManager requestWithArgs:args];
     [manager setFinishBlock:^() {
-        NSLog(@"异步请求成功，请求结果为=%@",manager.responseString);
         NSXMLParser *xml = [[NSXMLParser alloc]initWithData:[manager.responseString dataUsingEncoding:NSUTF8StringEncoding]];
         [xml setDelegate:self];
         [xml parse];  //xml开始解析
@@ -83,12 +100,12 @@
             UIAlertView *alterView = [[UIAlertView alloc]initWithTitle:@"" message:[Global tishiMessage:[resultJsonDic objectForKey:@"error"]] delegate:nil cancelButtonTitle:nil otherButtonTitles:@"OK", nil];
             [alterView show];
         }
-        
-
         [self addMessageForView];
+        [bg removeFromSuperview];
     }];
     [manager setFailedBlock:^() {
-//        NSLog(@"异步请求失败，失败原因=%@",manager.error.description);
+        UIAlertView *alterView = [[UIAlertView alloc]initWithTitle:@"" message:@"请求服务器失败" delegate:nil cancelButtonTitle:nil otherButtonTitles:@"OK", nil];
+        [alterView show];
     }];
     [manager startAsynchronous];//开始异步
 
@@ -105,8 +122,9 @@
     contantlabe.textColor = [UIColor whiteColor];
     contantlabe.numberOfLines = 0;
     contantlabe.lineBreakMode = NSLineBreakByWordWrapping;
+    contantlabe.font = [UIFont systemFontOfSize:13.0];
     CGSize size = CGSizeMake(300, 1000);
-    CGSize contantSize = [self.myMessageClass.XinXi_contants sizeWithFont:[UIFont systemFontOfSize:12] constrainedToSize:size lineBreakMode:NSLineBreakByWordWrapping];
+    CGSize contantSize = [self.myMessageClass.XinXi_contants sizeWithFont:[UIFont systemFontOfSize:13.0] constrainedToSize:size lineBreakMode:NSLineBreakByWordWrapping];
     contantlabe.frame = CGRectMake(10, 0, 300, contantSize.height);
     contantlabe.text = self.myMessageClass.XinXi_contants;
     [contantlabe sizeToFit];
@@ -132,15 +150,12 @@
     for (int i = 0; i< fjimageArrary.count;i++) {
         FujianClass *fj = [[FujianClass alloc]init];
         fj = [fjimageArrary objectAtIndex:i];
-        
-        
         FujianBtn *fujianBtn = [[FujianBtn alloc]init];
         fujianBtn.fujianName = fj.fujianName;
         fujianBtn.fujiantype = fj.fujiantype;
         fujianBtn.fjclass  = fj;
         fujianBtn.backgroundColor = [UIColor clearColor];
 
-        
         /*读取入图片*/
         //因为拿到的是个路径，所以把它加载成一个data对象
         NSData *data=[NSData dataWithContentsOfFile:fj.fujianbendiPath];
@@ -160,8 +175,6 @@
               y += fujianBtn.frame.size.height +10;
             [fujianBtn setImage:image forState:0];
         }
-
-       
         [fujianBtn addTarget:self action:@selector(clickImageBtn:) forControlEvents:UIControlEventTouchUpInside];
         [self.faultScrollView addSubview:fujianBtn];
     }
@@ -169,14 +182,21 @@
         FujianClass *fj = [[FujianClass alloc]init];
         fj = [fjfileArray objectAtIndex:i];
         CGSize size = [fj.fujianName textSize:[UIFont systemFontOfSize:12.0f] withWidth:self.view.frame.size.width - 20];
-        FujianBtn *fujianBtn = [[FujianBtn alloc]initWithFrame:CGRectMake(10, y ,size.width, 25)];
+        FujianBtn *fujianBtn = [[FujianBtn alloc]initWithFrame:CGRectMake(10, y ,size.width+30, 25)];
         fujianBtn.fjclass = fj;
+        fujianBtn.fujianName = fj.fujianName;
         fujianBtn.backgroundColor = [UIColor clearColor];
         [fujianBtn setTitleColor:[UIColor whiteColor] forState:0];
-        [fujianBtn setTitle:fj.fujianName forState:0];
         fujianBtn.titleLabel.font = [UIFont systemFontOfSize:12];
         fujianBtn.titleLabel.textAlignment = NSTextAlignmentLeft;
-        fujianBtn.fujiantype = fj.fujianName;
+        
+        
+        if (fj.fujianisdown.length==0) {
+            [fujianBtn setTitle:[NSString stringWithFormat:@"%@    未下载",fj.fujianName] forState:0];
+        }else{
+            [fujianBtn setTitle:[NSString stringWithFormat:@"%@    已下载",fj.fujianName] forState:0];
+        }
+        
         fujianBtn.fujiantype = fj.fujiantype;
         fujianBtn.Paths = fj.fujianPaths; //网络地址
         [fujianBtn addTarget:self action:@selector(clickImageBtn:) forControlEvents:UIControlEventTouchUpInside];
@@ -185,30 +205,37 @@
         
     }
     
-    
-    CanKanListView *listView = [[[NSBundle mainBundle]loadNibNamed:@"CanKanListView" owner:nil options:nil]objectAtIndex:0];
-    listView.frame = CGRectMake(0, y, 320, 200);
-    listView.delegate = self;
-    [self.faultScrollView addSubview:listView];
-    [self.faultScrollView setContentSize:CGSizeMake(320,listView.frame.size.height+y)];
+    if ([[Global getPreferredLanguage]isEqualToString:@"en"]) {
+        CanKanListView *listView = [[[NSBundle mainBundle]loadNibNamed:@"CanKanListView_en" owner:nil options:nil]objectAtIndex:0];
+        listView.frame = CGRectMake(0, y, 320, 200);
+        listView.delegate = self;
+        [self.faultScrollView addSubview:listView];
+        [self.faultScrollView setContentSize:CGSizeMake(320,listView.frame.size.height+y)];
+    }else{
+        CanKanListView *listView = [[[NSBundle mainBundle]loadNibNamed:@"CanKanListView" owner:nil options:nil]objectAtIndex:0];
+        listView.frame = CGRectMake(0, y, 320, 200);
+        listView.delegate = self;
+        [self.faultScrollView addSubview:listView];
+        [self.faultScrollView setContentSize:CGSizeMake(320,listView.frame.size.height+y)];
+    }
     [self addCaoZuoBtn];
 }
 -(void)clickImageBtn:(FujianBtn *)btn{
-    NSLog(@"");
-    
+
     if ([btn.fujiantype isEqualToString:@"1"]) {
-     
-        
         ImageCropper *cropper = [[ImageCropper alloc] initWithImage:btn.btnImage];
         [cropper setDelegate:self];
-        
         [self presentViewController:cropper animated:YES completion:nil];
    }
     else
    {
+       if (![self IsEnableConnection]) {
+           UIAlertView *alterView = [[UIAlertView alloc]initWithTitle:nil message:@"没有网络" delegate:nil cancelButtonTitle:nil otherButtonTitles:@"OK", nil];
+           [alterView show];
+           return;
+       }
        
           [WTStatusBar setStatusText:@"Downloading data..." animated:YES];
-        
          _progress=0.0;
         ServiceRequestManager *manager=[ServiceRequestManager requestWithURL:[NSURL URLWithString:btn.Paths]];
         [manager setProgressBlock:^(long long total, long long size, float rate) {
@@ -230,9 +257,15 @@
             NSString *uniquePath=[[paths objectAtIndex:0] stringByAppendingPathComponent:[NSString stringWithFormat:@"%@%@",locationString,btn.fjclass.fujianName]];
             [fileData writeToFile: uniquePath    atomically:YES];
             
-            [[FMDBClass shareInstance]UpData:IMAGETABLE setStr:[NSString stringWithFormat:@"bendiPath = %@",uniquePath] whereStr:[NSString stringWithFormat:@"where proid = %@ and faultid = %@ and faultType = %@ and id = %@ and type = %@  and orgid = %@",btn.fjclass.fujianproid,btn.fjclass.fujianfaultid,btn.fjclass.fujianFaultType,btn.fjclass.fujianid,btn.fjclass.fujiantype,btn.fjclass.fujianorgid]];
+            [[FMDBClass shareInstance]UpData:IMAGETABLE setStr:@" isdown = \'已下载\'" whereStr:[NSString stringWithFormat:@" proid = %@ and faultid = %@ and faultType = %@ and id = %@ and type = %@  and orgid = %@",btn.fjclass.fujianproid,btn.fjclass.fujianfaultid,btn.fjclass.fujianFaultType,btn.fjclass.fujianid,btn.fjclass.fujiantype,btn.fjclass.fujianorgid]];
+            
+            
+            NSArray *array = [[FMDBClass shareInstance]seleDate:IMAGETABLE wherestr:[NSString stringWithFormat:@"where proid = %@ and faultid = %@ and faultType = %@ and id = %@ and type = %@  and orgid = %@",btn.fjclass.fujianproid,btn.fjclass.fujianfaultid,btn.fjclass.fujianFaultType,btn.fjclass.fujianid,btn.fjclass.fujiantype,btn.fjclass.fujianorgid]];
+            FujianClass *fj = [array objectAtIndex:0];
+            
             
             [WTStatusBar setStatusText:@"Done!" timeout:0.5 animated:YES];
+             [btn setTitle:[NSString stringWithFormat:@"%@    已下载",btn.fujianName] forState:0];
             
         }];
         [manager setFailedBlock:^() {
@@ -240,16 +273,10 @@
         }];
         [manager startAsynchronous];//开始异步
 
-        
-       
-//        [self performSelector:@selector(setTextStatusProgress2) withObject:nil afterDelay:0.5];
     }
-    
 }
-
 //圖片等比例顯示
-- (CGSize)autoImageSize:(CGSize)imgSize
-{
+- (CGSize)autoImageSize:(CGSize)imgSize{
     CGFloat oldWidth = imgSize.width;
     CGFloat oldHeight = imgSize.height;
     CGSize saveSize =imgSize;
@@ -275,54 +302,42 @@
     }
     return saveSize;
 }
-
-
-- (void)imageCropper:(ImageCropper *)cropper didFinishCroppingWithImage:(UIImage *)image {
+-(void)imageCropper:(ImageCropper *)cropper didFinishCroppingWithImage:(UIImage *)image {
 	[imageView setImage:image];
 	[self dismissViewControllerAnimated:YES completion:nil];
 	
 	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault animated:YES];
 }
-
-- (void)imageCropperDidCancel:(ImageCropper *)cropper {
+-(void)imageCropperDidCancel:(ImageCropper *)cropper {
 	[self dismissViewControllerAnimated:YES completion:nil];
 	
 	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault animated:YES];
 }
-
-//- (void)setTextStatusProgress2
-//{
-//    [WTStatusBar setStatusText:@"Downloading data..." animated:YES];
-//    _progress = 0;
-//    [WTStatusBar setProgressBarColor:[UIColor greenColor]];
-//    [self performSelector:@selector(setTextStatusProgress3) withObject:nil afterDelay:0.1];
-//}
-//
-//- (void)setTextStatusProgress3
-//{
-//    
-//    if (_progress < 1.0)
-//    {
-////        _progress += 0.3;
-////        [WTStatusBar setProgress:_progress animated:YES];
-//        [self performSelector:@selector(setTextStatusProgress3) withObject:nil afterDelay:0.1];
-//    }
-//    else
-//    {
-//        [WTStatusBar setStatusText:@"Done!" timeout:0.5 animated:YES];
-//    }
-//}
-
 -(void)removeBtn:(UIButton *)btn{
     [btn removeFromSuperview];
 }
 -(void)addCaoZuoBtn{
-    UIButton *btn1 = [[UIButton alloc]initWithFrame:CGRectMake(260, 523, 48, 21)];
-    UIButton *btn2 = [[UIButton alloc]initWithFrame:CGRectMake(210, 523, 48, 21)];
-    UIButton *btn3 = [[UIButton alloc]initWithFrame:CGRectMake(160, 523, 48, 21)];
-    UIButton *btn4 = [[UIButton alloc]initWithFrame:CGRectMake(110, 523, 48, 21)];
-    UIButton *btn5 = [[UIButton alloc]initWithFrame:CGRectMake(60, 523, 48, 21)];
-    UIButton *btn6 = [[UIButton alloc]initWithFrame:CGRectMake(10, 523, 48, 21)];
+    
+    BOOL lauguageEN = [[Global getPreferredLanguage]isEqualToString:@"en"];
+    
+    
+    UIButton *btn1,*btn2,*btn3,*btn4,*btn5,*btn6;
+    
+    if ([[Global getPreferredLanguage]isEqualToString:@"en"]) {
+        btn1 = [[UIButton alloc]initWithFrame:CGRectMake(240, IPHONE5?523:433, 75, 21)];
+        btn2 = [[UIButton alloc]initWithFrame:CGRectMake(160,  IPHONE5?523:433, 75, 21)];
+        btn3 = [[UIButton alloc]initWithFrame:CGRectMake(80,  IPHONE5?523:433, 75, 21)];
+        btn4 = [[UIButton alloc]initWithFrame:CGRectMake(10,  IPHONE5?523:433, 75, 21)];
+    }else{
+        btn1 = [[UIButton alloc]initWithFrame:CGRectMake(260,  IPHONE5?523:433, 48, 21)];
+        btn2 = [[UIButton alloc]initWithFrame:CGRectMake(210,  IPHONE5?523:433, 48, 21)];
+        btn3 = [[UIButton alloc]initWithFrame:CGRectMake(160,  IPHONE5?523:433, 48, 21)];
+        btn4 = [[UIButton alloc]initWithFrame:CGRectMake(110,  IPHONE5?523:433, 48, 21)];
+        btn5 = [[UIButton alloc]initWithFrame:CGRectMake(60,  IPHONE5?523:433, 48, 21)];
+        btn6 = [[UIButton alloc]initWithFrame:CGRectMake(10,  IPHONE5?523:433, 48, 21)];
+
+    }
+    
     
     
     NSMutableArray *btnarray = [[NSMutableArray alloc]initWithObjects:btn1,btn2,btn3,btn4,btn5,btn6, nil];
@@ -330,33 +345,66 @@
     int i = 0;
     if ([self.myMessageClass.XinXi_forwarding isEqualToString:@"True"]) {
         i++;
-        NSString *str = @"zhuanfa";
+        NSString *str;
+        if (!lauguageEN) {
+            str = @"zhuanfa";
+        }else{
+            str = @"Forward";
+        }
+        
         [imageDic setObject:str forKey:@"100"];
     }
     if ([self.myMessageClass.XinXi_pingjia isEqualToString:@"True"]) {
         i++;
-        NSString *str = @"pingjia";
+        NSString *str;
+        if (!lauguageEN) {
+            str = @"pingjia";
+        }else{
+            str = @"Evaluation";
+        }
         [imageDic setObject:str forKey:@"200"];
     }
     if ([self.myMessageClass.XinXi_result_submit isEqualToString:@"True"]) {
         i++;
-        NSString *str = @"queding";
+        NSString *str;
+        if (!lauguageEN) {
+            str = @"queding";
+        }else{
+            str = @"Confirmation";
+        }
         [imageDic setObject:str forKey:@"300"];
     }
     if ([self.myMessageClass.XinXi_result isEqualToString:@"True"]) {
         i++;
-        NSString *str = @"jieguo";
+        NSString *str;
+        if (!lauguageEN) {
+            str = @"jieguo";
+        }else{
+            str = @"Result";
+        }
         [imageDic setObject:str forKey:@"400"];
     }
     if ([self.myMessageClass.XinXi_yijian isEqualToString:@"True"]) {
         i++;
-        NSString *str = @"yijian";
+        
+        NSString *str;
+        if (!lauguageEN) {
+            str = @"yijian";
+        }else{
+            str = @"Opinion";
+        }
         [imageDic setObject:str forKey:@"500"];
         
     }
     if ([self.myMessageClass.XinXi_jianyi isEqualToString:@"True"]) {
         i++;
-        NSString *str = @"jianyi";
+        NSString *str;
+        if (!lauguageEN) {
+            str = @"jianyi";
+        }else{
+            str = @"Suqqestions";
+        }
+        
         [imageDic setObject:str forKey:@"600"];
         
     }
@@ -373,7 +421,6 @@
     }
 
 }
-
 -(void)cellBtnAction:(UIButton *)btn{
     
     int tag = btn.tag;
@@ -441,33 +488,25 @@
     }
 }
 #pragma mark xmlparser
-//step 1 :准备解析
 - (void)parserDidStartDocument:(NSXMLParser *)parser
 {
     //        NSLog(@"%@",NSStringFromSelector(_cmd) );
     
 }
-//step 2：准备解析节点
 - (void)parser:(NSXMLParser *)parser didStartElement:(NSString *)elementName namespaceURI:(NSString *)namespaceURI qualifiedName:(NSString *)qName attributes:(NSDictionary *)attributeDict
 {
     if ([elementName isEqualToString:@"ChaKanFanKuiWenTiXiangQingResult"]) {
         self.resultJsonStr = [[NSMutableString alloc]init];
     }
 }
-//step 3:获取首尾节点间内容
 - (void)parser:(NSXMLParser *)parser foundCharacters:(NSString *)string
 {
-    //    NSLog(@"%@",NSStringFromSelector(_cmd) );
     [self.resultJsonStr appendString:string];
 }
-
-//step 4 ：解析完当前节点
 - (void)parser:(NSXMLParser *)parser didEndElement:(NSString *)elementName namespaceURI:(NSString *)namespaceURI qualifiedName:(NSString *)qName
 {
-    //    NSLog(@"%@",NSStringFromSelector(_cmd) );
     
 }
-
 //step 5；解析结束
 - (void)parserDidEndDocument:(NSXMLParser *)parser
 {
@@ -478,8 +517,6 @@
 {
     //    NSLog(@"%@",NSStringFromSelector(_cmd) );
 }
-
-
 -(void)GotoVC:(int)i{
     NSString *titStr;
     NSString *type;
@@ -499,7 +536,7 @@
         titStr = @"查看评价";
         type = @"7";
     }
-    FindViewController *findVC = [[FindViewController alloc]initWithNibName:@"FindViewController" bundle:nil];
+    FindViewController *findVC = [[FindViewController alloc]initWithNibName:IPHONE5 ? @"FindViewController" :@"FindViewController_3.5" bundle:nil];
     findVC.selfTilteStr = titStr;
     NSLog(@"findVC.selfTilteStr = %@",findVC.selfTilteStr);
     findVC.dataType = type;

@@ -21,31 +21,27 @@
 #import "Header.h"              //头文件
 #import "Global.h"
 #import "UserInfo.h"
-@class LoginViewController;
 
-@protocol LoginViewControllerDelegate <NSObject>
-//登陆成功处理
-- (void)loginSuccessViewController:(LoginViewController *)loginViewController withResponse:(id)response;
-//登陆失败处理
-- (void)loginFailViewController:(LoginViewController *)loginViewController withError:(NSError *)error;
-@end
+
+
+
 
 @interface LoginViewController : BaseViewController<UIActionSheetDelegate,UITextFieldDelegate,UIGestureRecognizerDelegate,NSXMLParserDelegate,ProViewDelegate>
 {
     BOOL SUCCESS; //登录是否成功
 }
 
+//@property (strong,nonatomic)MySelfActivity *myActivityView;
 
 @property (weak, nonatomic) IBOutlet UITextField *userNameTextF;
 @property (weak, nonatomic) IBOutlet UITextField *passWordTextF;
 @property (weak, nonatomic) IBOutlet UIButton *regisBtn;
 @property (weak, nonatomic) IBOutlet UIButton *loginBtn;
-
+@property (weak, nonatomic) ProView *proView;
 
 @property (nonatomic, strong) NSMutableString *jsonStr;    //JsonStr
 @property (nonatomic, strong) NSMutableArray *projectArray;  //项目组
 
-@property (nonatomic, strong)id<LoginViewControllerDelegate>delegate;
 - (IBAction)ButtonAction:(id)sender;
 
 @end

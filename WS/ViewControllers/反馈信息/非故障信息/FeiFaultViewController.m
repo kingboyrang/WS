@@ -67,22 +67,30 @@
     hv.linetwoLable.text = [NSString stringWithFormat:@"%@ - %@,反馈 - %@",zhuangye,wentijibie,proName];
     NSString *dealStr = [Global dealState:deal_state];
     hv.lineThreeLabel.text = [NSString stringWithFormat:@"状态 - %@ 发起人:%@[%@]",dealStr,faqiPerson,faqiRole];
-    hv.delegate = self;
+//    hv.delegate = self;
     [self.myScrollView addSubview:hv];
     
     UILabel *contantlabe = [[UILabel alloc]initWithFrame:CGRectZero];
     contantlabe.backgroundColor = [UIColor clearColor];
     contantlabe.textColor = [UIColor whiteColor];
     contantlabe.numberOfLines = 0;
+    contantlabe.font = [UIFont systemFontOfSize:13.0];
     contantlabe.lineBreakMode = NSLineBreakByWordWrapping;
     CGSize contantSize =[faultgaiyao textSize:contantlabe.font withWidth:300];
     contantlabe.frame = CGRectMake(10,120, 300, contantSize.height);
     contantlabe.text = faultgaiyao;
+    
+
     [self.myScrollView addSubview:contantlabe];
+    UIButton *btn = [[UIButton alloc]initWithFrame:CGRectMake(contantlabe.frame.origin.x,contantlabe.frame.origin.y,contantlabe.frame.size.width,contantlabe.frame.size.height)];
+    btn.backgroundColor = [UIColor clearColor];
+    [btn addTarget:self action:@selector(GotoDetailVC) forControlEvents:UIControlEventTouchUpInside];
+    [self.myScrollView addSubview:btn];
+    
     
     BottonView *btmView = [[[NSBundle mainBundle]loadNibNamed:@"BottonView" owner:nil options:nil] objectAtIndex:0];
     btmView.delegate = self;
-    btmView.frame = CGRectMake(0, contantlabe.frame.origin.y+contantlabe.frame.size.height , 320, 0);
+    btmView.frame = CGRectMake(0, contantlabe.frame.origin.y+contantlabe.frame.size.height+20 , 320, 0);
     btmView.typeLabel.text = self.typeStr;
     btmView.huifuPersonLab.text = huifuPerson;
     btmView.timeLabel.text = huifutime;
@@ -100,20 +108,21 @@
         ImageCropper *cropper = [[ImageCropper alloc] initWithImage:myimage];
         [cropper setDelegate:self];
         
-        [self presentModalViewController:cropper animated:YES];
+        [self presentViewController:cropper animated:YES completion:nil];
     }else{
         ImageCropper *cropper = [[ImageCropper alloc] initWithImage:[UIImage imageNamed:@"test"]];
         [cropper setDelegate:self];
-        
-        [self presentModalViewController:cropper animated:YES];
+         [self presentViewController:cropper animated:YES completion:nil];
     }
 }
 #pragma mark 下载事件
 -(void)DownLoadAction:(FujianBtn *)fjBtn{
     
-    
-    
-        
+    if (![self IsEnableConnection]) {
+        UIAlertView *alterView = [[UIAlertView alloc]initWithTitle:nil message:@"没有网络" delegate:nil cancelButtonTitle:nil otherButtonTitles:@"OK", nil];
+        [alterView show];
+        return;
+    }
         [WTStatusBar setStatusText:@"Downloading data..." animated:YES];
         
         _progress=0.0;
@@ -174,7 +183,11 @@
 #pragma mark 发送数据
 -(void)sendMessage{
     
-    
+    if (![self IsEnableConnection]) {
+        UIAlertView *alterView = [[UIAlertView alloc]initWithTitle:nil message:@"没有网络" delegate:nil cancelButtonTitle:nil otherButtonTitles:@"OK", nil];
+        [alterView show];
+        return;
+    }
     NSMutableArray *params=[NSMutableArray array];
     NSString *str =[NSString stringWithFormat: @"{XinXiLeiXing: \"%@\",XinXiID: \"%@\",FanKuiID:\"%@\",RenYuanID:\"%@\",ZuiDaJianYiID: \"%@\",ZuiDaYiJianID:\"%@\",JieGuoID:\"%@\",JieGuoQueRenID: \"%@\",PingJiaID:\"%@\"}",self.FieXinXiLeiXing,self.FieXinXiID,self.FieFanKuiID,self.FieRenYuanID,self.ZuiDaJianYiID,self.ZuiDaYiJianID,self.JieGuoID,self.JieGuoQueRenID,self.PingJiaID];
     [params addObject:[NSDictionary dictionaryWithObjectsAndKeys:str,@"chaKanXinXiXiangQing", nil]];
@@ -254,7 +267,7 @@
 }
 #pragma mark 跳转详细页
 -(void)GotoDetailVC{
-    DetailedViewController *vc = [[DetailedViewController alloc]initWithNibName:@"DetailedViewController" bundle:nil];
+    DetailedViewController *vc = [[DetailedViewController alloc]initWithNibName:IPHONE5?@"DetailedViewController":@"DetailedViewController_3.5" bundle:nil];
     vc.xinxi_type = fankuiType;
     vc.xinxi_id = messageid;
     vc.xinxi_currentFaultId = faultid;

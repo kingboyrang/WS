@@ -9,8 +9,10 @@
 #import "BaseViewController.h"
 #import "FujianClass.h"
 #import "UserInfo.h"
+
 @interface SuggectionViewController :BaseViewController
 
 @property (nonatomic, strong)NSMutableString *jsonData;
+@property BOOL laugeEN;
 
 @end

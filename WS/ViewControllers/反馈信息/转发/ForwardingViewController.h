@@ -14,12 +14,14 @@
 #import "Global.h"
 
 @interface ForwardingViewController : BaseViewController<UITableViewDataSource,UITableViewDelegate,ForwardTableViewCellDelegate,NSXMLParserDelegate>
+
 @property (weak, nonatomic) IBOutlet UITableView *myTableView;
 @property (strong, nonatomic) NSMutableArray *personArray;
 @property (nonatomic, strong) NSMutableString *jsonStr;    //JsonStr
+@property (nonatomic, strong) NSMutableDictionary *selectedPersons;    //选中人员信息
 
 @property (nonatomic, strong)NSMutableString *personStr;
-
+@property BOOL laugeEN;
 
 @property (nonatomic, strong)NSString *messageType; //信息类型
 @property (nonatomic, strong)NSString *messageid;   //信息id

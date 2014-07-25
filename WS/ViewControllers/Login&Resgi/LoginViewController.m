@@ -55,18 +55,33 @@
 - (IBAction)ButtonAction:(id)sender
 {
     UIButton *btn = (UIButton *)sender;
-    int tag = btn.tag;
+    int tag = (int)btn.tag;
     if (tag == 111)  //注册
     {
         UIBarButtonItem *backItem = [[UIBarButtonItem alloc]init];
         backItem.title = @"返回";
         
-        NSString *xibStr;
-        if ([[Global getPreferredLanguage]isEqualToString:@"en"]) {
-            xibStr = @"RegistrationViewController_en";
+        
+        
+        NSString *xibName;
+        if (IPHONE5) {
+            if ([[Global getPreferredLanguage]isEqualToString:@"en"]) {
+                xibName = @"RegistrationViewController_en";
+            }else{
+                xibName = @"RegistrationViewController";
+            }
         }else{
-            xibStr = @"RegistrationViewController";
+            if ([[Global getPreferredLanguage] isEqualToString:@"en"]) {
+                xibName = @"RegistrationViewController_3.5en";
+            }else{
+                xibName = @"RegistrationViewController_3.5";
+            }
         }
+        
+        
+        
+        NSString *xibStr;
+
         
         self.navigationItem.backBarButtonItem = backItem;
         RegistrationViewController *regVC = [[RegistrationViewController alloc]initWithNibName:xibStr bundle:nil];
@@ -74,30 +89,44 @@
     }
     else if (tag == 222) //登录
     {
-//        UIBarButtonItem *backItem = [[UIBarButtonItem alloc]init];
-//        backItem.title = @"";
-//        self.navigationItem.backBarButtonItem = backItem;
+        UIBarButtonItem *backItem = [[UIBarButtonItem alloc]init];
+        backItem.title = @"返回";
+        self.navigationItem.backBarButtonItem = backItem;
         [self SengMessage];
-
-        
-    
+  
     }
     else if (tag == 3333) //忘记密码
     {
-        NSString *xibStr;
-        if ([[Global getPreferredLanguage]isEqualToString:@"en"]) {
-            xibStr = @"FindEmailViewController_en";
+        NSString *xibName;
+        if (IPHONE5) {
+            if ([[Global getPreferredLanguage] isEqualToString:@"en"]) {
+                xibName = @"FindEmailViewController_en";
+            }else{
+                xibName = @"FindEmailViewController";
+            }
         }else{
-            xibStr = @"FindEmailViewController";
+            if ([[Global getPreferredLanguage] isEqualToString:@"en"]) {
+                xibName = @"FindEmailViewController_3.5en";
+            }else{
+                xibName = @"FindEmailViewController_3.5";
+            }
         }
         
-        FindEmailViewController *vc = [[FindEmailViewController alloc]initWithNibName:xibStr bundle:nil];
+ 
+        FindEmailViewController *vc = [[FindEmailViewController alloc]initWithNibName:xibName bundle:nil];
         [self.navigationController pushViewController:vc animated:YES];
     }
     
 }
 #pragma mark向服务发送登录消息
 -(void)SengMessage{
+    
+    if (![self IsEnableConnection]) {
+     UIAlertView *alterView = [[UIAlertView alloc]initWithTitle:nil message:@"没有网络" delegate:nil cancelButtonTitle:nil otherButtonTitles:@"OK", nil];
+        [alterView show];
+        return;
+     }
+
     NSString *str =[NSString stringWithFormat: @"{YongHuMing:\"%@\",MiMa:\"%@\"}",self.userNameTextF.text,self.passWordTextF.text];
     NSMutableArray *params=[NSMutableArray array];
     [params addObject:[NSDictionary dictionaryWithObjectsAndKeys:str,@"dengLuXinXi", nil]];
@@ -124,47 +153,72 @@
         NSDictionary *resultJsonDic = [Global GetjsonStr:self.jsonStr];
         if ([[resultJsonDic objectForKey:@"return"]isEqualToString:@"true"]) {
             
-            self.projectArray =  [Global resultArray:resultJsonDic :2:nil:nil where:@""];
+            self.projectArray =  [Global resultArray:resultJsonDic :2 :NULL :NULL where:@""];
+            
+            
         }else{
             UIAlertView *alterView = [[UIAlertView alloc]initWithTitle:nil message:[Global tishiMessage:[resultJsonDic objectForKey:@"error"]] delegate:nil cancelButtonTitle:nil otherButtonTitles:@"OK", nil];
             [alterView show];
+            return ;
         }
         
         if (self.projectArray.count > 1) {
-            ProView *proView =[[[NSBundle mainBundle]loadNibNamed:@"ProView" owner:nil options:nil]objectAtIndex:0];
-            proView.seleDelegate = self;
-            proView.tableArray = self.projectArray;
-            int h  = proView.tableArray.count * 70+40;
+            
+            self.proView =[[[NSBundle mainBundle]loadNibNamed:@"ProView" owner:nil options:nil]objectAtIndex:0];
+            self.proView.seleDelegate = self;
+            self.proView.tableArray = self.projectArray;
+            int h  = self.proView.tableArray.count * 70+40;
             int y = (self.view.frame.size.height  - h)/2;
-            [ proView makeTableViewCGReframe:0 :y :320 :h ];
-            [self.view addSubview:proView];
+            [self.proView makeTableViewCGReframe:0 :y :320 :h ];
+            [self.view addSubview:self.proView];
             
             
         }else if(self.projectArray.count == 1){
             
             
             ProjectClass *proclass = [self.projectArray objectAtIndex:0];
-
+            
             [[NSUserDefaults standardUserDefaults]setObject:proclass.pro_id forKey:PROID];
             [[NSUserDefaults standardUserDefaults]setObject:proclass.pro_quancheng forKey:PRONAME];
             [[NSUserDefaults standardUserDefaults]synchronize];
             [UserInfo shareInstance].project_current_name = proclass.pro_quancheng;
             [UserInfo shareInstance].project_current_Id = proclass.pro_id;
-            if ([self.delegate respondsToSelector:@selector(loginSuccessViewController:withResponse:)])
-            {
-                [self.delegate loginSuccessViewController:self withResponse:@"登陆成功"];
-            }
+            
+            NSString *xibName;
+           
+                   if ([[self getPreferredLanguage] isEqualToString:@"en"]) {
+                       xibName = @"SeleViewController_en";
+                    }else{
+                        xibName = @"SeleViewController";
+                    }
+            
+            SeleViewController *seleVC = [[SeleViewController alloc]initWithNibName:xibName bundle:nil];
+            [self.navigationController pushViewController:seleVC animated:YES];
+            
+            
+        }else{
+            
+            UIAlertView *alterView = [[UIAlertView alloc]initWithTitle:nil message:@"没有项目" delegate:nil cancelButtonTitle:nil otherButtonTitles:@"OK", nil];
+            [alterView show];
+            return ;
             
         }
         
         
     }];
     [manager startSynchronous];//开始同步
+
     
     
 }
-    
 
+- (NSString*)getPreferredLanguage
+{
+    NSUserDefaults* defs = [NSUserDefaults standardUserDefaults];
+    NSArray* languages = [defs objectForKey:@"AppleLanguages"];
+    NSString* preferredLang = [languages objectAtIndex:0];
+    return preferredLang;
+}
 #pragma mark 选择项目信息
 -(void)selePro:(ProjectClass *)proclass{
     
@@ -173,11 +227,17 @@
     [[NSUserDefaults standardUserDefaults]synchronize];
     [UserInfo shareInstance].project_current_name = proclass.pro_quancheng;
     [UserInfo shareInstance].project_current_Id = proclass.pro_id;
-    if ([self.delegate respondsToSelector:@selector(loginSuccessViewController:withResponse:)])
-    {
-        [self.delegate loginSuccessViewController:self withResponse:@"登陆成功"];
+    [self.proView removeFromSuperview];
+    NSString *xibName;
+         if ([[self getPreferredLanguage] isEqualToString:@"en"]) {
+        xibName = @"SeleViewController_en";
+    }else{
+        xibName = @"SeleViewController";
     }
     
+    SeleViewController *seleVC = [[SeleViewController alloc]initWithNibName:xibName bundle:nil];
+    [self.navigationController pushViewController:seleVC animated:YES];
+
     
 }
 
@@ -259,26 +319,4 @@
     [UIView commitAnimations];
     
 }
-
-
-
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
-
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
-{
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
-
-
 @end

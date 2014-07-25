@@ -13,7 +13,7 @@
 @interface Global : NSObject
 
 +(NSString *)tishiMessage:(NSString *)resultMessage;
-+(NSDictionary *)GetjsonStr:(NSMutableString *)str;
++(NSDictionary *)GetjsonStr:(NSString *)str;
 +(NSMutableArray *)resultArray:(NSDictionary *)jsonDic :(int) i  :(NSString *)type : (CaoZuoClass *)czClass where:(NSString *)whereStr;
 +(NSString *)readState:(NSString *)str;  //阅读状态
 +(NSString *)dealState:(NSString *)str;  //处理状态
@@ -26,4 +26,6 @@
 +(NSString*)FilePaths:(NSString *)imageName;
 
 + (NSString*)getPreferredLanguage;
+//十六进制 转 color
++ (UIColor *) colorWithHexString: (NSString *)color;
 @end

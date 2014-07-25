@@ -149,8 +149,8 @@
             }else{
                 [responseData_ appendData:data];
             }
+            [self hideNetworkActivityIndicator];
             if (self.successBlock) {
-                [self hideNetworkActivityIndicator];
                 self.successBlock();
             }
     }

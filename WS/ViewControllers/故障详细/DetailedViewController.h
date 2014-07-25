@@ -21,16 +21,15 @@
 #import "AddPingjiaViewController.h"
 #import "AddSubmitViewController.h"
 
+
+#import "CanKanListView.h"
 #import "WTStatusBar.h"
 #import "ImageCropper.h"
-@interface DetailedViewController : BaseViewController<ImageCropperDelegate>
+@interface DetailedViewController : BaseViewController<ImageCropperDelegate,CaKanListDelate>
 
 {
     CGFloat _progress;
-
-        UIImageView *imageView;
-  
-
+    UIImageView *imageView;
 }
 
 @property (weak, nonatomic) IBOutlet UILabel *biaohao_lab;

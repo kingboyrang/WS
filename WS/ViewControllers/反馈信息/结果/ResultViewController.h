@@ -9,6 +9,7 @@
 #import "BaseViewController.h"
 #import "Pull_downTable.h"
 #import "Pull_downClass.h"
+
 @interface ResultViewController : BaseViewController<Pull_downTableDelegate>
 
 @property (nonatomic, strong)Pull_downTable *tableView;
@@ -18,6 +19,7 @@
 @property (nonatomic, strong)NSString *JieGuoIDstr;
 
 @property (nonatomic, strong)NSMutableString *jsonData;
+@property BOOL laugeEN;
 
 
 @end

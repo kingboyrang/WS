@@ -7,15 +7,58 @@
 //
 
 #import "BaseViewController.h"
-#import "Global.h"
-
-#import "AlbumCameraImage.h"
 
 @interface BaseViewController ()
 
 @end
 
 @implementation BaseViewController
+
+//@synthesize albumCamera;
+//@synthesize xiangmuId;
+//@synthesize fankuiId;
+//@synthesize bgImageView;
+//
+//@synthesize imageScrollView;
+//
+//@synthesize toolbar;
+//@synthesize navView;
+//
+//@synthesize fujianArray; //选择图片的信息数组
+//@synthesize fujianResultStr;
+//@synthesize xinxiType;
+//@synthesize sendFujianArray;//向服务发送的数组
+//
+//@synthesize myTextView;
+//@synthesize label;
+//@synthesize lineImageView;
+
+#pragma mark 判断网络
+-(BOOL)IsEnableConnection{
+    
+	// Create zero addy
+	struct sockaddr_in zeroAddress;
+	bzero(&zeroAddress, sizeof(zeroAddress));
+	zeroAddress.sin_len = sizeof(zeroAddress);
+	zeroAddress.sin_family = AF_INET;
+	
+	// Recover reachability flags
+	SCNetworkReachabilityRef defaultRouteReachability = SCNetworkReachabilityCreateWithAddress(NULL, (struct sockaddr *)&zeroAddress);
+	SCNetworkReachabilityFlags flags;
+	
+	BOOL didRetrieveFlags = SCNetworkReachabilityGetFlags(defaultRouteReachability, &flags);
+	CFRelease(defaultRouteReachability);
+	
+	if (!didRetrieveFlags)
+	{
+		return NO;
+	}
+	
+	BOOL isReachable = flags & kSCNetworkFlagsReachable;
+	BOOL needsConnection = flags & kSCNetworkFlagsConnectionRequired;
+	return (isReachable && !needsConnection) ? YES : NO;
+    
+}
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -29,7 +72,6 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    // Do any additional setup after loading the view.
     self.albumCamera=[[AlbumCameraImage alloc] init];
     self.albumCamera.delegate=self;
     
@@ -67,13 +109,19 @@
     [self.view addSubview:self.toolbar];
     UIButton *sendButton = [UIButton buttonWithType:UIButtonTypeCustom];
     sendButton.frame = CGRectMake(100, 15,120, 30);
-    [sendButton setImage:[UIImage imageNamed:@"tijiao_normal"] forState:UIControlStateNormal];
-    [sendButton setImage:[UIImage imageNamed:@"tijiao_sele"] forState:UIControlStateHighlighted];
+    
+    if ([[Global getPreferredLanguage]isEqualToString:@"en"]) {
+        [sendButton setImage:[UIImage imageNamed:@"Submit1"] forState:UIControlStateNormal];
+        [sendButton setImage:[UIImage imageNamed:@"submit-1"] forState:UIControlStateHighlighted];
+    }else{
+        [sendButton setImage:[UIImage imageNamed:@"tijiao_normal"] forState:UIControlStateNormal];
+        [sendButton setImage:[UIImage imageNamed:@"tijiao_sele"] forState:UIControlStateHighlighted];
+    }
+    
+  
     [sendButton addTarget:self action:@selector(SubmitAction) forControlEvents:UIControlEventTouchUpInside];
     [self.toolbar addSubview:sendButton];
     self.toolbar.hidden = YES;
-    
-    
     
     self.label = [[UILabel alloc]initWithFrame:CGRectMake(0, 65, 320, 30)];
     self.label.text = @"  字数限制还剩1000字";
@@ -89,14 +137,12 @@
     self.lineImageView.alpha = 0.8;
     [self.view addSubview:self.lineImageView];
     self.lineImageView.hidden = YES;
-    self.myTextView = [[UITextView alloc]initWithFrame:CGRectMake(0, self.lineImageView.frame.origin.y+self.lineImageView.frame.size.height, 320, 410)];
+    self.myTextView = [[UITextView alloc]initWithFrame:CGRectMake(0, self.lineImageView.frame.origin.y+self.lineImageView.frame.size.height, 320, self.view.bounds.size.height - (self.lineImageView.frame.origin.y+self.lineImageView.frame.size.height)-60)];
     self.myTextView.backgroundColor = [UIColor colorWithRed:146/255.0 green:153/255.0 blue:161/255.0 alpha:1];
     self.myTextView.returnKeyType = UIReturnKeyDone;
       self.myTextView.delegate = self;
     [self.view addSubview:self.myTextView];
     [self.myTextView setHidden:YES];
-    
-
 }
 #pragma mark 返回
 -(void)back
@@ -111,9 +157,7 @@
         [self.navigationController popViewControllerAnimated:YES];
 //    }
 }
--(void)viewWillAppear:(BOOL)animated{
-    [super viewWillAppear:animated ];
-}
+
 #pragma mark - 调用相册和相机
 -(void)chooseImage {
       // 判断是否支持相机
@@ -121,7 +165,7 @@
         
     {
     
-        sheetView = [[[NSBundle mainBundle]loadNibNamed:@"MySheetView" owner:nil options:nil]objectAtIndex:0];
+        sheetView = [[[NSBundle mainBundle]loadNibNamed:IPHONE5 ? @"MySheetView":@"MySheetView_3.5" owner:nil options:nil]objectAtIndex:0];
         BOOL ISEN = [[Global getPreferredLanguage]isEqualToString:@"en"];
         [sheetView.takePhotoBtn setTitle:ISEN? @"Take photo":@"拍照" forState:UIControlStateNormal];
         [sheetView.photeBtn setTitle:ISEN?@"Chose photo":@"从手机相册选择" forState:UIControlStateNormal];
@@ -130,7 +174,7 @@
     }
     
     else {
-        sheetView = [[[NSBundle mainBundle]loadNibNamed:@"MySheetView_noCrame" owner:nil options:nil]objectAtIndex:0];
+        sheetView = [[[NSBundle mainBundle]loadNibNamed:IPHONE5?@"MySheetView_noCrame":@"MySheetView_noCrame3.5" owner:nil options:nil]objectAtIndex:0];
         [sheetView.photeBtn setTitle:@"Chose photo" forState:UIControlStateNormal];
         
         
@@ -139,7 +183,7 @@
     [self.view addSubview:sheetView];
     
 }
-
+#pragma mark -sheetAction
 -(void)MySheetAction:(int)tag{
     NSUInteger sourceType = 0;
  [sheetView removeFromSuperview];
@@ -168,13 +212,14 @@
     [dateformatter setDateFormat:@"YYYYMMddhhmmssSSS"];
     NSString *  locationString=[dateformatter stringFromDate:senddate]; //当前时间
     NSString *fileName = locationString;  //得到图片名字
-    NSData *_data = UIImageJPEGRepresentation(image, 1.0f);
+    NSData *_data = UIImageJPEGRepresentation(image, 0.8f);
     NSString *_encodedImageStr = [_data base64Encoding];//转成base64String
     FujianClass *class = [[FujianClass alloc]init];
-    class.fujianName = fileName;
+    class.fujianName = [NSString stringWithFormat:@"%@.png",fileName];
     class.fujianData = _encodedImageStr;
     class.myImage = image;
     [self.fujianArray addObject:class];
+    [self addFujianView];
     
 }
 - (void)dismissImagePickerController
@@ -198,10 +243,10 @@
         ALAssetRepresentation *representation = [item defaultRepresentation];
         NSString *fileName = [representation filename];  //得到图片名字
         UIImage *image = [UIImage imageWithCGImage:representation.fullResolutionImage];//原图
-        NSData *_data = UIImageJPEGRepresentation(image, 1.0f);
+        NSData *_data = UIImageJPEGRepresentation(image, 0.8f);
          NSString *_encodedImageStr = [_data base64Encoding];//转成base64String
         FujianClass *class = [[FujianClass alloc]init];
-        class.fujianName = fileName;
+        class.fujianName = [NSString stringWithFormat:@"%@",fileName];
         class.fujianData = _encodedImageStr;
         class.myImage = image;
         [self.fujianArray addObject:class];
@@ -260,12 +305,30 @@
 -(void)deleteImage:(UIButton *)btn{
     int tag = btn.tag;
     [self.fujianArray removeObjectAtIndex:tag];
-//    NSLog(@"%@",self.fujianArray);
     [self addFujianView];
 }
 
 #pragma  mark 发送附件
+//图片上传
+-(ServiceOperation*)uploadWithBase64:(NSString *)base64string  fileName:(NSString *)fileName{
+    NSMutableArray *params=[NSMutableArray array];
+    [params addObject:[NSDictionary dictionaryWithObjectsAndKeys:base64string,@"base64String", nil]];
+    [params addObject:[NSDictionary dictionaryWithObjectsAndKeys:fileName,@"fileName", nil]];
+    [params addObject:[NSDictionary dictionaryWithObjectsAndKeys:self.xinxiType,@"xiaoXiLeiXing", nil]];
+    
+    
+    ServiceArgs *args=[[ServiceArgs alloc] init];
+    args.methodName=@"UploadFile";//要调用的webservice方法
+    args.soapParams=params;//传递方法参数
+    args.httpWay=ServiceHttpSoap1;
+   
+    ServiceOperation *operation=[[ServiceOperation alloc] initWithArgs:args];
+    operation.userInfo=[NSDictionary dictionaryWithObjectsAndKeys:fileName,@"name", nil];
+    return operation;
+}
 -(void)sendMessage:(NSString *)base64string  fileName:(NSString *)fileName completed:(void(^)())finished{
+    
+    
     NSMutableArray *params=[NSMutableArray array];
     [params addObject:[NSDictionary dictionaryWithObjectsAndKeys:base64string,@"base64String", nil]];
     [params addObject:[NSDictionary dictionaryWithObjectsAndKeys:fileName,@"fileName", nil]];
@@ -275,36 +338,38 @@
     ServiceArgs *args=[[ServiceArgs alloc] init];
     args.methodName=@"UploadFile";//要调用的webservice方法
     args.soapParams=params;//传递方法参数
+    args.httpWay=ServiceHttpSoap1;
+    NSLog(@"header=%@",args.headers);
+    NSLog(@"body=%@",args.bodyMessage);
+    
+
     
     ServiceRequestManager *manager=[ServiceRequestManager requestWithArgs:args];
+    
     [manager setSuccessBlock:^() {
         if (manager.error) {
-//            NSLog(@"同步请求失败，失败原因=%@",manager.error.description);
+            NSLog(@"同步请求失败，失败原因=%@",manager.error.description);
+            
             return;
         }
-        NSLog(@"同步请求成功，请求结果为=%@",manager.responseString);
-       
+        NSLog(@"登录请求成功，请求结果为=\n%@",manager.responseString);
         NSString *xml=[manager.responseString stringByReplacingOccurrencesOfString:@"xmlns=\"http://tempuri.org/\"" withString:@""];
         XmlParseHelper *_helper = [[XmlParseHelper alloc] initWithData:xml];
         XmlNode *node=[_helper soapXmlSelectSingleNode:@"//UploadFileResult"];
-
+        BOOL boo=NO;
         NSDictionary *resultJsonDic = [NSJSONSerialization JSONObjectWithData:[node.InnerText dataUsingEncoding:NSUTF8StringEncoding] options:1 error:nil];
         if (resultJsonDic&&[resultJsonDic.allKeys containsObject:@"return"]&&[[resultJsonDic objectForKey:@"return"] isEqualToString:@"true"]) {
-            [self.sendFujianArray addObject:resultJsonDic];
+            boo=YES;
+            NSMutableArray *array = [[NSMutableArray alloc]init];
+            NSDictionary *dic = @{@"YuanMingCheng": [resultJsonDic objectForKey:@"YuanMingCheng"],@"XinMingCheng":[resultJsonDic objectForKey:@"XinMingCheng"],@"LeiXing":[resultJsonDic objectForKey:@"LeiXing"]};
+            [array addObject:dic];
+            [self.sendFujianArray addObject:dic];
         }
-        /***
-        if ([[resultJsonDic objectForKey:@"return"] isEqualToString:@"true"]) {
-            NSMutableDictionary *dic = [[NSMutableDictionary alloc]init];
-            [dic setObject:[resultJsonDic objectForKey:@"LeiXing"] forKey:@"LeiXing"];
-            [dic setObject:[resultJsonDic objectForKey:@"XinMingCheng"] forKey:@"XinMingCheng"];
-            [dic setObject:[resultJsonDic objectForKey:@"YuanMingCheng"] forKey:@"YuanMingCheng"];
-            
-        }
-         ***/
         
     }];
     [manager startSynchronous];//开始同步
-}
+    
+ }
 
 #pragma mark textView
 -(BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
@@ -328,46 +393,9 @@
         textView.text = [textView.text substringToIndex:128];
         number = 1000;
     }
-//    self.statusLabel.text = [NSString stringWithFormat:@"%d/128",number];
 }
-#pragma mark xmlparser 图片
-//step 1 :准备解析
-- (void)parserDidStartDocument:(NSXMLParser *)parser
-{
-    //        NSLog(@"%@",NSStringFromSelector(_cmd) );
+
+-(void)SubmitAction{
     
 }
-//step 2：准备解析节点
-- (void)parser:(NSXMLParser *)parser didStartElement:(NSString *)elementName namespaceURI:(NSString *)namespaceURI qualifiedName:(NSString *)qName attributes:(NSDictionary *)attributeDict
-{
-    if ([elementName isEqualToString:@"UploadFileResult"]) {
-        self.fujianResultStr = [[NSMutableString alloc]init];
-    }
-}
-//step 3:获取首尾节点间内容
-- (void)parser:(NSXMLParser *)parser foundCharacters:(NSString *)string
-{
-    //    NSLog(@"%@",NSStringFromSelector(_cmd) );
-    [self.fujianResultStr appendString:string];
-}
-
-//step 4 ：解析完当前节点
-- (void)parser:(NSXMLParser *)parser didEndElement:(NSString *)elementName namespaceURI:(NSString *)namespaceURI qualifiedName:(NSString *)qName
-{
-    //    NSLog(@"%@",NSStringFromSelector(_cmd) );
-    
-}
-
-//step 5；解析结束
-- (void)parserDidEndDocument:(NSXMLParser *)parser
-{
-    //      NSLog(@"%@",NSStringFromSelector(_cmd) );
-}
-//获取cdata块数据
-- (void)parser:(NSXMLParser *)parser foundCDATA:(NSData *)CDATABlock
-{
-    //    NSLog(@"%@",NSStringFromSelector(_cmd) );
-}
-
-
 @end

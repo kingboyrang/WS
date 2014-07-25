@@ -8,15 +8,15 @@
 
 #import <UIKit/UIKit.h>
 #import "LoginViewController.h"
-#import "SeleViewController.h"
 
-
-
+#import "Globalservices.h"
 #import "Global.h"
 #import "userInfo.h"
+
 @interface AppDelegate : UIResponder <UIApplicationDelegate,UITabBarDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
-//@property(nonatomic,strong)UITabBarController *rootTabBarViewController;
+
+
 
 @end

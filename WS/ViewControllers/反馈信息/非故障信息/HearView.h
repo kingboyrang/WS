@@ -8,18 +8,18 @@
 
 #import <UIKit/UIKit.h>
 
-@protocol HearViewDelegate <NSObject>
-
--(void)GotoDetailVC;
-
-@end
+//@protocol HearViewDelegate <NSObject>
+//
+//-(void)GotoDetailVC;
+//
+//@end
 
 @interface HearView : UIView
 @property (weak, nonatomic) IBOutlet UILabel *bianhaoLabel;
 @property (weak, nonatomic) IBOutlet UILabel *timeLabel;
 @property (weak, nonatomic) IBOutlet UILabel *linetwoLable;
 @property (weak, nonatomic) IBOutlet UILabel *lineThreeLabel;
-@property (assign, nonatomic)id<HearViewDelegate>delegate;
-- (IBAction)BtnAction:(id)sender;
+//@property (assign, nonatomic)id<HearViewDelegate>delegate;
+//- (IBAction)BtnAction:(id)sender;
 
 @end

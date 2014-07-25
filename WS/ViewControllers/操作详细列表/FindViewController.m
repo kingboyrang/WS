@@ -49,6 +49,16 @@
     [self sendMessage];
 }
 -(void)sendMessage{
+//    MySelfActivity *myActivity = [[MySelfActivity alloc]initWithFrame:self.view.bounds];
+//    [self.view addSubview:myActivity];
+    
+    
+    if (![self IsEnableConnection]) {
+        UIAlertView *alterView = [[UIAlertView alloc]initWithTitle:nil message:@"没有网络" delegate:nil cancelButtonTitle:nil otherButtonTitles:@"OK", nil];
+        [alterView show];
+        return;
+    }
+    
     NSMutableArray *params=[NSMutableArray array];
     NSString *str;
     
@@ -72,8 +82,6 @@
         str = [NSString stringWithFormat:@"{XinXiLeiXing: \"%@\",FanKuiID: \"%@\",ZuiDaJianYiID: \"0\",ZuiDaYiJianID: \"0\",JieGuoID: \"0\",JieGuoQueRenID: \"0\",PingJiaID: \"%d\"}",self.dataType,self.czClass.fautlid,zuida];
 
     }
-    
-    
    
     [params addObject:[NSDictionary dictionaryWithObjectsAndKeys:str,@"chaKanXinXiXiangQing", nil]];
     
@@ -106,12 +114,12 @@
 
             
             for (CaoZuoClass *myclass in self.tableArray) {
+                int heighCell = 0;
                 
                 NSString *whereStr = [NSString stringWithFormat:@"where proid = %@ and faultid = %@ and faultType = %@ and messType = %@ and orgid = %@",myclass.proId,myclass.fautlid,myclass.faultType,myclass.xinxiType,myclass.xinxiID];
                 
                 NSArray *fujianarray = [[FMDBClass shareInstance]seleDate:IMAGETABLE wherestr:whereStr];
                 
-                int heighCell = 0;
                 for (int i = 0;i < fujianarray.count; i++) {
                     FujianClass *fjclass = [[FujianClass alloc]init];
                     fjclass = [fujianarray objectAtIndex:i];
@@ -123,8 +131,10 @@
                         heighCell += 25;
                         
                     }
+                    
                 }
-                [self.heightArray addObject:[NSString stringWithFormat:@"%d",heighCell]];
+                 [self.heightArray addObject:[NSString stringWithFormat:@"%d",heighCell]];
+               
             }
                [self.myTableView reloadData];
         }else{
@@ -142,14 +152,13 @@
 
 #pragma mark tableViewDelegate
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    return 120+[[self.heightArray objectAtIndex:indexPath.row] intValue];
+    CaoZuoClass *entity=self.tableArray[indexPath.row];
+    return entity.cellHeight+[[self.heightArray objectAtIndex:indexPath.row] intValue];
 }
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     static NSString *identifier = @"identifier";
-    
     CZCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
     if (cell) {
-       
         for (CZCell * cz in cell.subviews) {
             [cz removeFromSuperview];
         }
@@ -163,6 +172,8 @@
     cell.huifuTime.text = myClass.huifutime;
     if (myClass.HuiFuXuanXiang.length !=0) {
         cell.label.text = myClass.HuiFuXuanXiang;
+    }else{
+       cell.label.text = nil;
     }
     NSString *whereStr = [NSString stringWithFormat:@"where proid = %@ and faultid = %@ and faultType = %@ and messType = %@ and orgid = %@",myClass.proId,myClass.fautlid,myClass.faultType,myClass.xinxiType,myClass.xinxiID];
     

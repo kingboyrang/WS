@@ -20,9 +20,9 @@
     
     
     _bgView=[[UIView alloc] initWithFrame:CGRectZero];
-    _bgView.backgroundColor=[UIColor grayColor];
+    _bgView.backgroundColor = [UIColor colorWithRed:146/255.0 green:153/255.0 blue:161/255.0 alpha:1];
     
-    _radios = [[CVRadioCollection alloc] initWithFrame:CGRectMake(0, 0, self.frame.size.width-80, 78)];
+    _radios = [[CVRadioCollection alloc] initWithFrame:CGRectMake(5, 5, self.frame.size.width-80, 78)];
     _radios.delegate=self;
     [_bgView addSubview:_radios];
     
@@ -38,13 +38,12 @@
     if ([entity isKindOfClass:[BtnClass class]]) {
         BtnClass *mod=(BtnClass*)entity;
         self.myId=mod.myId;
-        NSLog(@"me choose radio value=%@",self.myId);
     }
 }
 - (void) layoutSubviews {
     [super layoutSubviews];
     
-    _bgView.frame=CGRectMake(80, 0, self.frame.size.width, self.frame.size.height-2);
+    _bgView.frame=CGRectMake(80, 0, self.frame.size.width, self.frame.size.height-1);
     CGRect r=_radios.frame;
     r.origin.y=(_bgView.frame.size.height-r.size.height)/2;
     _radios.frame=r;

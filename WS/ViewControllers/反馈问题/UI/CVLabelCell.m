@@ -23,16 +23,15 @@
     _labTitle.textColor = [UIColor whiteColor];
 	_labTitle.numberOfLines=0;
     _labTitle.lineBreakMode=NSLineBreakByWordWrapping;
-    _labTitle.font = [UIFont systemFontOfSize:15.0f];
-    //70,101,132
+    _labTitle.font = [UIFont systemFontOfSize:14.0f];
     _labTitle.backgroundColor=[UIColor colorWithRed:70/255.0 green:101/255.0 blue:132/255.0 alpha:1.0];
 	[self.contentView addSubview:_labTitle];
     
     
     _labLine = [[UILabel alloc] initWithFrame:CGRectZero];
-	_labLine.backgroundColor = [UIColor whiteColor];
+	_labLine.backgroundColor =  [UIColor colorWithRed:192/255.0 green:195/255.0 blue:200/255.0 alpha:1.0];
 
-    
+    [self.contentView addSubview:_labLine];
     
     return self;
 }
@@ -46,8 +45,8 @@
     [super layoutSubviews];
     
 	//CGSize size=[_labTitle.text textSize:_labTitle.font withWidth:80];
-    _labTitle.frame=CGRectMake(0, 0, 80, self.frame.size.height-2);
-    _labLine.frame=CGRectMake(0, self.frame.size.height-2, self.frame.size.width, 2);
+    _labTitle.frame=CGRectMake(0, 0, 80, self.frame.size.height-1);
+    _labLine.frame=CGRectMake(0, self.frame.size.height-1, self.frame.size.width, 1);
 }
 
 @end

@@ -882,7 +882,6 @@
     va_start(args, sql);
     
     BOOL result = [self executeUpdate:sql error:nil withArgumentsInArray:nil orDictionary:nil orVAList:args];
-    
     va_end(args);
     return result;
 }

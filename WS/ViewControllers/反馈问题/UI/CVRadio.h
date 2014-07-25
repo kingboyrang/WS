@@ -8,6 +8,9 @@
 
 #import <UIKit/UIKit.h>
 
+#import "Global.h"
+
+
 @protocol CVRadioDelegate <NSObject>
 - (void)selectedRadioWithSender:(id)sender;
 @end

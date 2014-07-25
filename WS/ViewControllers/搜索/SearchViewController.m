@@ -135,7 +135,12 @@
     }else if (paixuTiaojianInt ==5){
         paixuTiaojianStr = @"order by deal_state desc";
     }
-    FeedbackViewController *feedVC = [[FeedbackViewController alloc]initWithNibName:@"FeedbackViewController" bundle:nil];
+    
+    
+    
+    FeedbackViewController *feedVC = [[FeedbackViewController alloc]initWithNibName:IPHONE5? @"FeedbackViewController":@"FeedbackViewController_3.5" bundle:nil];
+    feedVC.isSend = YES;
+
      NSString *sqlStr = [NSString stringWithFormat:@"where proid = %@ and bianhao like '%%%@%%' and type = %@ and deal_state = %@ %@ ",[UserInfo shareInstance].project_current_Id,self.TextField.text,XiaoXiShuXing,dealstr,paixuTiaojianStr];
   
     feedVC.messageArr = [[FMDBClass shareInstance]seleDate:tableName wherestr:sqlStr];

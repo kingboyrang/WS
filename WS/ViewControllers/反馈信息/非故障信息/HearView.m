@@ -33,7 +33,7 @@
 }
 */
 
-- (IBAction)BtnAction:(id)sender{
-    [self.delegate GotoDetailVC];
-}
+//- (IBAction)BtnAction:(id)sender{
+//   [self.delegate GotoDetailVC];
+//}
 @end

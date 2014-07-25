@@ -8,6 +8,8 @@
 
 #import "FeedbackViewController.h"
 
+#import "FMDBClass.h"
+
 @interface FeedbackViewController ()
 
 @end
@@ -24,91 +26,7 @@
     return self;
 }
 
-#pragma mark向服务发送消息
--(void)SengMessage{
-    NSString *seleStr =[NSString stringWithFormat: @"where type = 1 and proid = %@",[UserInfo shareInstance].project_current_Id];
-    int ZiJiFanKuiID = [Global TableName:INFOTABLE where:seleStr isFault:YES zuidaZhuanfa:NO];
-    NSString *OtherseleStr =[NSString stringWithFormat: @"where type = 2 and proid = %@",[UserInfo shareInstance].project_current_Id ];
-    int JieShouFanKuiID  = [Global TableName:INFOTABLE where:OtherseleStr isFault:YES zuidaZhuanfa:NO];
-    NSString *jianyiStr = [NSString stringWithFormat:@"where proid = %@ and type = 3",[UserInfo shareInstance].project_current_Id];
-    int JianYiID = [Global TableName:INFOTABLE where:jianyiStr isFault:NO zuidaZhuanfa:NO];
-    NSString *yijianStr = [NSString stringWithFormat:@"where proid = %@ and type = 4",[UserInfo shareInstance].project_current_Id];
-    int YiJianID = [Global TableName:INFOTABLE where:yijianStr isFault:NO zuidaZhuanfa:NO];
-    NSString *JieGuoStr = [NSString stringWithFormat:@"where proid = %@ and type = 5",[UserInfo shareInstance].project_current_Id];
-    int JieGuoID = [Global TableName:INFOTABLE where:JieGuoStr isFault:NO zuidaZhuanfa:NO];
-    NSString *JieGuoQueRenStr = [NSString stringWithFormat:@"where proid = %@ and type = 6",[UserInfo shareInstance].project_current_Id];
-    int JieGuoQueRenID = [Global TableName:INFOTABLE where:JieGuoQueRenStr isFault:NO zuidaZhuanfa:NO];
-    NSString *PingJiaIDStr = [NSString stringWithFormat:@"where proid = %@ and type = 7",[UserInfo shareInstance].project_current_Id];
-    int PingJiaID = [Global TableName:INFOTABLE where:PingJiaIDStr isFault:NO zuidaZhuanfa:NO];
-    
-    NSString *zhuanfaId = [NSString stringWithFormat:@"where proid = %@ ",[UserInfo shareInstance].project_current_Id];
-    int zuidazhuanfaId = [Global TableName:INFOTABLE where:zhuanfaId isFault:NO zuidaZhuanfa:YES];
-
-    
-    
-    
-    
-    
-    
-
-        NSString *str =[NSString stringWithFormat:@"{RenYuanID:\"%@\",XiangMuID:\"%@\",ZiJiFanKuiID:\"%d\",JieShouFanKuiID:\"%d\",JieShouJianYiID:\"%d\",JieShouYiJianID:\"%d\",JieShouJieGuoID:\"%d\",JieShouJieGuoQueRenID:\"%d\",JieShouPingJiaID:\"%d\",GuZhangBianHao:\"\",XiaoXiShuXing:\"\",DangQianZhuangTai:\"\",KaiShiShiJian:\"\",JieShuShiJian:\"\",PaiXu:\"\",DuQuShuLiang: \"%@\",JieShouZhuanFaID:\"%d\"}",[UserInfo shareInstance].userId,[UserInfo shareInstance].project_current_Id,ZiJiFanKuiID,JieShouFanKuiID,JianYiID,YiJianID,JieGuoID,JieGuoQueRenID,PingJiaID,@"15",zuidazhuanfaId] ;
-        NSMutableArray *params=[NSMutableArray array];
-        [params addObject:[NSDictionary dictionaryWithObjectsAndKeys:str,@"xuanZeXiangMu", nil]];
-        ServiceArgs *args=[[ServiceArgs alloc] init];
-        args.methodName=@"XuanZeXiangMu";//要调用的webservice方法
-        args.soapParams=params;//传递方法参数
-        //    NSLog(@"soap=%@",args.bodyMessage);
-        ServiceRequestManager *manager=[ServiceRequestManager requestWithArgs:args];
-        __block ServiceRequestManager *this = manager;
-        [manager setSuccessBlock:^() {
-            if (this.error) {
-                
-                    UIAlertView *alterView = [[UIAlertView alloc]initWithTitle:@"登录失败" message:this.error.description delegate:nil cancelButtonTitle:nil otherButtonTitles:@"OK", nil];
-                    [alterView show];
-                    
-                  
-                return;
-            }
-            //请求成功
-//                NSLog(@"获取主页面信息成功，请求结果为=\n%@",this.responseString);
-                NSXMLParser *xml = [[NSXMLParser alloc]initWithData:[this.responseString dataUsingEncoding:NSUTF8StringEncoding]];
-                [xml setDelegate:self];
-                [xml parse];  //xml开始解析
-                
-                NSDictionary *resultmyJsonDic = [Global GetjsonStr:self.resultJsonStr];
-            NSMutableArray *resultArray = [[NSMutableArray alloc]init];
-                if ([[resultmyJsonDic objectForKey:@"return"]isEqualToString:@"true"]) {
-                    resultArray = [Global resultArray:resultmyJsonDic :1:nil:nil where:@""];
-                }else{
-                    UIAlertView *alterView = [[UIAlertView alloc]initWithTitle:nil message:[Global tishiMessage:[resultmyJsonDic objectForKey:@"error"]] delegate:nil cancelButtonTitle:nil otherButtonTitles:@"OK", nil];
-                    [alterView show];
-                }
-               
-                if (resultArray.count >= 1)
-                {
-
-                    for (MessageClass *messClass in resultArray) {  //有数据 且正确的情况
-                        
-                        [contentsArray addObject:messClass.XinXi_contants];
-                        [self.messageArr addObject:messClass];
-                        
-                    }
-                    [self.mytableView reloadData];
-                }
-                else{
-                    NSLog(@"没有信息");
-                }
-
-            
-            
-        }];
-        [manager startSynchronous];//开始同步
-        
-    
-    
-}
--(void)getResultJieguoId:(NSString *)jieguoID title:(NSString *)titleStr{
-//    NSLog(@"jieguoID,titleStr = %@,%@",jieguoID,titleStr);
+-(void)getResultJieguoId:(NSString *)jieguoID title:(NSString *)titleStr tag:(int)tag{
     [UserInfo shareInstance].project_current_Id = jieguoID;
     [UserInfo shareInstance].project_current_name = titleStr;
     
@@ -117,14 +35,10 @@
     [[NSUserDefaults standardUserDefaults]synchronize];
     
     
-    
-    self.messageArr = [[FMDBClass shareInstance]seleDate:INFOTABLE wherestr:[NSString stringWithFormat:@"WHERE proid = %@",[UserInfo shareInstance].project_current_Id]];
     cellHighArray = [[NSMutableArray alloc]init];
     self.messageArr = [[FMDBClass shareInstance]seleDate:INFOTABLE wherestr:[NSString stringWithFormat:@"WHERE proid = %@",[UserInfo shareInstance].project_current_Id]];
     contentsArray = [[NSMutableArray alloc]init];
-    for (MessageClass *messClass in self.messageArr) {  //有数据 且正确的情况
-        [contentsArray addObject:messClass.XinXi_contants];
-    }
+
     [self.mytableView reloadData];
 
     [self SengMessage];
@@ -179,10 +93,6 @@
     
    
     contentsArray = [[NSMutableArray alloc]init];
-    for (MessageClass *messClass in self.messageArr) {  //有数据 且正确的情况
-        [contentsArray addObject:messClass.XinXi_contants];
-    }
-    [self.mytableView reloadData];
 
     
     UIButton *btn = [[UIButton alloc]initWithFrame:CGRectMake(0,0,100, 30)];
@@ -207,37 +117,9 @@
     
     if (refreshView == _headerView) {
         [self SengMessage];
-//        if (pageNumber==1) {
-//            self.list=arr;
-//            [_refreshTable reloadData];
-//        }else{
-//            NSMutableArray *insertIndexPaths = [NSMutableArray arrayWithCapacity:arr.count];
-//            int total=self.list.count;
-//            for (int i=0; i<[arr count]; i++) {
-//                [self.list addObject:[arr objectAtIndex:i]];
-//                NSIndexPath *newPath=[NSIndexPath indexPathForRow:i+total inSection:0];
-//                [insertIndexPaths addObject:newPath];
-//            }
-//            //重新呼叫UITableView的方法, 來生成行.
-//            [_refreshTable beginUpdates];
-//            [_refreshTable insertRowsAtIndexPaths:insertIndexPaths withRowAnimation:UITableViewRowAnimationFade];
-//            [_refreshTable endUpdates];
-//            [self showSuccessViewWithHide:^(AnimateErrorView *successView) {
-//                successView.labelTitle.text=[NSString stringWithFormat:@"更新%d筆資料!",insertIndexPaths.count];
-//            } completed:nil];
-//        }
     }else if (refreshView == _footerVier){
         cellRowint = cellRowint + 10;
         if (cellRowint < contentsArray.count) {
-//            NSMutableArray *inserIndexPaths = [[NSMutableArray alloc]initWithCapacity:10];
-//            int total =  contentsArray.count;
-//            for (int i = 0; i< 10; i++) {
-//                
-//            }
-//            
-//            [self.mytableView beginUpdates];
-//            [self.mytableView insertRowsAtIndexPaths: withRowAnimation:UITableViewRowAnimationBottom];
-//            [self.mytableView endUpdates];
             [cellHighArray removeAllObjects];
             [self.mytableView reloadData];
         }else{
@@ -245,7 +127,6 @@
             [cellHighArray removeAllObjects];
               [self.mytableView reloadData];
         }
-//         NSLog(@"%d,count = %d",cellRowint,contentsArray.count);
     }
     [self performSelector:@selector(endFefrshing) withObject:nil afterDelay:0];
 }
@@ -254,9 +135,7 @@
     [_headerView endRefreshing];
     [_footerVier endRefreshing];
 }
-
-- (float)getHeightForCell:(NSString *)string
-{
+- (float)getHeightForCell:(NSString *)string{
     UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0,0,0,0)];
     label.numberOfLines = 0;
     label.lineBreakMode = NSLineBreakByWordWrapping;
@@ -266,20 +145,19 @@
 }
 #pragma mark tableViewDelegate
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-
-    
-    [cellHighArray addObject:[NSNumber numberWithFloat:160+ [self getHeightForCell:contentsArray[indexPath.row]]]];
-    return cellH+ [self getHeightForCell:contentsArray[indexPath.row]];
-   
-    
+    for (MessageClass * meclass in self.messageArr) {
+        [contentsArray addObject:meclass.XinXi_contants];
+      }
+     [cellHighArray addObject:[NSNumber numberWithFloat:160+ [self getHeightForCell:contentsArray[indexPath.row]]]];
+    return 160+ [self getHeightForCell:contentsArray[indexPath.row]];
 }
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
    
-    if (self.messageArr.count >=10) {
-        return cellRowint;
-    }else{
+//    if (self.messageArr.count >=10) {
+//        return cellRowint;
+//    }else{
         return self.messageArr.count;
-    }
+//    }
 }
 -(int)cellBottomBtn:(int)heigh{
     return heigh;
@@ -302,6 +180,7 @@
     cell.BiaoHao.text =messClass.XinXi_BiaoHao;
     cell.FaBuShijian.text = messClass.XinXi_FaBuShiJian;
     cell.ZhuanYe.text = [NSString stringWithFormat:@"%@--%@",messClass.XinXi_ZhuanYe,messClass.XinXi_WenTiJiBie];
+    cell.TypeLabel.text = [NSString stringWithFormat:@"%@--%@", [Global xiaoxiType:messClass.XinXi_type] ,messClass.XinXi_proName];
     cell.Deal_state.text =[Global dealState:messClass.XinXi_deal_state] ;
     cell.FaQiRen.text = messClass.XinXi_FaQiRen;
 
@@ -322,29 +201,28 @@
     UIButton *btn1,*btn2,*btn3,*btn4,*btn5,*btn6;
     
     if ([[Global getPreferredLanguage]isEqualToString:@"en"]) {
-        btn1 = [[UIButton alloc]initWithFrame:CGRectMake(80, y+22, 75, 21)];
-        btn2 = [[UIButton alloc]initWithFrame:CGRectMake(10, y+22, 75, 21)];
-        btn3 = [[UIButton alloc]initWithFrame:CGRectMake(240, y, 75, 21)];
-        btn4 = [[UIButton alloc]initWithFrame:CGRectMake(160, y, 75, 21)];
-        btn5 = [[UIButton alloc]initWithFrame:CGRectMake(80, y, 75, 21)];
-        btn6 = [[UIButton alloc]initWithFrame:CGRectMake(10, y,75, 21)];
+        btn1 = [[UIButton alloc]initWithFrame:CGRectMake(240, y, 75, 21)];
+        btn2 = [[UIButton alloc]initWithFrame:CGRectMake(160, y, 75, 21)];
+        btn3 = [[UIButton alloc]initWithFrame:CGRectMake(80, y, 75, 21)];
+        btn4 = [[UIButton alloc]initWithFrame:CGRectMake(10, y, 75, 21)];
+        btn5 = [[UIButton alloc]initWithFrame:CGRectMake(10, y + 20, 75, 21)];
+        btn6 = [[UIButton alloc]initWithFrame:CGRectMake(80, y+20, 75, 21)];
     }else{
         btn1 = [[UIButton alloc]initWithFrame:CGRectMake(260, y, 48, 21)];
         btn2 = [[UIButton alloc]initWithFrame:CGRectMake(210, y, 48, 21)];
         btn3 = [[UIButton alloc]initWithFrame:CGRectMake(160, y, 48, 21)];
         btn4 = [[UIButton alloc]initWithFrame:CGRectMake(110, y, 48, 21)];
-        btn5 = [[UIButton alloc]initWithFrame:CGRectMake(60, y, 48, 21)];
-        btn6 = [[UIButton alloc]initWithFrame:CGRectMake(10, y, 48, 21)];
-        
-    }
-
+        btn5 = [[UIButton alloc]initWithFrame:CGRectMake(10, y, 48, 21)];
+        btn6 = [[UIButton alloc]initWithFrame:CGRectMake(80, y, 48, 21)];
+   }
+ 
     NSMutableArray *btnarray = [[NSMutableArray alloc]initWithObjects:btn1,btn2,btn3,btn4,btn5,btn6, nil];
     NSMutableDictionary *imageDic = [[NSMutableDictionary alloc]init];
     int i = 0;
     if ([messClass.XinXi_forwarding isEqualToString:@"True"]) {
         i++;
          NSString *str;
-        if (cellH == 160) {
+        if (!cellEN) {
            str = @"zhuanfa";
         }else{
            str = @"Forward";
@@ -355,7 +233,7 @@
     if ([messClass.XinXi_pingjia isEqualToString:@"True"]) {
         i++;
         NSString *str;
-        if (cellH == 160) {
+        if (!cellEN) {
             str = @"pingjia";
         }else{
             str = @"Evaluation";
@@ -365,7 +243,7 @@
     if ([messClass.XinXi_result_submit isEqualToString:@"True"]) {
         i++;
         NSString *str;
-        if (cellH == 160) {
+        if (!cellEN) {
             str = @"queding";
         }else{
             str = @"Confirmation";
@@ -375,8 +253,8 @@
     if ([messClass.XinXi_result isEqualToString:@"True"]) {
         i++;
         NSString *str;
-        if (cellH == 160) {
-            str = @"queding";
+        if (!cellEN) {
+            str = @"jieguo";
         }else{
             str = @"Result";
         }
@@ -386,7 +264,7 @@
         i++;
         
         NSString *str;
-        if (cellH == 160) {
+        if (!cellEN) {
             str = @"yijian";
         }else{
             str = @"Opinion";
@@ -397,7 +275,7 @@
     if ([messClass.XinXi_jianyi isEqualToString:@"True"]) {
         i++;
         NSString *str;
-        if (cellH == 160) {
+        if (!cellEN) {
             str = @"jianyi";
         }else{
             str = @"Suqqestions";
@@ -406,12 +284,9 @@
         [imageDic setObject:str forKey:@"600"];
         
     }
-
-    
     NSArray *keys = [[imageDic allKeys] sortedArrayUsingSelector:@selector(compare:)];
     for (int j = 0; j < i; j++) {
         UIButton *btn = [btnarray objectAtIndex:j];
-         btn.tag = [[keys objectAtIndex:j] intValue];
         [btn setImage:[UIImage imageNamed: [imageDic objectForKey:[keys objectAtIndex:j]]] forState:UIControlStateNormal];
         btn.tag = [[keys objectAtIndex:j] intValue]; //btn.tag
         [btn addTarget:self action:@selector(cellBtnAction:) forControlEvents:UIControlEventTouchUpInside];
@@ -421,20 +296,10 @@
 }
 #pragma mark tableViewDateSource
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    
-  
-    
-    
     FaultCellTableViewCell *cell = (FaultCellTableViewCell *)[tableView cellForRowAtIndexPath:indexPath];
-
-    
     [[FMDBClass shareInstance]UpData:INFOTABLE setStr:@"read_state = 2" whereStr:[NSString stringWithFormat:@"id = %@ and type = %@",cell.XinXi_ID,cell.XinXi_type]];
-    
-
-    
     if ([cell.XinXi_type isEqualToString:@"1"] ||[cell.XinXi_type isEqualToString:@"2"]) {
-        
-        DetailedViewController *detaiVC = [[DetailedViewController alloc]initWithNibName:@"DetailedViewController" bundle:nil];
+        DetailedViewController *detaiVC = [[DetailedViewController alloc]initWithNibName:IPHONE5?@"DetailedViewController":@"DetailedViewController_3.5" bundle:nil];
         detaiVC.xinxi_type = cell.XinXi_type;
         detaiVC.xinxi_id = cell.XinXi_ID;
         detaiVC.xinxi_currentFaultId = cell.XinXi_faultid;
@@ -442,7 +307,7 @@
         [self.navigationController pushViewController:detaiVC animated:YES];
         
     }else{
-        FeiFaultViewController *vc = [[FeiFaultViewController alloc]initWithNibName:@"FeiFaultViewController" bundle:nil];
+        FeiFaultViewController *vc = [[FeiFaultViewController alloc]initWithNibName:IPHONE5?@"FeiFaultViewController":@"FeiFaultViewController_3.5" bundle:nil];
         vc.FieXinXiLeiXing = cell.XinXi_type;
         vc.FieXinXiID = cell.XinXi_ID;
         vc.FieFanKuiID = cell.XinXi_faultid;
@@ -487,11 +352,13 @@
             vc.JieGuoQueRenID=@"0";
             vc.PingJiaID=[NSString stringWithFormat:@"%d",bigId];
         }
-
-        
         [self.navigationController pushViewController:vc animated:YES];
+
     }
-    
+    cellHighArray = [[NSMutableArray alloc]init];
+    self.messageArr = [[FMDBClass shareInstance]seleDate:INFOTABLE wherestr:[NSString stringWithFormat:@"WHERE proid = %@",[UserInfo shareInstance].project_current_Id]];
+    contentsArray = [[NSMutableArray alloc]init];
+    [self.mytableView reloadData];
 }
 -(void)cellBtnAction:(UIButton *)btn{
     
@@ -501,63 +368,76 @@
         v=[v superview];
    }while(![v isKindOfClass:[FaultCellTableViewCell class]]);
       FaultCellTableViewCell *cell =(FaultCellTableViewCell *) v;
-     if (tag == 100) { //转发
-        ForwardingViewController *vc = [[ForwardingViewController alloc]initWithNibName:@"ForwardingViewController" bundle:nil];
-        vc.projectid = cell.XinXi_proid;
-        vc.zhuangfarenid = [UserInfo shareInstance].userId;
-        vc.messageid = cell.XinXi_ID;
-        vc.messageType = cell.XinXi_type;
-        vc.faultid = cell.XinXi_faultid;
-        [self.navigationController pushViewController:vc animated:YES];
-    }else if (tag == 200){ //评价
-         AddPingjiaViewController *vc = [[AddPingjiaViewController alloc]init];
-         vc.xinxiType = cell.XinXi_type;
+    if (tag == 100) { //转发
+        if (cellEN ) {
+            ForwardingViewController *vc = [[ForwardingViewController alloc]initWithNibName:IPHONE5?@"ForwardingViewController_en":@"ForwardingViewController_3.5en" bundle:nil];
+            vc.laugeEN = cellEN;
+            vc.projectid = cell.XinXi_proid;
+            vc.zhuangfarenid = [UserInfo shareInstance].userId;
+            vc.messageid = cell.XinXi_ID;
+            vc.messageType = cell.XinXi_type;
+            vc.faultid = cell.XinXi_faultid;
+            [self.navigationController pushViewController:vc animated:YES];
+            
+        }else{
+            ForwardingViewController *vc = [[ForwardingViewController alloc]initWithNibName:IPHONE5?@"ForwardingViewController":@"ForwardingViewController_3.5" bundle:nil];
+            vc.laugeEN = cellEN;
+            vc.projectid = cell.XinXi_proid;
+            vc.zhuangfarenid = [UserInfo shareInstance].userId;
+            vc.messageid = cell.XinXi_ID;
+            vc.messageType = cell.XinXi_type;
+            vc.faultid = cell.XinXi_faultid;
+            [self.navigationController pushViewController:vc animated:YES];
+            
+        }
+    }
+    else if (tag == 200){ //评价
+        AddPingjiaViewController *vc = [[AddPingjiaViewController alloc]init];
+        vc.laugeEN = cellEN;
+        vc.xinxiType = cell.XinXi_type;
         vc.fankuiId =cell.XinXi_faultid;
         vc.xiangmuId = cell.XinXi_proid;
         [self.navigationController pushViewController:vc animated:YES];
     }
     else if (tag == 300){ //确认
         if ( [self CanAdd:300 fankuiID:cell.XinXi_faultid]) {
-            
             AddSubmitViewController  *vc = [[AddSubmitViewController alloc]init];
+            vc.laugeEN = cellEN;
             vc.xinxiType = cell.XinXi_type;
             vc.fankuiId =cell.XinXi_faultid;
             vc.xiangmuId = cell.XinXi_proid;
             [self.navigationController pushViewController:vc animated:YES];
-            
         }else{
-            
             UIAlertView *alterView = [[UIAlertView alloc]initWithTitle:@"提示" message:@"该项目已经添加结果确认"delegate:nil cancelButtonTitle:nil otherButtonTitles:@"OK", nil];
             [alterView show];
-            
         }
-
     }
-
-   else if(tag == 400){ //结果
-       
-       if ( [self CanAdd:400 fankuiID:cell.XinXi_faultid]) {
-           ResultViewController *vc = [[ResultViewController alloc]init];
-           vc.xinxiType = cell.XinXi_type;
-           vc.fankuiId =cell.XinXi_faultid;
-           vc.xiangmuId = cell.XinXi_proid;
-           [self.navigationController pushViewController:vc animated:YES];
-       }else{
-           UIAlertView *alterView = [[UIAlertView alloc]initWithTitle:@"提示" message:@"该项目已经添加结果"delegate:nil cancelButtonTitle:nil otherButtonTitles:@"OK", nil];
-           [alterView show];
-       }
-       
-       
-
-    }else if(tag == 500){ //意见
+    else if (tag == 400){ //结果
+        
+        if ( [self CanAdd:400 fankuiID:cell.XinXi_faultid]) {
+            ResultViewController *vc = [[ResultViewController alloc]init];
+            vc.laugeEN = cellEN;
+            vc.xinxiType = cell.XinXi_type;
+            vc.fankuiId =cell.XinXi_faultid;
+            vc.xiangmuId = cell.XinXi_proid;
+            [self.navigationController pushViewController:vc animated:YES];
+        }else{
+            UIAlertView *alterView = [[UIAlertView alloc]initWithTitle:@"提示" message:@"该项目已经添加结果"delegate:nil cancelButtonTitle:nil otherButtonTitles:@"OK", nil];
+            [alterView show];
+        }
+    }
+    else if (tag == 500){ //意见
         AddviceViewController *vc = [[AddviceViewController alloc]init];
+        vc.laugeEN = cellEN;
         vc.xinxiType = cell.XinXi_type;
         vc.fankuiId =cell.XinXi_faultid;
         vc.xiangmuId = cell.XinXi_proid;
         [self.navigationController pushViewController:vc animated:YES];
-
-    }else if (tag == 600){ //建议
+        
+    }
+    else if (tag == 600){ //建议
         SuggectionViewController *vc = [[SuggectionViewController alloc]init];
+        vc.laugeEN = cellEN;
         vc.xinxiType = cell.XinXi_type;
         vc.fankuiId =cell.XinXi_faultid;
         vc.xiangmuId = cell.XinXi_proid;
@@ -582,103 +462,34 @@
     ServiceRequestManager *manager=[ServiceRequestManager requestWithArgs:args];
     [manager setSuccessBlock:^() {
         if (manager.error) {
-//            NSLog(@"同步请求失败，失败原因=%@",manager.error.description);
+            UIAlertView *alterview = [[UIAlertView alloc]initWithTitle:nil message:@"连接服务器失败" delegate:nil cancelButtonTitle:nil otherButtonTitles:@"OK", nil];
+            [alterview show];
             return;
         }
-//        NSLog(@"同步请求成功，请求结果为=%@",manager.responseString);
-        NSXMLParser *xml = [[NSXMLParser alloc]initWithData:[manager.responseString dataUsingEncoding:NSUTF8StringEncoding]];
         
-        [xml setDelegate:self];
-        [xml parse];  //xml开始解析
+        NSString *xml=[manager.responseString stringByReplacingOccurrencesOfString:@"xmlns=\"http://tempuri.org/\"" withString:@""];
+           XmlParseHelper *_helper = [[XmlParseHelper alloc] initWithData:xml];
+        
+        XmlNode *node;
         
         if (i == 400) {
-            
-            if ([[[Global GetjsonStr:ShiFouYiTianJiaJieGuoResultStr] objectForKey:@"return"] isEqualToString:@"true"]) {
-                
-                if ([[resultJsonDic objectForKey:@"ShiFouYiTianJia"] isEqualToString:@"True"]) {
-                    isCan = NO;
-                    
-                }else if ([[resultJsonDic objectForKey:@"ShiFouYiTianJia"] isEqualToString:@"false"]){
-                    isCan = YES;
-                }
-            }
-
+            node=[_helper soapXmlSelectSingleNode:@"//ShiFouYiTianJiaJieGuoResult"];
         }else{
-            if ([[[Global GetjsonStr:ShiFouYiTianJiaJieGuoQueRenResultStr] objectForKey:@"return"] isEqualToString:@"true"]) {
-                
-                if ([[resultJsonDic objectForKey:@"ShiFouYiTianJia"] isEqualToString:@"True"]) {
+            node=[_helper soapXmlSelectSingleNode:@"//ShiFouYiTianJiaJieGuoQueRenResult"];
+        }
+          NSDictionary *resultDic = [Global GetjsonStr:node.InnerText];
+             if ([[resultDic objectForKey:@"return"] isEqualToString:@"true"]) {
+                if ([[resultDic objectForKey:@"ShiFouYiTianJia"] isEqualToString:@"True"]) {
                     isCan = NO;
-                    
-                }else if ([[resultJsonDic objectForKey:@"ShiFouYiTianJia"] isEqualToString:@"false"]){
+                }else if([[resultDic objectForKey:@"ShiFouYiTianJia"] isEqualToString:@"False"]) {
                     isCan = YES;
                 }
             }
 
-            
-        }
-//            if ([[resultJsonDic objectForKey:@"return"] isEqualToString:@"true"]) {
-//                
-//                if ([[resultJsonDic objectForKey:@"ShiFouYiTianJia"] isEqualToString:@"True"]) {
-//                    isCan = NO;
-//                    
-//                }else if ([[resultJsonDic objectForKey:@"ShiFouYiTianJia"] isEqualToString:@"false"]){
-//                    isCan = YES;
-//                }
-//            }
- 
      
-      
     }];
     [manager startSynchronous];//开始同步
     return  isCan;
-}
-#pragma mark xmlparser
-//step 1 :准备解析
-- (void)parserDidStartDocument:(NSXMLParser *)parser
-{
-    //        NSLog(@"%@",NSStringFromSelector(_cmd) );
-    
-}
-//step 2：准备解析节点
-- (void)parser:(NSXMLParser *)parser didStartElement:(NSString *)elementName namespaceURI:(NSString *)namespaceURI qualifiedName:(NSString *)qName attributes:(NSDictionary *)attributeDict
-{
-    if ([elementName isEqualToString:@"XuanZeXiangMuResult"]) {
-        self.resultJsonStr = [[NSMutableString alloc]init];
-    }else if ([elementName isEqualToString:@"ShiFouYiTianJiaJieGuoResult"]){
-        ShiFouYiTianJiaJieGuoResultStr = [[NSMutableString alloc]init];
-    }else if ([elementName isEqualToString:@"ShiFouYiTianJiaJieGuoQueRenResult"]){
-        ShiFouYiTianJiaJieGuoQueRenResultStr = [[NSMutableString alloc]init];
-    }
-}
-//step 3:获取首尾节点间内容
-- (void)parser:(NSXMLParser *)parser foundCharacters:(NSString *)string
-{
-    [self.resultJsonStr appendString:string];
-    [ShiFouYiTianJiaJieGuoResultStr appendString:string];
-    [ShiFouYiTianJiaJieGuoQueRenResultStr appendString:string];
-}
-
-//step 4 ：解析完当前节点
-- (void)parser:(NSXMLParser *)parser didEndElement:(NSString *)elementName namespaceURI:(NSString *)namespaceURI qualifiedName:(NSString *)qName
-{
-    //    NSLog(@"%@",NSStringFromSelector(_cmd) );
-    
-}
-
-//step 5；解析结束
-- (void)parserDidEndDocument:(NSXMLParser *)parser
-{
-    //      NSLog(@"%@",NSStringFromSelector(_cmd) );
-}
-//获取cdata块数据
-- (void)parser:(NSXMLParser *)parser foundCDATA:(NSData *)CDATABlock
-{
-    //    NSLog(@"%@",NSStringFromSelector(_cmd) );
-}
-#pragma mark 返回
--(void)back
-{
-    [self.navigationController popToViewController:[self.navigationController.viewControllers objectAtIndex:0]  animated:YES];
 }
 - (IBAction)GotoSerachVC:(id)sender {
     
@@ -692,17 +503,85 @@
     SearchViewController *vc = [[SearchViewController alloc]initWithNibName:xibStr bundle:nil];
     [self.navigationController pushViewController:vc animated:YES];
 }
-
--(void)viewWillAppear:(BOOL)animated
-{
+-(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
     if ([[Global getPreferredLanguage]isEqualToString:@"en"]) {
-        cellH = 180;
+        cellEN = YES;
     }else{
-        cellH = 160;
+        cellEN = NO;
     }
     
-     self.messageArr = [[FMDBClass shareInstance]seleDate:INFOTABLE wherestr:[NSString stringWithFormat:@"WHERE proid = %@",[UserInfo shareInstance].project_current_Id]];
+//     self.messageArr = [[FMDBClass shareInstance]seleDate:INFOTABLE wherestr:[NSString stringWithFormat:@"WHERE proid = %@",[UserInfo shareInstance].project_current_Id]];
     [self.mytableView reloadData];
+}
+#pragma mark向服务发送消息得到列表内容
+-(void)SengMessage{
+    if (self.isSend) {
+        return;
+    }
+    if (![self IsEnableConnection]) {
+        UIAlertView *alterView = [[UIAlertView alloc]initWithTitle:nil message:@"没有网络" delegate:nil cancelButtonTitle:nil otherButtonTitles:@"OK", nil];
+        [alterView show];
+        return;
+    }
+    
+    NSString *seleStr =[NSString stringWithFormat: @"where type = 1 and proid = %@",[UserInfo shareInstance].project_current_Id ];
+    int ZiJiFanKuiID = [Global TableName:INFOTABLE where:seleStr isFault:YES zuidaZhuanfa:NO];
+    
+    NSString *OtherseleStr =[NSString stringWithFormat: @"where type = 2 and proid = %@",[UserInfo shareInstance].project_current_Id ];
+    int JieShouFanKuiID  = [Global TableName:INFOTABLE where:OtherseleStr isFault:YES zuidaZhuanfa:NO];
+    NSString *jianyiStr = [NSString stringWithFormat:@"where proid = %@ and type = 3",[UserInfo shareInstance].project_current_Id];
+    int JianYiID = [Global TableName:INFOTABLE where:jianyiStr isFault:NO zuidaZhuanfa:NO];
+    NSString *yijianStr = [NSString stringWithFormat:@"where proid = %@ and type = 4",[UserInfo shareInstance].project_current_Id];
+    int YiJianID = [Global TableName:INFOTABLE where:yijianStr isFault:NO zuidaZhuanfa:NO];
+    NSString *JieGuoStr = [NSString stringWithFormat:@"where proid = %@ and type = 5",[UserInfo shareInstance].project_current_Id];
+    int JieGuoID = [Global TableName:INFOTABLE where:JieGuoStr isFault:NO zuidaZhuanfa:NO];
+    NSString *JieGuoQueRenStr = [NSString stringWithFormat:@"where proid = %@ and type = 6",[UserInfo shareInstance].project_current_Id];
+    int JieGuoQueRenID = [Global TableName:INFOTABLE where:JieGuoQueRenStr isFault:NO zuidaZhuanfa:NO];
+    NSString *PingJiaIDStr = [NSString stringWithFormat:@"where proid = %@ and type = 7",[UserInfo shareInstance].project_current_Id];
+    int PingJiaID = [Global TableName:INFOTABLE where:PingJiaIDStr isFault:NO zuidaZhuanfa:NO];
+    
+    NSString *zhuanfaId = [NSString stringWithFormat:@"where proid = %@ ",[UserInfo shareInstance].project_current_Id];
+    int zuidazhuanfaId = [Global TableName:INFOTABLE where:zhuanfaId isFault:NO zuidaZhuanfa:YES];
+    
+    NSString *str  =[NSString stringWithFormat:@"{RenYuanID:\"%@\",XiangMuID:\"%@\",ZiJiFanKuiID:\"%d\",JieShouFanKuiID:\"%d\",JieShouJianYiID:\"%d\",JieShouYiJianID:\"%d\",JieShouJieGuoID:\"%d\",JieShouJieGuoQueRenID:\"%d\",JieShouPingJiaID:\"%d\",GuZhangBianHao:\"\",XiaoXiShuXing:\"\",DangQianZhuangTai:\"\",KaiShiShiJian:\"\",JieShuShiJian:\"\",PaiXu:\"\",DuQuShuLiang: \"%@\",JieShouZhuanFaID:\"%d\"}",[UserInfo shareInstance].userId,[UserInfo shareInstance].project_current_Id,ZiJiFanKuiID,JieShouFanKuiID,JianYiID,YiJianID,JieGuoID,JieGuoQueRenID,PingJiaID,@"15",zuidazhuanfaId] ;
+    NSMutableArray *params=[NSMutableArray array];
+    [params addObject:[NSDictionary dictionaryWithObjectsAndKeys:str,@"xuanZeXiangMu", nil]];
+    ServiceArgs *args=[[ServiceArgs alloc] init];
+    args.methodName=@"XuanZeXiangMu";//要调用的webservice方法
+    args.soapParams=params;//传递方法参数
+    ServiceRequestManager *manager=[ServiceRequestManager requestWithArgs:args];
+    __block ServiceRequestManager *this = manager;
+    [manager setSuccessBlock:^() {
+        if (this.error) {
+            UIAlertView *alterView = [[UIAlertView alloc]initWithTitle:@"登录失败" message:this.error.description delegate:nil cancelButtonTitle:nil otherButtonTitles:@"OK", nil];
+            [alterView show];
+            return;
+        }
+         NSString *xml=[manager.responseString stringByReplacingOccurrencesOfString:@"xmlns=\"http://tempuri.org/\"" withString:@""];
+        XmlParseHelper *_helper = [[XmlParseHelper alloc] initWithData:xml];
+        XmlNode *node=[_helper soapXmlSelectSingleNode:@"//XuanZeXiangMuResult"];
+        NSDictionary *resultDic = [Global GetjsonStr:node.InnerText];
+        
+        NSMutableArray *resultArray = [[NSMutableArray alloc]init];
+        if ([[resultDic objectForKey:@"return"]isEqualToString:@"true"]) {
+            resultArray = [Global resultArray:resultDic :1:nil:nil where:@""];
+        }else{
+            UIAlertView *alterView = [[UIAlertView alloc]initWithTitle:nil message:[Global tishiMessage:[resultDic objectForKey:@"error"]] delegate:nil cancelButtonTitle:nil otherButtonTitles:@"OK", nil];
+            [alterView show];
+        }
+        if (resultArray.count >= 1)
+        {
+            for (MessageClass *messClass in resultArray) {  //有数据 且正确的情况
+                [self.messageArr addObject:messClass];
+            }
+            [self.mytableView reloadData];
+        }
+        else{
+            NSLog(@"没有信息");
+        }
+    }];
+    [manager startSynchronous];//开始同步
+    
 }
 @end

@@ -52,7 +52,7 @@
     if (self.label.text.length == 0) {
         size = CGSizeMake(280, 0);
     }else{
-     size = self.label.frame.size;
+     size = CGSizeMake(300, 20);
     }
     r.size = size;
     self.label.textAlignment = NSTextAlignmentRight;
@@ -138,7 +138,13 @@
         fujianBtn.fjclass = fj;
         fujianBtn.backgroundColor = [UIColor clearColor];
         [fujianBtn setTitleColor:[UIColor whiteColor] forState:0];
-        [fujianBtn setTitle:fj.fujianName forState:0];
+        if (fj.fujianisdown.length==0) {
+            [fujianBtn setTitle:fj.fujianName forState:0];
+        }else{
+            [fujianBtn setTitle:[NSString stringWithFormat:@"%@    已下载",fj.fujianisdown] forState:0];
+        }
+        
+        
         fujianBtn.titleLabel.font = [UIFont systemFontOfSize:12];
         [fujianBtn addTarget:self action:@selector(btnAction:) forControlEvents:UIControlEventTouchUpInside];
         [self.fujianView addSubview:fujianBtn];

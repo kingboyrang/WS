@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="5053" systemVersion="13C64" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="5056" systemVersion="13C64" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment defaultVersion="1552" identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
@@ -27,7 +27,7 @@
                     </state>
                     <state key="highlighted" image="Feedback information.png"/>
                     <connections>
-                        <action selector="BtnAction:" destination="-1" eventType="touchUpInside" id="Roh-cX-yf0"/>
+                        <action selector="BtnActionSele:" destination="-1" eventType="touchUpInside" id="PoF-nv-uxg"/>
                     </connections>
                 </button>
                 <button opaque="NO" tag="200" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ykg-jz-cMC">
@@ -38,7 +38,7 @@
                     </state>
                     <state key="highlighted" image="Investigation evaluation.png"/>
                     <connections>
-                        <action selector="BtnAction:" destination="-1" eventType="touchUpInside" id="Gqy-Zn-e51"/>
+                        <action selector="BtnActionSele:" destination="-1" eventType="touchUpInside" id="EY1-jJ-0lU"/>
                     </connections>
                 </button>
                 <button opaque="NO" tag="300" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hhe-aX-Qti">
@@ -49,7 +49,7 @@
                     </state>
                     <state key="highlighted" image="Online customer service.png"/>
                     <connections>
-                        <action selector="BtnAction:" destination="-1" eventType="touchUpInside" id="W0t-ir-fHe"/>
+                        <action selector="BtnActionSele:" destination="-1" eventType="touchUpInside" id="708-eZ-vUN"/>
                     </connections>
                 </button>
                 <button opaque="NO" tag="400" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="AHj-Aw-zp8">
@@ -60,7 +60,7 @@
                     </state>
                     <state key="highlighted" image="Feedback issues.png"/>
                     <connections>
-                        <action selector="BtnAction:" destination="-1" eventType="touchUpInside" id="cQ0-wy-REO"/>
+                        <action selector="BtnActionSele:" destination="-1" eventType="touchUpInside" id="KWH-aq-n6z"/>
                     </connections>
                 </button>
             </subviews>

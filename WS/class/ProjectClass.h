@@ -15,6 +15,7 @@
 @property (nonatomic, strong)NSString *pro_jiancheng;
 @property (nonatomic, strong)NSString *pro_quancheng;
 
+@property (nonatomic, strong)NSString *pro_ShiFouKeYiFanKui;
 @property (nonatomic, strong)NSString *WeiChuLiShuLiang;//未处理数量
 @property (nonatomic, strong)NSString *WeiDuShuLiang;//未读数量
 

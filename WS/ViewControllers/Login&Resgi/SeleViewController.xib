@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="5053" systemVersion="13C64" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="5056" systemVersion="13C64" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment defaultVersion="1552" identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
@@ -20,47 +20,58 @@
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                 </imageView>
                 <button opaque="NO" tag="100" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dvA-P9-CUz">
-                    <rect key="frame" x="50" y="145" width="220" height="40"/>
+                    <rect key="frame" x="50" y="122" width="220" height="40"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <state key="normal" image="normal_1.png">
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
                     <state key="highlighted" image="hight_1.png"/>
                     <connections>
-                        <action selector="BtnAction:" destination="-1" eventType="touchUpInside" id="mia-ud-w6J"/>
+                        <action selector="BtnActionSele:" destination="-1" eventType="touchUpInside" id="tQS-co-Sly"/>
                     </connections>
                 </button>
                 <button opaque="NO" tag="200" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lol-er-KSF">
-                    <rect key="frame" x="50" y="210" width="220" height="40"/>
+                    <rect key="frame" x="50" y="187" width="220" height="40"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <state key="normal" title="调研评价" image="normal_2.png">
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
                     <state key="highlighted" image="hight_2.png"/>
                     <connections>
-                        <action selector="BtnAction:" destination="-1" eventType="touchUpInside" id="dOx-Tg-Sa3"/>
+                        <action selector="BtnActionSele:" destination="-1" eventType="touchUpInside" id="YAF-ae-Lg7"/>
                     </connections>
                 </button>
                 <button opaque="NO" tag="300" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="L1t-bP-M5r">
-                    <rect key="frame" x="50" y="277" width="220" height="40"/>
+                    <rect key="frame" x="50" y="259" width="220" height="40"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <state key="normal" title="在线客服" image="normal_3.png">
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
                     <state key="highlighted" image="hight_3.png"/>
                     <connections>
-                        <action selector="BtnAction:" destination="-1" eventType="touchUpInside" id="0oj-I9-Wd1"/>
+                        <action selector="BtnActionSele:" destination="-1" eventType="touchUpInside" id="EZn-9D-Oj1"/>
                     </connections>
                 </button>
                 <button opaque="NO" tag="400" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="r3B-5l-yUE">
-                    <rect key="frame" x="50" y="343" width="220" height="40"/>
+                    <rect key="frame" x="50" y="325" width="220" height="40"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <state key="normal" image="normal_4.png">
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
                     <state key="highlighted" image="hight_4.png"/>
                     <connections>
-                        <action selector="BtnAction:" destination="-1" eventType="touchUpInside" id="dAd-K2-lFP"/>
+                        <action selector="BtnActionSele:" destination="-1" eventType="touchUpInside" id="PeV-e0-Nuk"/>
+                    </connections>
+                </button>
+                <button opaque="NO" tag="500" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dNb-gj-U37">
+                    <rect key="frame" x="50" y="397" width="220" height="40"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <state key="normal" image="bg_an1.png">
+                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <state key="highlighted" image="bg_an01.png"/>
+                    <connections>
+                        <action selector="BtnActionSele:" destination="-1" eventType="touchUpInside" id="i7d-Sv-ELM"/>
                     </connections>
                 </button>
             </subviews>
@@ -71,6 +82,8 @@
     </objects>
     <resources>
         <image name="backgroundImage.png" width="640" height="1136"/>
+        <image name="bg_an01.png" width="520" height="94"/>
+        <image name="bg_an1.png" width="520" height="94"/>
         <image name="hight_1.png" width="520" height="94"/>
         <image name="hight_2.png" width="520" height="94"/>
         <image name="hight_3.png" width="520" height="94"/>

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="5053" systemVersion="13C64" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="5056" systemVersion="13C64" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment defaultVersion="1552" identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
@@ -27,7 +27,7 @@
                     </state>
                     <state key="highlighted" image="hight_4.png"/>
                     <connections>
-                        <action selector="BtnAction:" destination="-1" eventType="touchUpInside" id="T5i-T4-F8W"/>
+                        <action selector="BtnActionSele:" destination="-1" eventType="touchUpInside" id="Hyu-ay-yNy"/>
                     </connections>
                 </button>
                 <button opaque="NO" tag="200" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nuv-5o-5qL">
@@ -38,7 +38,7 @@
                     </state>
                     <state key="highlighted" image="hight_2.png"/>
                     <connections>
-                        <action selector="BtnAction:" destination="-1" eventType="touchUpInside" id="ES2-Kg-0pE"/>
+                        <action selector="BtnActionSele:" destination="-1" eventType="touchUpInside" id="BpQ-td-1aA"/>
                     </connections>
                 </button>
                 <button opaque="NO" tag="300" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vRr-vo-Hag">
@@ -49,7 +49,7 @@
                     </state>
                     <state key="highlighted" image="hight_3.png"/>
                     <connections>
-                        <action selector="BtnAction:" destination="-1" eventType="touchUpInside" id="Efm-me-u3k"/>
+                        <action selector="BtnActionSele:" destination="-1" eventType="touchUpInside" id="iPr-jX-pPS"/>
                     </connections>
                 </button>
                 <button opaque="NO" tag="100" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GDV-eq-M2a">
@@ -60,18 +60,7 @@
                     </state>
                     <state key="highlighted" image="hight_1.png"/>
                     <connections>
-                        <action selector="BtnAction:" destination="-1" eventType="touchUpInside" id="9Sv-wP-MRp"/>
-                    </connections>
-                </button>
-                <button opaque="NO" tag="500" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aY3-G1-JqM">
-                    <rect key="frame" x="50" y="332" width="220" height="40"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <state key="normal" title="搜索" image="normal_5.png">
-                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                    </state>
-                    <state key="highlighted" image="hight_5.png"/>
-                    <connections>
-                        <action selector="BtnAction:" destination="-1" eventType="touchUpInside" id="rsF-OQ-jbZ"/>
+                        <action selector="BtnActionSele:" destination="-1" eventType="touchUpInside" id="61M-zR-uFC"/>
                     </connections>
                 </button>
             </subviews>
@@ -85,11 +74,9 @@
         <image name="hight_2.png" width="520" height="94"/>
         <image name="hight_3.png" width="520" height="94"/>
         <image name="hight_4.png" width="520" height="94"/>
-        <image name="hight_5.png" width="520" height="94"/>
         <image name="normal_1.png" width="520" height="94"/>
         <image name="normal_2.png" width="520" height="94"/>
         <image name="normal_3.png" width="520" height="94"/>
         <image name="normal_4.png" width="520" height="94"/>
-        <image name="normal_5.png" width="520" height="94"/>
     </resources>
 </document>

@@ -16,6 +16,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *Deal_state;
 @property (weak, nonatomic) IBOutlet UILabel *FaQiRen;
 @property (weak, nonatomic) IBOutlet UIImageView *read_stateImg;
+@property (weak, nonatomic) IBOutlet UILabel *TypeLabel;
 
 @property (nonatomic, strong)NSString *XinXi_ID;                //id
 @property (nonatomic, strong)NSString *XinXi_type;           //类型

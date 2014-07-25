@@ -19,7 +19,6 @@
 @property (weak, nonatomic) IBOutlet UITextField *xingMingTextF;
 @property (weak, nonatomic) IBOutlet UITextField *usernameTextF;
 @property (weak, nonatomic) IBOutlet UITextField *passwordTextF;
-@property (weak, nonatomic) IBOutlet UITextField *passwordsubTextF;
 @property (weak, nonatomic) IBOutlet UITextField *phoneTextF;
 @property (weak, nonatomic) IBOutlet UITextField *emailTextF;
 @property (weak, nonatomic) IBOutlet UITextField *companyTextF;

@@ -9,6 +9,7 @@
 #import "BaseViewController.h"
 #import "Global.h"
 #import "ProView.h"
+
 @interface FindEmailViewController : BaseViewController<UITextFieldDelegate>
 
 @property (strong, nonatomic)NSMutableString *jsonStr;

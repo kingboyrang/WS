@@ -55,10 +55,10 @@
                     <nil key="highlightedColor"/>
                 </label>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="CEK-J1-nbb">
-                    <rect key="frame" x="244" y="138" width="50" height="21"/>
+                    <rect key="frame" x="232" y="138" width="62" height="21"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                    <state key="normal" image="zhuanfa.png">
+                    <state key="normal">
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
                     <connections>
@@ -89,6 +89,5 @@
     <resources>
         <image name="cellbackG.png" width="613" height="78"/>
         <image name="line.png" width="565" height="1"/>
-        <image name="zhuanfa.png" width="80" height="35"/>
     </resources>
 </document>

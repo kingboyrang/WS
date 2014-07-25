@@ -20,6 +20,8 @@
         self.contentLabel.numberOfLines=0;
         self.contentLabel.lineBreakMode=NSLineBreakByWordWrapping;
         
+
+        
     }
     return self;
 }
@@ -124,6 +126,12 @@
 
 -(void)layoutSubviews{
     [super layoutSubviews];
+    
+    if ([[Global getPreferredLanguage]isEqualToString:@"en"]) {
+        [self.zhuanFaBtn setImage:[UIImage imageNamed:@"Forward"] forState:UIControlStateNormal];
+    }else{
+        [self.zhuanFaBtn setImage:[UIImage imageNamed:@"zhuanfa"] forState:UIControlStateNormal];
+    }
     
     CGRect r=self.typeLabel.frame;
    CGSize size=[self.typeLabel.text textSize:self.typeLabel.font withWidth:r.size.width];

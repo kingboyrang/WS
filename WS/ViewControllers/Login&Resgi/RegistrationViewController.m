@@ -7,11 +7,13 @@
 //
 
 #import "RegistrationViewController.h"
-
+#import "ProView.h"
 #define HIGHT [[[UIDevice currentDevice] systemVersion] floatValue] >= 7.0 ?100 : 20
 
 @interface RegistrationViewController ()
-
+{
+    ProView *proView;
+}
 @end
 
 @implementation RegistrationViewController
@@ -32,6 +34,15 @@
     self.navView.titel_Label.text = @"注册";
     UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(tapGesture:)];
     [self.view addGestureRecognizer:tapGesture];
+    
+    self.usernameTextF.delegate = self;
+    self.xingMingTextF .delegate = self;
+    self.usernameTextF.delegate = self;
+    self.passwordTextF .delegate = self;
+    self.phoneTextF.delegate = self;
+    self.emailTextF .delegate = self;
+    self.companyTextF .delegate = self;
+    
  }
 
 #pragma mark xmlparser
@@ -77,15 +88,16 @@
 -(void)textFieldDidBeginEditing:(UITextField *)textField{
     if (textField == self.companyTextF  )
     {
-        [self ViewAnimation:0 :-35];
+        [self ViewAnimation:0 :-70];
     }
     if (textField == self.emailTextF  )
     {
-        [self ViewAnimation:0 :-35];
+        [self ViewAnimation:0 :-50];
     }
 
     
 }
+
 -(void)ViewAnimation : (int)x : (int)y{
     NSTimeInterval animationDuration = 0.30f;
     [UIView beginAnimations:@"ResizeForKeyBoard" context:nil];
@@ -131,56 +143,75 @@
 }
 
 - (IBAction)submitAction:(id)sender {
-    if (![self.passwordTextF.text isEqualToString:self.passwordsubTextF.text]) {
-        UIAlertView *alterViw = [[UIAlertView alloc]initWithTitle:@"" message:@"两次密码输入不正确" delegate:nil cancelButtonTitle:nil otherButtonTitles:@"OK", nil];
-        [alterViw show];
-        return;
-    }
-    
-    
-    if ([self isValidateEmail:self.emailTextF.text] && [self isValidateMobile:self.phoneTextF.text ]) {
-        
-        NSString *str = [NSString stringWithFormat:@"{XingMing:\"%@\",YongHuMing:\"%@\",MiMa:\"%@\",ShouJiHao:\"%@\",YouXiang:\"%@\",GongSiMingCheng:\"%@\",KeHuDuanBiaoShi:\"%@\"}",self.xingMingTextF.text,self.usernameTextF.text,self.passwordTextF.text,self.phoneTextF.text,self.emailTextF.text,self.companyTextF.text,@"1"];
-        
-        NSMutableArray *params=[NSMutableArray array];
-        [params addObject:[NSDictionary dictionaryWithObjectsAndKeys:str,@"zhuCeXinXi", nil]];
-        ServiceArgs *args=[[ServiceArgs alloc] init];
-        args.methodName=@"YongHuZhuCe";//要调用的webservice方法
-        args.soapParams=params;//传递方法参数
-       
-        ServiceRequestManager *manager=[ServiceRequestManager requestWithArgs:args];
-        __block ServiceRequestManager *this = manager;
-        [manager setSuccessBlock:^() {
-            if (this.error) {
-                NSLog(@"同步请求失败，失败原因=%@",this.error.description);
-                //请求失败
-                
-                UIAlertView *alterView = [[UIAlertView alloc]initWithTitle:@"请求失败" message:this.error.description delegate:nil cancelButtonTitle:nil otherButtonTitles:@"OK", nil];
-                [alterView show];
-                
-                
-                return;
-            }
-            //请求成功
-            NSXMLParser *xml = [[NSXMLParser alloc]initWithData:[this.responseString dataUsingEncoding:NSUTF8StringEncoding]];
-            [xml setDelegate:self];
-            [xml parse];  //xml开始解析
-            
-            NSError *err;
-            NSData *jsonData = [resultJsonStr dataUsingEncoding:NSUTF8StringEncoding]; //json解析 转成 data
-            NSDictionary* jsonDic = [NSJSONSerialization JSONObjectWithData:jsonData options:1 error:&err];
-            NSString *resultMessage = [jsonDic objectForKey:@"error"];
-            UIAlertView *alterView = [[UIAlertView alloc]initWithTitle:@"" message:[Global tishiMessage:resultMessage] delegate:nil cancelButtonTitle:nil otherButtonTitles:@"OK", nil];
+       if (![self isValidateEmail:self.emailTextF.text] && [self isValidateMobile:self.phoneTextF.text ]) {
+           UIAlertView *alterViw = [[UIAlertView alloc]initWithTitle:@"" message:@"邮箱或手机号格式不对" delegate:nil cancelButtonTitle:nil otherButtonTitles:@"OK", nil];
+           [alterViw show];
+           return;
+       }
+        if (![self IsEnableConnection]) {
+            UIAlertView *alterView = [[UIAlertView alloc]initWithTitle:nil message:@"没有网络" delegate:nil cancelButtonTitle:nil otherButtonTitles:@"OK", nil];
             [alterView show];
+            return;
+        }
+              NSString *str = [NSString stringWithFormat:@"{XingMing:\"%@\",YongHuMing:\"%@\",MiMa:\"%@\",ShouJiHao:\"%@\",YouXiang:\"%@\",GongSiMingCheng:\"%@\",KeHuDuanBiaoShi:\"%@\"}",self.xingMingTextF.text,self.usernameTextF.text,self.passwordTextF.text,self.phoneTextF.text,self.emailTextF.text,self.companyTextF.text,@"1"];
+            NSMutableArray *params=[NSMutableArray array];
+            [params addObject:[NSDictionary dictionaryWithObjectsAndKeys:str,@"zhuCeXinXi", nil]];
+            ServiceArgs *args=[[ServiceArgs alloc] init];
+            args.methodName=@"YongHuZhuCe";//要调用的webservice方法
+            args.soapParams=params;//传递方法参数
             
-        }];
-        [manager startSynchronous];//开始同步
-        
-    }else{
-        UIAlertView *alterViw = [[UIAlertView alloc]initWithTitle:@"" message:@"邮箱或手机号格式不对" delegate:nil cancelButtonTitle:nil otherButtonTitles:@"OK", nil];
-        [alterViw show];
-    }
-    
-    
+            ServiceRequestManager *manager=[ServiceRequestManager requestWithArgs:args];
+            __block ServiceRequestManager *this = manager;
+            [manager setSuccessBlock:^() {
+                if (this.error) {
+                    NSLog(@"同步请求失败，失败原因=%@",this.error.description);
+                    //请求失败
+                    UIAlertView *alterView = [[UIAlertView alloc]initWithTitle:@"请求失败" message:this.error.description delegate:nil cancelButtonTitle:nil otherButtonTitles:@"OK", nil];
+                    [alterView show];
+                     return;
+                }
+                //请求成功
+                NSXMLParser *xml = [[NSXMLParser alloc]initWithData:[this.responseString dataUsingEncoding:NSUTF8StringEncoding]];
+                [xml setDelegate:self];
+                [xml parse];  //xml开始解析
+                
+                NSError *err;
+                NSData *jsonData = [resultJsonStr dataUsingEncoding:NSUTF8StringEncoding]; //json解析 转成 data
+                NSDictionary* jsonDic = [NSJSONSerialization JSONObjectWithData:jsonData options:1 error:&err];
+                NSString *resultMessage = [jsonDic objectForKey:@"error"];
+                if ([resultMessage isEqualToString:@"000"]) {
+                    proView = [[[NSBundle mainBundle]loadNibNamed:@"ProView" owner:nil options:nil]objectAtIndex:0];
+                    proView.frame = CGRectMake(0, 0, 320, 568);
+                    UILabel *label = [[UILabel alloc]initWithFrame:CGRectMake(0, 200, 320,200)];
+                    label.backgroundColor = [UIColor clearColor];
+                    label.numberOfLines = 2;
+                    label.textAlignment = NSTextAlignmentCenter;
+                    NSString *message;
+                    if ([[Global getPreferredLanguage] isEqualToString:@"en"]) {
+                        message =@"感谢您使用售后服务信息交流管理平台为保障您身份的真实性，系统将在72小时内向您注册邮箱发送审核结果，请注意查收，由此给您带来的不便请谅解。";
+                    }else{
+                        message =@"Thank you for using customer service information manegement platform    To ensure the authenticity of your identity,the system will send the auditresult to the registered mailbox,please note that check,Thank you for understanding";
+                    }
+                    
+                    label.text = message;
+                    label.textColor = [UIColor whiteColor];
+                    UIButton *subBtn = [[UIButton alloc]initWithFrame:CGRectMake(120, 300,80, 30)];
+                    [subBtn setImage:[UIImage imageNamed:@"pwSelBtn"] forState:UIControlStateNormal];
+                    [subBtn setImage:[UIImage imageNamed:@"pwNorBtn"] forState:UIControlStateHighlighted];
+                    [subBtn addTarget:self action:@selector(removeView) forControlEvents:UIControlEventTouchUpInside];
+                    [proView addSubview:subBtn];
+                    [proView addSubview:label];
+                    [self.view addSubview:proView];
+                 }else{
+                    UIAlertView *alterView = [[UIAlertView alloc]initWithTitle:@"" message:[Global tishiMessage:resultMessage] delegate:nil cancelButtonTitle:nil otherButtonTitles:@"OK", nil];
+                    [alterView show];
+                }
+                
+            }];
+            [manager startSynchronous];//开始同步
+}
+
+-(void)removeView{
+    [proView removeFromSuperview];
 }
 @end

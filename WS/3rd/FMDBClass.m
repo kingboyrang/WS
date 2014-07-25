@@ -37,7 +37,11 @@
     }
     return self;
 }
-
+- (void)resetInit{
+    if (!db) {
+        db = [[FMDatabase alloc]initWithPath:[self FilePaths]];
+    }
+}
 //设置数据库文件路径
 -(NSString*)FilePaths{
     
@@ -57,9 +61,9 @@
         // 反馈信息id,项目id
         [db executeUpdate:[NSString stringWithFormat:@"CREATE TABLE IF NOT EXISTS %@(id text,type text,Biaoti text,bianhao text,zhuanye text,wentijibie text,read_state text,deal_state text,fabu_time text,faqi_person text,faqi_role text,huifu_person text,huifu_role text,contants text,suggested text,advice text,result text,result_submit text,pingjia text,forwarding text,falutid text,proname text,proid text,huifutime text,zhuanfaId text)",INFOTABLE]];
         
-        [db executeUpdate:[NSString stringWithFormat:@"create table IF NOT EXISTS %@ (id text,short text,full text,code text,state text,read text)",PROJECTTABLE]];
+        [db executeUpdate:[NSString stringWithFormat:@"create table IF NOT EXISTS %@ (id text,short text,full text,code text,state text,read text,ShiFouKeYiFanKui text)",PROJECTTABLE]];
         
-        [db executeUpdate:[NSString stringWithFormat:@"CREATE TABLE IF NOT EXISTS %@(orgid text,proid text,faultid text,faultType text,messType text,id text,type text,name text,path text,bendiPath text)",IMAGETABLE]];
+        [db executeUpdate:[NSString stringWithFormat:@"CREATE TABLE IF NOT EXISTS %@(orgid text,proid text,faultid text,faultType text,messType text,id text,type text,name text,path text,bendiPath text,isdown text)",IMAGETABLE]];
         
         [db executeUpdate:[NSString stringWithFormat:@"CREATE TABLE IF NOT EXISTS %@(RenYuanID text,XingMing text,RenYuanJueSeMiaoShu text,FenZhi text)",PRO_PERSON_INFOTABLE]];
         //主表
@@ -88,12 +92,12 @@
         }
         //项目表
         else if ([tableName isEqualToString:PROJECTTABLE]){
-            sql = [NSString stringWithFormat:@"INSERT INTO %@ (id,short,full,code,state ,read ) VALUES (%@)",tableName,valueStr];
+            sql = [NSString stringWithFormat:@"INSERT INTO %@ (id,short ,full ,code ,state ,read ,ShiFouKeYiFanKui ) VALUES (%@)",tableName,valueStr];
             
         }
         //附件表
         else if ([tableName isEqualToString:IMAGETABLE]){
-            sql = [NSString stringWithFormat:@"INSERT INTO %@ (orgid ,proid ,faultid ,faultType ,messType ,id ,type ,name ,path ,bendiPath ) VALUES (%@)",tableName,valueStr];
+            sql = [NSString stringWithFormat:@"INSERT INTO %@ (orgid ,proid ,faultid ,faultType ,messType ,id ,type ,name ,path,bendiPath,isdown) VALUES (%@)",tableName,valueStr];
         }
         //项目人员表
         else if ([tableName isEqualToString:PRO_PERSON_INFOTABLE]){
@@ -117,7 +121,9 @@
 -(void)UpData:(NSString *)tableName setStr:(NSString *)setStr  whereStr:(NSString *)whereStr{
     
      if ([db open]) {
-        [db executeUpdate:[NSString stringWithFormat:@"UPDATE %@ SET %@ WHERE %@",tableName,setStr,whereStr]];
+         
+         NSString *str = [NSString stringWithFormat:@"UPDATE %@ SET %@ WHERE %@",tableName,setStr,whereStr];
+        [db executeUpdate:str];
         [db close];
     }
 
@@ -129,7 +135,6 @@
     if ([db open]) {
     
         NSString *seleSql= [NSString stringWithFormat:@"select * from %@ %@",tableName,str];
-//        NSLog(@"查询语句-------->\n%@\n\n\n",seleSql);
         FMResultSet *resultSet = [db executeQuery:seleSql];
         //项目表
         if ([tableName isEqualToString:PROJECTTABLE])
@@ -142,13 +147,13 @@
                 proClass.pro_bianhao = [resultSet stringForColumn:@"code"];
                 proClass.WeiChuLiShuLiang = [resultSet stringForColumn:@"state"];
                 proClass.WeiDuShuLiang = [resultSet stringForColumn:@"read"];
+                proClass.pro_ShiFouKeYiFanKui = [resultSet stringForColumn:@"ShiFouKeYiFanKui"];
                 [resultArr addObject:proClass];
             }
         }
         //项目人员表
         else if ([tableName isEqualToString:PRO_PERSON_INFOTABLE])
         {
-            
             while ([resultSet next]) {
                 
                 NSString *person_id = [resultSet stringForColumn:@"RenYuanID"];
@@ -270,6 +275,7 @@
                 fjClass.fujianName = [resultSet stringForColumn:@"name"];
                 fjClass.fujianPaths = [resultSet stringForColumn:@"path"];
                 fjClass.fujianbendiPath = [resultSet stringForColumn:@"bendiPath"];
+                fjClass.fujianisdown = [resultSet stringForColumn:@"isdown"];
                 [resultArr addObject:fjClass];
             }
             

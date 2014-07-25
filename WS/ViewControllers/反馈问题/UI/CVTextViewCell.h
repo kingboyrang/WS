@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
+#import "GCPlaceholderTextView.h"
+
 @protocol CVTextViewCellDelegate <NSObject>
 
 -(void)ChangeSuzi:(NSString *)str;
@@ -16,8 +18,8 @@
 
 
 @interface CVTextViewCell : UITableViewCell<UITextViewDelegate>
-@property (nonatomic,strong) UITextView *textView;
-
+@property (nonatomic,strong) GCPlaceholderTextView *textView;
+//@property (nonatomic, strong)UIButton *placeholderBtn;
 
 @property (nonatomic, strong)id<CVTextViewCellDelegate>delegate;
 @end

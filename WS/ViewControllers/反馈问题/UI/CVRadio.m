@@ -18,17 +18,16 @@
         
         _labName=[[UILabel alloc] initWithFrame:CGRectZero];
         _labName.backgroundColor=[UIColor clearColor];
-        _labName.font=[UIFont boldSystemFontOfSize:14];
-        _labName.textColor=[UIColor whiteColor];
+        _labName.font=[UIFont boldSystemFontOfSize:12];
+        _labName.textColor=[Global colorWithHexString:@"#27415C"];
         [self addSubview:_labName];
         
         self.selected=NO;
         
         UIImage *img=[UIImage imageNamed:@"noSeleYuan"];
         _button=[UIButton buttonWithType:UIButtonTypeCustom];
-        _button.frame=CGRectMake(0, 0, 20, 20);
+        _button.frame=CGRectMake(0, 0, 15, 15);
 
-//        _button.frame=CGRectMake(0, 0, img.size.width, img.size.height);
         [_button setImage:img forState:UIControlStateNormal];
         [_button setImage:[UIImage imageNamed:@"yesSeleYuan"] forState:UIControlStateSelected];
         [_button addTarget:self action:@selector(buttonChkClick:) forControlEvents:UIControlEventTouchUpInside];

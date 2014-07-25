@@ -11,27 +11,26 @@
 
 @interface CaoZuoClass : NSObject
 
-@property (nonatomic, strong)NSString *xinxiType;
-@property (nonatomic, strong)NSString *xinxiID;
-@property (nonatomic, strong)NSString *fautlid;
-@property (nonatomic, strong)NSString *proId;
-@property (nonatomic, strong)NSString *faultType;
-@property (nonatomic, strong)NSString *bianhao;
-@property (nonatomic, strong)NSString *biaoti;
-@property (nonatomic, strong)NSString *zhuanye;
-@property (nonatomic, strong)NSString *wentijiBie;
-@property (nonatomic, strong)NSString *read_state;
-@property (nonatomic, strong)NSString *deal_state;
-@property (nonatomic, strong)NSString *fabutime;
-@property (nonatomic, strong)NSString *faqiperson;
-@property (nonatomic, strong)NSString *faqirole;
-@property (nonatomic, strong)NSString *huifuperson;
-@property (nonatomic, strong)NSString *huifurole;
-@property (nonatomic, strong)NSString *huifutime;
-@property (nonatomic, strong)NSString *faultContent;
-@property (nonatomic, strong)NSString *content;
-@property (nonatomic, strong)NSString *HuiFuXuanXiang;
+@property (nonatomic, copy)NSString *xinxiType;
+@property (nonatomic, copy)NSString *xinxiID;
+@property (nonatomic, copy)NSString *fautlid;
+@property (nonatomic, copy)NSString *proId;
+@property (nonatomic, copy)NSString *faultType;
+@property (nonatomic, copy)NSString *bianhao;
+@property (nonatomic, copy)NSString *biaoti;
+@property (nonatomic, copy)NSString *zhuanye;
+@property (nonatomic, copy)NSString *wentijiBie;
+@property (nonatomic, copy)NSString *read_state;
+@property (nonatomic, copy)NSString *deal_state;
+@property (nonatomic, copy)NSString *fabutime;
+@property (nonatomic, copy)NSString *faqiperson;
+@property (nonatomic, copy)NSString *faqirole;
+@property (nonatomic, copy)NSString *huifuperson;
+@property (nonatomic, copy)NSString *huifurole;
+@property (nonatomic, copy)NSString *huifutime;
+@property (nonatomic, copy)NSString *faultContent;
+@property (nonatomic, copy)NSString *content;
+@property (nonatomic, copy)NSString *HuiFuXuanXiang;
 
-
-
+@property (nonatomic, readonly) CGFloat cellHeight;
 @end

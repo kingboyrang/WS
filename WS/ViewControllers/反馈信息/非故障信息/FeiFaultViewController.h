@@ -18,11 +18,12 @@
 
 #import "ImageCropper.h"
 
-@interface FeiFaultViewController : BaseViewController<HearViewDelegate,ButtomViewZhuanfaAction,ImageCropperDelegate>
+@interface FeiFaultViewController : BaseViewController<ButtomViewZhuanfaAction,ImageCropperDelegate>
 {
     CGFloat _progress;
       UIImageView *imageView;
 }
+
 
 @property (weak, nonatomic) IBOutlet UIScrollView *myScrollView;
 

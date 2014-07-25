@@ -29,10 +29,12 @@
 #import "ProjectClass.h"
 #import "Pull_downTable.h"
 #import "Pull_downClass.h"
+
+
 @interface FeedbackViewController : BaseViewController<UITableViewDataSource,UITableViewDelegate,MJRefreshBaseViewDelegate,NSXMLParserDelegate,Pull_downTableDelegate>
 {
    
-    int cellH; //cell 高度
+    BOOL cellEN; //
     
     NSMutableArray *contentsArray;
     MJRefreshHeaderView *_headerView;
@@ -44,6 +46,8 @@
     NSDictionary *resultJsonDic;
 }
 
+
+@property BOOL isSend;
 @property (strong, nonatomic)Pull_downTable *tableView;
 @property (nonatomic, strong) NSMutableArray *messageArr;
 @property (weak, nonatomic) IBOutlet UITableView *mytableView;

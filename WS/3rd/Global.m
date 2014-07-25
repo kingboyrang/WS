@@ -19,19 +19,19 @@
 +(NSString *)xiaoxiType:(NSString *)type{
     NSString *message;
     if ([type isEqualToString:@"1"]) {
-        message = @"自己的反馈";
+        message = @"自己反馈";
     }else if ([type isEqualToString:@"2"]) {
-        message = @"推送的反馈";
+        message = @"接受反馈";
     }else if ([type isEqualToString:@"3"]){
-        message = @"故障处理建议";
+        message = @"建议";
     }else if ([type isEqualToString:@"4"]){
-        message = @"故障处理意见";
+        message = @"意见";
     }else if ([type isEqualToString:@"5"]){
-        message = @"故障处理结果";
+        message = @"结果";
     }else if ([type isEqualToString:@"6"]){
-        message = @"故障处理确认";
+        message = @"确认";
     }else if ([type isEqualToString:@"7"]){
-        message = @"客户评价";
+        message = @"评价";
     }
     return message;
 }
@@ -41,7 +41,7 @@
 
     NSString *message;
     if ([resultMessage isEqualToString:@"000"]) {
-        message = @"信息提交成功 ，威视人员会在72小时对您注册信息进行审合，请耐心等待";
+//        message = @"信息提交成功 ，威视人员会在72小时对您注册信息进行审合，请耐心等待";
     }else if ([resultMessage isEqualToString:@"101"]){
         message = @"数据传输失败";
     }else if ([resultMessage isEqualToString:@"102"]){
@@ -80,7 +80,7 @@
     if ([str isEqualToString:@"1"]) {
         stateStr = @"未阅读";
     }else if ([str isEqualToString:@"2"]){
-        stateStr =  @"已阅读";
+        stateStr = @"已阅读";
     }
     return stateStr;
 }
@@ -95,7 +95,7 @@
     return stateStr;
 }
 //返回正确的json格式
-+(NSDictionary *)GetjsonStr:(NSMutableString *)str{
++(NSDictionary *)GetjsonStr:(NSString *)str{
     NSString * responseString = str;
     responseString = [responseString stringByReplacingOccurrencesOfString:@"\r\n" withString:@""];
     responseString = [responseString stringByReplacingOccurrencesOfString:@"\n" withString:@""];
@@ -190,8 +190,8 @@
                     proClass.pro_quancheng = [dic objectForKey:@"XiangMuQuanCheng"];
                     proClass.WeiChuLiShuLiang = [dic objectForKey:@"WeiChuLiShuLiang"];
                     proClass.WeiDuShuLiang = [dic objectForKey:@"WeiDuShuLiang"];
-                    
-                    NSArray *arr = [[NSArray alloc]initWithObjects:proClass.pro_id,proClass.pro_jiancheng,proClass.pro_quancheng,proClass.pro_bianhao,proClass.WeiChuLiShuLiang,proClass.WeiDuShuLiang, nil];
+                    proClass.pro_ShiFouKeYiFanKui = [dic objectForKey:@"ShiFouKeYiFanKui"];
+                    NSArray *arr = [[NSArray alloc]initWithObjects:proClass.pro_id,proClass.pro_jiancheng,proClass.pro_quancheng,proClass.pro_bianhao,proClass.WeiChuLiShuLiang,proClass.WeiDuShuLiang,proClass.pro_ShiFouKeYiFanKui, nil];
                     if ([[FMDBClass shareInstance]seleDate:PROJECTTABLE wherestr:[NSString stringWithFormat:@"where id = %@",proClass.pro_id]].count < 1) {
                         [[FMDBClass shareInstance]insertDate:PROJECTTABLE date:arr :@""];
                        
@@ -296,7 +296,7 @@
                     }else{
                         fujianC.fujianbendiPath = @"";
                     }
-                    NSArray *fujianArray = @[fujianC.fujianorgid,fujianC.fujianproid,fujianC.fujianfaultid,fujianC.fujianFaultType,fujianC.fujianMessageType,fujianC.fujianid,fujianC.fujiantype,fujianC.fujianName,fujianC.fujianPaths,fujianC.fujianbendiPath];
+                    NSArray *fujianArray = @[fujianC.fujianorgid,fujianC.fujianproid,fujianC.fujianfaultid,fujianC.fujianFaultType,fujianC.fujianMessageType,fujianC.fujianid,fujianC.fujiantype,fujianC.fujianName,fujianC.fujianPaths,fujianC.fujianbendiPath,@""];
                     if ([[FMDBClass shareInstance]seleDate:IMAGETABLE wherestr:[NSString stringWithFormat:@"where proid = %@ and faultid = %@ and faultType = %@ and id = %@ and type = %@  and orgid = %@",fujianC.fujianproid,fujianC.fujianfaultid,fujianC.fujianFaultType,fujianC.fujianid,fujianC.fujiantype,fujianC.fujianorgid]].count < 1)           //判断是否重复记录
                     {
                         [[FMDBClass shareInstance]insertDate:IMAGETABLE date:fujianArray :@""]; //IMAGETABLE表中添加数据
@@ -338,10 +338,7 @@
                     {
                         [[FMDBClass shareInstance]insertDate:CZTABLE date:array :@""]; //PRO_PERSON_INFOTABLE表中添加数据
                     }
-                
-                
-                
-                    NSArray *fujianArray = [dic objectForKey:@"FuJian"];
+                      NSArray *fujianArray = [dic objectForKey:@"FuJian"];
                     for (NSDictionary *fujiandic in fujianArray) {
                         FujianClass *fujianC = [[FujianClass alloc]init];
                         fujianC.fujianorgid = [dic objectForKey:@"XinXiID"];
@@ -376,7 +373,7 @@
                         }
                        
                         
-                        NSArray *fujianArray = @[fujianC.fujianorgid,fujianC.fujianproid,fujianC.fujianfaultid,fujianC.fujianFaultType,fujianC.fujianMessageType,fujianC.fujianid,fujianC.fujiantype,fujianC.fujianName,fujianC.fujianPaths,fujianC.fujianbendiPath];
+                        NSArray *fujianArray = @[fujianC.fujianorgid,fujianC.fujianproid,fujianC.fujianfaultid,fujianC.fujianFaultType,fujianC.fujianMessageType,fujianC.fujianid,fujianC.fujiantype,fujianC.fujianName,fujianC.fujianPaths,fujianC.fujianbendiPath,@""];
                         if ([[FMDBClass shareInstance]seleDate:IMAGETABLE wherestr:[NSString stringWithFormat:@"where proid = %@ and faultid = %@ and faultType = %@ and id = %@ and type = %@  and orgid = %@",fujianC.fujianproid,fujianC.fujianfaultid,fujianC.fujianFaultType,fujianC.fujianid,fujianC.fujiantype,fujianC.fujianorgid]].count < 1)           //判断是否重复记录
                         {
                             [[FMDBClass shareInstance]insertDate:IMAGETABLE date:fujianArray :@""]; //IMAGETABLE表中添加数据
@@ -424,7 +421,6 @@
     
     if (isfault) {
         NSMutableArray *dataArray = [[FMDBClass shareInstance]seleDate:INFOTABLE wherestr:seleStr];
-        
         for (MessageClass *class in dataArray) {
             retrunid = retrunid >= [class.XinXi_faultid intValue] ? retrunid:[class.XinXi_faultid intValue];
         }
@@ -446,7 +442,6 @@
     }
     return retrunid;
 }
-
 +(void)downloadWithImageURL:(NSURL *)url callback:(void (^)(UIImage *, NSError *))callback
 {
     NSURLRequest *request = [NSURLRequest requestWithURL:url
@@ -478,10 +473,50 @@
     NSUserDefaults* defs = [NSUserDefaults standardUserDefaults];
     NSArray* languages = [defs objectForKey:@"AppleLanguages"];
     NSString* preferredLang = [languages objectAtIndex:0];
-    NSLog(@"Preferred Language:%@", preferredLang);
     return preferredLang;
 }
 
++ (UIColor *) colorWithHexString: (NSString *)color
+{
+    NSString *cString = [[color stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] uppercaseString];
+    
+    // String should be 6 or 8 characters
+    if ([cString length] < 6) {
+        return [UIColor clearColor];
+    }
+    
+    // strip 0X if it appears
+    if ([cString hasPrefix:@"0X"])
+        cString = [cString substringFromIndex:2];
+    if ([cString hasPrefix:@"#"])
+        cString = [cString substringFromIndex:1];
+    if ([cString length] != 6)
+        return [UIColor clearColor];
+    
+    // Separate into r, g, b substrings
+    NSRange range;
+    range.location = 0;
+    range.length = 2;
+    
+    //r
+    NSString *rString = [cString substringWithRange:range];
+    
+    //g
+    range.location = 2;
+    NSString *gString = [cString substringWithRange:range];
+    
+    //b
+    range.location = 4;
+    NSString *bString = [cString substringWithRange:range];
+    
+    // Scan values
+    unsigned int r, g, b;
+    [[NSScanner scannerWithString:rString] scanHexInt:&r];
+    [[NSScanner scannerWithString:gString] scanHexInt:&g];
+    [[NSScanner scannerWithString:bString] scanHexInt:&b];
+    
+    return [UIColor colorWithRed:((float) r / 255.0f) green:((float) g / 255.0f) blue:((float) b / 255.0f) alpha:1.0f];
+}
 
 
 

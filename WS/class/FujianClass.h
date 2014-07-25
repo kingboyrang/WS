@@ -17,6 +17,7 @@
 @property (nonatomic, strong)NSString *fujianMessageType;
 @property (nonatomic, strong)NSString *fujianid;
 @property (nonatomic, strong)NSString *fujiantype;
+@property (nonatomic, strong)NSString *fujianisdown;
 
 @property (nonatomic, strong)NSString *fujianName;
 

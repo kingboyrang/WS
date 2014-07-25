@@ -15,8 +15,9 @@
 {
     FMDatabase *db;
 }
+@property (nonatomic, strong)FMDatabase *db;
 +(FMDBClass *)shareInstance;
-
+- (void)resetInit;
 #pragma mark 创建数据表
 -(void)createTable;
 #pragma mark 添加信息

@@ -16,12 +16,13 @@
 #import "FujianClass.h"
 #import "ShowImageView.h"
 #import "Global.h"
-
 #import "XmlParseHelper.h"
-
 #import "MySheetView.h"
 #import "AlbumCameraImage.h"
+#import "Reachability.h"
 
+#import "ServiceOperation.h"
+#import "ServiceOperationQueue.h"
 
 #if __IPHONE_OS_VERSION_MAX_ALLOWED > __IPHONE_6_1
 #define IF_IOS7_OR_GREATER(...) \
@@ -32,6 +33,7 @@ __VA_ARGS__ \
 #else
 #define IF_IOS7_OR_GREATER(...)
 #endif
+
 
 
 @interface BaseViewController : UIViewController<NacViewDelegate,UITextViewDelegate,MySheetViewDelegte,QBImagePickerControllerDelegate,AlbumCameraDelegate,NSXMLParserDelegate>
@@ -63,4 +65,6 @@ __VA_ARGS__ \
 -(void)chooseImage;
 -(void)SubmitAction;
 -(void)sendMessage:(NSString *)base64string  fileName:(NSString *)fileName completed:(void(^)())finished;
+-(BOOL)IsEnableConnection;
+-(ServiceOperation*)uploadWithBase64:(NSString *)base64string  fileName:(NSString *)fileName;
 @end

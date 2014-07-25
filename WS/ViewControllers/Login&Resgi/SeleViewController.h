@@ -12,14 +12,15 @@
 #import "FeedbackProViewController.h"
 #import "OnlineServiceViewController.h"
 #import "ReseachEvaluationViewController.h"
-
+#import "CKFindViewController.h"
+#import "ProjectClass.h"
 
 
 @interface SeleViewController : BaseViewController
 
 
 
-- (IBAction)BtnAction:(id)sender;
+- (IBAction)BtnActionSele:(id)sender;
 
 
 @end

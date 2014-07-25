@@ -7,9 +7,23 @@
 //
 
 #import "CaoZuoClass.h"
-
+#import "NSString+TPCategory.h"
 @implementation CaoZuoClass
-
-@synthesize xinxiType,xinxiID,fautlid,bianhao,zhuanye,wentijiBie,read_state,deal_state,fabutime,faqiperson,faqirole,huifuperson,huifurole,huifutime,content,HuiFuXuanXiang,biaoti,faultContent;
-
+- (CGFloat)cellHeight{
+    CGFloat h=5;
+    CGSize size = [self.huifuperson textSize:[UIFont systemFontOfSize:14] withWidth:320];
+    h+=size.height+4;
+    size = [self.content textSize:[UIFont systemFontOfSize:15] withWidth:320];
+    h+=size.height+4;
+    
+    if ([self.HuiFuXuanXiang length]) {
+        h+=21+5;
+    }
+    size = [self.huifutime textSize:[UIFont systemFontOfSize:14] withWidth:320];
+    h+=size.height+15;
+    h+=2;
+    h+=5;
+    return h;
+    //return h<120.0f?120.0f:h;
+}
 @end

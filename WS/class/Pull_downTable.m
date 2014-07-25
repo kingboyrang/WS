@@ -31,12 +31,12 @@
     return self.tableArray.count;
 }
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
+    
     static NSString *identifier = @"identifier";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
     if (!cell) {
         cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
         UILabel *labele = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, self.frame.size.width, 28)];
-        
         labele.backgroundColor = [UIColor colorWithRed:34/255.0 green:68/255.0 blue:105/255.0 alpha:1];
         labele.textAlignment = NSTextAlignmentCenter;
         labele.font = [UIFont systemFontOfSize:self.fondSize];
@@ -51,19 +51,21 @@
         
     }
     Pull_downClass *pull_down = [self.tableArray objectAtIndex:indexPath.row];
-    
     UILabel *label = (UILabel *)[cell.contentView viewWithTag:100];
-    
     label.text = pull_down.MingCheng;
-    
-    
     cell.tag = [pull_down.idStr intValue];
    
+
     return cell;
 }
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    
+    
     UITableViewCell *cell =[tableView cellForRowAtIndexPath:indexPath];
-    [self.myDelegate getResultJieguoId:[NSString stringWithFormat:@"%d",cell.tag] title:cell.textLabel.text];
+    UILabel *label = (UILabel *)[cell.contentView viewWithTag:100];
+    [self.myDelegate getResultJieguoId:[NSString stringWithFormat:@"%d",cell.tag] title:label.text tag:tableView.tag];
+    
+    
 }
 
 

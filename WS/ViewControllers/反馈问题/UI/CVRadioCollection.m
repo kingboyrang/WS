@@ -46,11 +46,10 @@
 - (void)relaySubOuts{
     CGFloat w=self.bounds.size.width;//总宽度
     CGFloat sepW=15;//分隔宽度
-    CGFloat w1=0,topY=0,leftX=0,leftX2;
+    CGFloat w1=0,topY=5,leftX=0,leftX2;
     for (UIView *item in self.subviews) {
         
         CGRect r=item.frame;
-        //        if (w1<=w) {
         if (w-w1>r.size.width) {
             w1+=r.size.width+sepW;
             r.origin.x=leftX;
@@ -64,7 +63,6 @@
             r.origin.y=topY;//改这里
             item.frame=r;
             leftX = item.frame.size.width +sepW;
-            NSLog(@"layout frame=%@",NSStringFromCGRect(r));
         }
         CGRect rect = self.frame;
         rect.size.height  = topY + item.frame.size.height;
@@ -74,8 +72,7 @@
         }
         
     }
-    
-    //
+
 }
 - (void)layoutSubviews{
     [super layoutSubviews];

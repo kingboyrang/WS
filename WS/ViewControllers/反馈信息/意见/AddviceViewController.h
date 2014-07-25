@@ -11,8 +11,11 @@
 #import "FujianClass.h"
 #import "UserInfo.h"
 
+#import "AppDelegate.h"
+
 @interface AddviceViewController : BaseViewController
 
 @property (nonatomic, strong)NSMutableString *jsonData;
+@property BOOL laugeEN;
 
 @end

@@ -19,33 +19,35 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization
-        self.navView.titel_Label.text = @"转发";
+ 
+        
     }
     return self;
 }
 -(void)sendMessage{
-    NSString *str =[NSString stringWithFormat: @"{XiangMuID:\"%@\",RenYuanID:\"%@\"}",[UserInfo shareInstance].project_current_Id,[UserInfo shareInstance].userId];
-    NSMutableArray *params=[NSMutableArray array];
-    [params addObject:[NSDictionary dictionaryWithObjectsAndKeys:str,@"xiangMuRenYuan", nil]];
-    ServiceArgs *args=[[ServiceArgs alloc] init];
-    args.methodName=@"XiangMuRenYuan";//要调用的webservice方法
-    args.soapParams=params;//传递方法参数
-    //    NSLog(@"soap=%@",args.bodyMessage);
-    ServiceRequestManager *manager=[ServiceRequestManager requestWithArgs:args];
-    __block ServiceRequestManager *this = manager;
-    [manager setSuccessBlock:^() {
-        if (this.error) {
-            NSLog(@"同步请求失败，失败原因=%@",this.error.description);
-            //请求失败
-           
+    if (![self IsEnableConnection]) {
+        UIAlertView *alterView = [[UIAlertView alloc]initWithTitle:nil message:@"没有网络" delegate:nil cancelButtonTitle:nil otherButtonTitles:@"OK", nil];
+        [alterView show];
+        return;
+    }
+        NSString *str =[NSString stringWithFormat: @"{XiangMuID:\"%@\",RenYuanID:\"%@\"}",[UserInfo shareInstance].project_current_Id,[UserInfo shareInstance].userId];
+        NSMutableArray *params=[NSMutableArray array];
+        [params addObject:[NSDictionary dictionaryWithObjectsAndKeys:str,@"xiangMuRenYuan", nil]];
+        ServiceArgs *args=[[ServiceArgs alloc] init];
+        args.methodName=@"XiangMuRenYuan";//要调用的webservice方法
+        args.soapParams=params;//传递方法参数
+        //    NSLog(@"soap=%@",args.bodyMessage);
+        ServiceRequestManager *manager=[ServiceRequestManager requestWithArgs:args];
+        __block ServiceRequestManager *this = manager;
+        [manager setSuccessBlock:^() {
+            if (this.error) {
+                NSLog(@"同步请求失败，失败原因=%@",this.error.description);
+                //请求失败
                 UIAlertView *alterView = [[UIAlertView alloc]initWithTitle:@"连接服务器失败" message:this.error.description delegate:nil cancelButtonTitle:nil otherButtonTitles:@"OK", nil];
                 [alterView show];
-                
-        
-            
-            return;
-        }
-        //请求成功
+                return;
+            }
+            //请求成功
             NSLog(@"%@",this.responseString);
             NSXMLParser *xml = [[NSXMLParser alloc]initWithData:[this.responseString dataUsingEncoding:NSUTF8StringEncoding]];
             [xml setDelegate:self];
@@ -54,7 +56,7 @@
             NSError *err;
             NSData *jsonData = [self.jsonStr dataUsingEncoding:NSUTF8StringEncoding];      //json解析 转成 data
             NSDictionary *jsonDic = [NSJSONSerialization JSONObjectWithData:jsonData options:1 error:&err];
-                       NSLog(@"jsonDic = %@",jsonDic);
+            NSLog(@"jsonDic = %@",jsonDic);
             NSString *returnStr = [jsonDic objectForKey:@"return"];
             if ([returnStr isEqualToString:@"false"])
             {
@@ -75,48 +77,33 @@
                     [self.personArray addObject:class];
                 }
                 [self.myTableView reloadData];
-             }
+            }
             
-        
-    }];
-    [manager startSynchronous];//开始同步
-    
-    
-}
+            
+        }];
+        [manager startSynchronous];//开始同步
+    }
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
-    self.navView.titel_Label.text = @"转发";
-
+    if (self.laugeEN) {
+        self.navView.titel_Label.text = @"Forward";
+        
+    }else{
+        self.navView.titel_Label.text = @"转发";
+        
+    }
     self.personArray = [[NSMutableArray alloc]init];
     [self sendMessage];
-//    NSMutableArray *array = [[FMDBClass shareInstance]seleDate:PRO_PERSON_INFOTABLE wherestr:@""];
-//    for(int i = 0; i< array.count; i++){
-//        NSMutableDictionary *dic1 = [array objectAtIndex:i];
-//        [dic1  setObject:@"0" forKey:@"isSele"];
-//        NSLog(@"%@",dic1);
-//        [self.personArray addObject:dic1];
-//    }
-    
-//    NSLog(@"self.personArray----%@",self.personArray);
+
 }
 #pragma mark 转发
 -(void)sendforwardMessage{
-    NSMutableString *nameStr = [[NSMutableString alloc]init];
-    for (PerSonClass *class in self.personArray  ) {
-      NSString *str = class.isSele;
-        if ([str isEqualToString:@"1"]) {
-            [nameStr appendString:[NSString stringWithFormat:@"%@,",class.XingMing]];
-            
-        }
-        
-        
-    }
-    self.jieshourenid = [nameStr substringToIndex:[nameStr length]-1];  //得到转发人id
-    
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        NSString *str =[NSString stringWithFormat:@"{XinXiLeiXing:\"%@\",XinXiID:\"%@\",FanKuiID:\"%@\",ZhuanFaRenID:\"%@\",JieShouRenIds:\"%@\",XiangMuID:\"%@\"}",self.messageType,self.messageid,self.faultid,self.zhuangfarenid,self.jieshourenid,self.projectid];
+
+ 
+        NSString *str =[NSString stringWithFormat:@"{XinXiLeiXing:\"%@\",XinXiID:\"%@\",FanKuiID:\"%@\",ZhuanFaRenID:\"%@\",JieShouRenIds:\"%@\",XiangMuID:\"%@\"}",self.messageType,self.messageid,self.faultid,self.zhuangfarenid,[self.selectedPersons allKeys],self.projectid];
         NSMutableArray *params=[NSMutableArray array];
         [params addObject:[NSDictionary dictionaryWithObjectsAndKeys:str,@"xinXiZhuanFa", nil]];
         ServiceArgs *args=[[ServiceArgs alloc] init];
@@ -129,17 +116,13 @@
             if (this.error) {
                 NSLog(@"同步请求失败，失败原因=%@",this.error.description);
                 //请求失败
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    
+                
                     UIAlertView *alterView = [[UIAlertView alloc]initWithTitle:@"登录失败" message:this.error.description delegate:nil cancelButtonTitle:nil otherButtonTitles:@"OK", nil];
                     [alterView show];
                     
-                });
                 
                 return;
             }
-            //请求成功
-            dispatch_async(dispatch_get_main_queue(), ^{
                 NSLog(@"登录请求成功，请求结果为=\n%@",this.responseString);
                 NSXMLParser *xml = [[NSXMLParser alloc]initWithData:[this.responseString dataUsingEncoding:NSUTF8StringEncoding]];
                 [xml setDelegate:self];
@@ -162,12 +145,12 @@
                     UIAlertView *alterView = [[UIAlertView alloc]initWithTitle:nil message:@"转发成功" delegate:nil cancelButtonTitle:nil otherButtonTitles:@"OK", nil];
                     [alterView show];
                 }
-             });
+    
             
         }];
         [manager startSynchronous];//开始同步
         
-    });
+    
     
 
    
@@ -183,49 +166,50 @@
     if (!cell) {
         NSArray *array = [[NSBundle mainBundle]loadNibNamed:@"ForwardTableViewCell" owner:nil options:nil];
         cell = [array objectAtIndex:0];
-        cell.delegate = self;
+        [cell.btn setImage:[UIImage imageNamed:@"forwardSele"] forState:UIControlStateSelected];
+        [cell.btn setImage:[UIImage imageNamed:@"forwardNormal"] forState:UIControlStateNormal];
+        [cell.btn addTarget:self action:@selector(buttonChkClick:) forControlEvents:UIControlEventTouchUpInside];
     }
- 
-  
-  
+   
     PerSonClass *person = [[PerSonClass alloc]init];
      person = [self.personArray objectAtIndex:indexPath.row];
     person.RenYuanID = person.RenYuanID;
     cell.name_label.text = person.XingMing;
     cell.idStr = person.RenYuanID;
     cell.isSele = person.isSele;
-    if ([cell.isSele isEqualToString:@"1"]) {
-        [cell.btn setImage:[UIImage imageNamed:@"forwardSele"]forState:0];
+    if (self.selectedPersons && [self.selectedPersons count]>0 && [self.selectedPersons.allKeys containsObject:person.RenYuanID]) {
+        cell.btn.selected=YES;
     }else{
-         [cell.btn setImage:[UIImage imageNamed:@"forwardNormal"]forState:0 ];
+        cell.btn.selected=NO;
     }
     cell.btn.tag = indexPath.row;
     
     return cell;
     
 }
--(void)changeCellBtnImage:(UIButton *)btn{
-    PerSonClass *class = [[PerSonClass alloc]init];
-    class = [self.personArray objectAtIndex:btn.tag];
-    NSString *str = class.isSele;
-    if ([str isEqualToString:@"0"])
-    {
-        class.isSele = @"1";
+-(void)buttonChkClick:(UIButton*)btn{
+    
+    btn.selected=!btn.selected;
+    id v=[btn superview];
+    while (![v isKindOfClass:[ForwardTableViewCell class]]) {
+        v=[v superview];
     }
-    else
-    {
-        class.isSele = @"0";
-        
+    ForwardTableViewCell *cell=(ForwardTableViewCell*)v;
+    NSIndexPath *indexPath=[self.myTableView indexPathForCell:cell];
+    PerSonClass *person =[self.personArray objectAtIndex:indexPath.row];
+    if (!self.selectedPersons) {
+        self.selectedPersons=[NSMutableDictionary dictionary];
     }
-[self.myTableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:btn.tag inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
+    
+    if (btn.selected) {//选中
+        [self.selectedPersons setValue:person.XingMing forKey:person.RenYuanID];
+    }else{
+        [self.selectedPersons removeObjectForKey:person.RenYuanID];
+    }
+    
 }
 
 
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
 #pragma mark xmlparser
 //step 1 :准备解析
 - (void)parserDidStartDocument:(NSXMLParser *)parser

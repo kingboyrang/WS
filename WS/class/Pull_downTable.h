@@ -12,7 +12,7 @@
 
 @protocol Pull_downTableDelegate <NSObject>
 
--(void)getResultJieguoId:(NSString *)jieguoID title:(NSString *)titleStr;
+-(void)getResultJieguoId:(NSString *)jieguoID title:(NSString *)titleStr tag:(int)tag;
 
 @end
 @interface Pull_downTable : UITableView<UITableViewDataSource,UITableViewDelegate>
